@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.awt.image.BufferedImage;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
+import com.probie.dailypaper.System.Interface.Native.User32;
 
 public interface IComputerSystem {
 
@@ -45,7 +46,7 @@ public interface IComputerSystem {
      * @return 当前格式化时间
      * */
     default String getCurrentFormatDate() {
-        return new SimpleDateFormat(DailyPaper.getInstance().getCurrentDateFormat()).format(new Date());
+        return new SimpleDateFormat(DailyPaper.getInstance().getCurrentDateFormat().get()).format(new Date());
     }
 
     /**
