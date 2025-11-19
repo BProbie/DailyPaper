@@ -37,11 +37,16 @@ public abstract class AIAgent implements IAIAgent {
      * */
     private Supplier<String> APIKey;
     private Supplier<String> APIUrl;
-    private Supplier<String> Model;
+    private Supplier<String> APIModel;
 
     @Override
     public KolorsAgent getKolorsAgent() {
         return KolorsAgent.getInstance();
+    }
+
+    @Override
+    public Qwen3_8BAgent getQwen3_8BAgent() {
+        return Qwen3_8BAgent.getInstance();
     }
 
     /**
@@ -77,8 +82,8 @@ public abstract class AIAgent implements IAIAgent {
         return APIUrl.get();
     }
 
-    public String getModel() {
-        return Model.get();
+    public String getAPIModel() {
+        return APIModel.get();
     }
 
 }

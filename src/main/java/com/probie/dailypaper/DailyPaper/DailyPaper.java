@@ -10,6 +10,7 @@ import com.probie.dailypaper.Config.LogConfig;
 import com.probie.dailypaper.Config.TempConfig;
 import com.probie.dailypaper.AIAgent.KolorsAgent;
 import com.probie.dailypaper.Config.ConfigConfig;
+import com.probie.dailypaper.AIAgent.Qwen3_8BAgent;
 
 @Data
 public class DailyPaper {
@@ -25,16 +26,21 @@ public class DailyPaper {
     public String KeyRootPath = "RootPath";
     public String KeyCurrentDateFormat = "CurrentDateFormat";
 
-    public String  KeyKolorsAPIKey = "KolorsAPIKey";
-    public String KeyKolorsAPIUrl = "KolorsAPIUrl";
-    public String KeyKolorsModel = "KolorsModel";
     private String KeyConnectTimeout = "ConnectTimeout";
     private String KeyReadTimeout = "ReadTimeout";
     private String KeyWriteTimeout = "WriteTimeout";
+
+    public String KeyKolorsAPIKey = "KolorsAPIKey";
+    public String KeyKolorsAPIUrl = "KolorsAPIUrl";
+    public String KeyKolorsAPIModel = "KolorsAPIModel";
     public String KeyKolorsImageSize = "KolorsImageSize";
     public String KeyKolorsImageCount = "KolorsImageCount";
     public String KeyKolorsFilePath = "KolorsFilePath";
     public String KeyKolorsFileName = "KolorsFileName";
+
+    public String KeyQwen3_8BAPIKey = "Qwen3_8BAPIKey";
+    public String KeyQwen3_8BAPIUrl = "Qwen3_8BAPIUrl";
+    public String KeyQwen3_8BAPIModel = "Qwen3_8BAPIModel";
 
     public String KeyLogConfigFilePath = "LogConfigFilePath";
     public String KeyLogConfigFileName = "LogConfigFileName";
@@ -57,7 +63,7 @@ public class DailyPaper {
             "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
     public Supplier<String> KolorsAPIUrl = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIUrl(),
             "https://api.siliconflow.cn/v1/images/generations").toString();
-    public Supplier<String> KolorsModel = () -> getConfigConfig().getLocalDB().get(getKeyKolorsModel(),
+    public Supplier<String> KolorsModel = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIModel(),
             "Kwai-Kolors/Kolors").toString();
     private Supplier<Integer> ConnectTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyConnectTimeout(),
             60).toString());
@@ -73,6 +79,13 @@ public class DailyPaper {
             getRootPath().get()).toString();
     public Supplier<String> KolorsFileName = () -> getConfigConfig().getLocalDB().get(getKeyKolorsFileName(),
             "Wallpaper.png").toString();
+
+    public Supplier<String> Qwen3_8BAPIKey = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIKey(),
+            "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
+    public Supplier<String> Qwen3_8BAPIUrl = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIUrl(),
+            "https://api.siliconflow.cn/v1/chat/completions").toString();
+    public Supplier<String> Qwen3_8BModel = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIModel(),
+            "Qwen/Qwen3-8B").toString();
 
     /**
      * 程序默认参数 - 静态存储
@@ -101,6 +114,10 @@ public class DailyPaper {
 
     public KolorsAgent getKolorsAgent() {
         return getAIAgent().getKolorsAgent();
+    }
+
+    public Qwen3_8BAgent getQwen3_8BAgent() {
+        return getAIAgent().getQwen3_8BAgent();
     }
 
     public ComputerSystem getComputerSystem() {

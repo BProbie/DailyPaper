@@ -1,6 +1,8 @@
 package com.probie.dailypaper.DailyPaper;
 
 import java.awt.*;
+
+import javafx.application.Platform;
 import lombok.Data;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -50,27 +52,34 @@ public class DailyPaperApplication extends Application {
             if (event.getCode() == KeyCode.ENTER && event.isShiftDown() && textArea.isEditable()) {
                 new Thread(() -> {
                     String text = textArea.getText();
-                    String prop = text.replace("\n",",");
-                    textArea.setText("生成: "+prop+"...");
-                    textArea.setEditable(false);
+
+                    Platform.runLater(() -> textArea.setEditable(false));
+                    Platform.runLater(() -> textArea.setText("生成: "+text+"..."));
+
+                    String prop = DailyPaper.getInstance().getQwen3_8BAgent().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("\n","，")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。");
+
+                    Platform.runLater(() -> textArea.setText("生成: "+prop+"..."));
 
                     BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(
                             DailyPaper.getInstance().getKolorsAgent().turnTextToImage(prop)[0]
                     );
-                    imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage));
+
+                    Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
 
                     if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getKolorsFilePath().get(), DailyPaper.getInstance().getKolorsFileName().get())) {
                         DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getKolorsFilePath().get()+"\\"+DailyPaper.getInstance().getKolorsFileName().get());
                     }
 
-                    textArea.setText("完成: "+prop+"!");
+                    Platform.runLater(() -> textArea.setText("完成: "+prop+"!"));
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException interruptedException) {
                         throw new RuntimeException(interruptedException);
                     }
-                    textArea.setText(text);
-                    textArea.setEditable(true);
+
+                    Platform.runLater(() -> textArea.setText(text));
+                    Platform.runLater(() -> textArea.setEditable(true));
                 }).start();
             }
         });

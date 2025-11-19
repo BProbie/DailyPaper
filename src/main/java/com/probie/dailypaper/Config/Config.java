@@ -34,6 +34,7 @@ public abstract class Config implements IConfig {
                     /// 空实现
                 }
             };
+            INSTANCE.getLocalDB().setIsAutoCommit(false);
         }
         return INSTANCE;
     }

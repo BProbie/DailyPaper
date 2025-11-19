@@ -13,15 +13,15 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.probie.encryption.Encryption;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.dailypaper.AIAgent.Interface.IKolorsAgent;
+import com.probie.dailypaper.AIAgent.Interface.IQwen3_8B;
 
 @Data
-public class KolorsAgent extends AIAgent implements IKolorsAgent {
+public class Qwen3_8BAgent extends AIAgent implements IQwen3_8B {
 
     /**
      * 维护一个懒加载的类单例对象
      * */
-    private volatile static KolorsAgent INSTANCE;
+    private volatile static Qwen3_8BAgent INSTANCE;
 
     /**
      * 请求连接参数
@@ -30,21 +30,15 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
     private Supplier<Integer> readTimeout = DailyPaper.getInstance().getReadTimeout();
     private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
 
-    /**
-     * 图片生成参数
-     * */
-    private Supplier<String> imageSize = DailyPaper.getInstance().getKolorsImageSize();
-    private Supplier<Integer> imageCount = DailyPaper.getInstance().getKolorsImageCount();
-
     @Override
     protected void init() {
-        setAPIKey(getAPIKey(DailyPaper.getInstance().getKolorsAPIKey()));
-        setAPIUrl(DailyPaper.getInstance().getKolorsAPIUrl());
-        setAPIModel(DailyPaper.getInstance().getKolorsModel());
+        setAPIKey(getAPIKey(DailyPaper.getInstance().getQwen3_8BAPIKey()));
+        setAPIUrl(DailyPaper.getInstance().getQwen3_8BAPIUrl());
+        setAPIModel(DailyPaper.getInstance().Qwen3_8BModel);
     }
 
     @Override
-    public String[] turnTextToImage(String text) {
+    public String turnTextToText(String text) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(getConnectTimeout(), TimeUnit.SECONDS)
@@ -54,9 +48,13 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
 
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
-        requestBodyJson.put("prompt", text);
-        requestBodyJson.put("image_size", getImageSize());
-        requestBodyJson.put("batch_size", getImageCount());
+
+        JSONArray messages = new JSONArray();
+        JSONObject userMessage = new JSONObject();
+        userMessage.put("role", "user");
+        userMessage.put("content", text);
+        messages.add(userMessage);
+        requestBodyJson.put("messages", messages);
 
         RequestBody requestBody = RequestBody.create(
                 requestBodyJson.toString(),
@@ -76,12 +74,7 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
                 String responseBody = response.body().string();
                 if (response.isSuccessful()) {
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
-                    JSONArray images = responseBodyJson.getJSONArray("images");
-                    String[] strings = new String[images.size()];
-                    for (int i = 0; i < strings.length; i++) {
-                        strings[i] = images.getJSONObject(i).getString("url");
-                    }
-                    return strings;
+                    return responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
                 }
             }
         } catch (IOException ioException) {
@@ -91,7 +84,7 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
     }
 
     @Override
-    public Supplier<String> getAPIKey(Supplier<String> APIKey) {
+    protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
         if (!Encryption.getInstance().isDebug()) {
             if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
                 Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
@@ -105,9 +98,9 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
     /**
      * 获取懒加载的类单例对象
      * */
-    public synchronized static KolorsAgent getInstance() {
+    public synchronized static Qwen3_8BAgent getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new KolorsAgent();
+            INSTANCE = new Qwen3_8BAgent();
             INSTANCE.init();
         }
         return INSTANCE;
@@ -126,14 +119,6 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
 
     public int getWriteTimeout() {
         return writeTimeout.get();
-    }
-
-    public String getImageSize() {
-        return imageSize.get();
-    }
-
-    public int getImageCount() {
-        return imageCount.get();
     }
 
 }
