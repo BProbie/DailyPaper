@@ -54,4 +54,8 @@ public abstract class Config implements IConfig {
         return ConfigConfig.getInstance();
     }
 
+    @Override
+    public RenewConfig getRenewConfig() {
+        return RenewConfig.getInstance();
+    }
 }

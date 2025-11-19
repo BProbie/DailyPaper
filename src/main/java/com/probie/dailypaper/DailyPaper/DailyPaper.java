@@ -2,14 +2,11 @@ package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
 import java.util.function.Supplier;
+import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import com.probie.dailypaper.Enum.Date;
-import com.probie.dailypaper.Config.Config;
 import com.probie.dailypaper.AIAgent.AIAgent;
-import com.probie.dailypaper.Config.LogConfig;
-import com.probie.dailypaper.Config.TempConfig;
 import com.probie.dailypaper.AIAgent.KolorsAgent;
-import com.probie.dailypaper.Config.ConfigConfig;
 import com.probie.dailypaper.AIAgent.Qwen3_8BAgent;
 
 @Data
@@ -50,6 +47,9 @@ public class DailyPaper {
 
     public String KeyConfigConfigFilePath = "ConfigConfigFilePath";
     public String KeyConfigConfigFileName = "ConfigConfigFileName";
+
+    public String KeyRenewConfigFilePath = "RenewConfigFilePath";
+    public String KeyRenewConfigFileName = "RenewConfigFileName";
 
     /**
      * 程序默认参数 - 动态更新
@@ -93,17 +93,22 @@ public class DailyPaper {
     public String LogConfigFilePath = getConfigConfig().getLocalDB().get(getKeyLogConfigFilePath(),
             getRootPath().get()).toString();
     public String LogConfigFileName = getConfigConfig().getLocalDB().get(getKeyLogConfigFileName(),
-            "Log-Dailypaper."+getComputerSystem().getDate(Date.YEAR)+"-"+getComputerSystem().getDate(Date.MONTH)+"-"+getComputerSystem().getDate(Date.DAY)+".txt").toString();
+            "Log."+getComputerSystem().getDate(Date.YEAR)+"-"+getComputerSystem().getDate(Date.MONTH)+"-"+getComputerSystem().getDate(Date.DAY)+".txt").toString();
 
     public String TempConfigFilePath = getConfigConfig().getLocalDB().get(getKeyTempConfigFilePath(),
             getRootPath().get()).toString();
     public String TempConfigFileName = getConfigConfig().getLocalDB().get(getKeyTempConfigFileName(),
-            "Temp-Dailypaper.properties").toString();
+            "Temp.properties").toString();
 
     public String ConfigConfigFilePath = getConfigConfig().getLocalDB().get(getKeyConfigConfigFilePath(),
             getRootPath().get()).toString();
     public String ConfigConfigFileName = getConfigConfig().getLocalDB().get(getKeyConfigConfigFileName(),
-            "Config-Dailypaper.properties").toString();
+            "Config.properties").toString();
+
+    public String RenewConfigFilePath = getConfigConfig().getLocalDB().get(getKeyRenewConfigFilePath(),
+            getRootPath().get()).toString();
+    public String RenewConfigFileName = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileName(),
+            "Renew.properties").toString();
 
     /**
      * 获取懒加载的工具类单例对象
@@ -154,6 +159,10 @@ public class DailyPaper {
 
     public ConfigConfig getConfigConfig() {
         return getConfig().getConfigConfig();
+    }
+
+    public RenewConfig getRenewConfig() {
+        return getConfig().getRenewConfig();
     }
 
     /**

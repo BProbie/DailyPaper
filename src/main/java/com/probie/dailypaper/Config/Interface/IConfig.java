@@ -2,6 +2,7 @@ package com.probie.dailypaper.Config.Interface;
 
 import com.probie.dailypaper.Config.LogConfig;
 import com.probie.dailypaper.Config.TempConfig;
+import com.probie.dailypaper.Config.RenewConfig;
 import com.probie.dailypaper.Config.ConfigConfig;
 
 public interface IConfig {
@@ -23,5 +24,11 @@ public interface IConfig {
      * @return ConfigConfig 代理单例
      * */
     ConfigConfig getConfigConfig();
+
+    /**
+     * 获取 RenewConfig 代理单例
+     * @return RenewConfig 代理单例
+     * */
+    RenewConfig getRenewConfig();
 
 }

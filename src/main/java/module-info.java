@@ -21,6 +21,7 @@ module com.probie.dailypaper {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
+    requires com.probie.dailypaper;
 
     exports com.probie.dailypaper;
     exports com.probie.dailypaper.DailyPaper;
