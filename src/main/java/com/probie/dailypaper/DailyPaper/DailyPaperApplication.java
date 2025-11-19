@@ -54,11 +54,11 @@ public class DailyPaperApplication extends Application {
                     String text = textArea.getText();
 
                     Platform.runLater(() -> textArea.setEditable(false));
-                    Platform.runLater(() -> textArea.setText("生成: "+text+"..."));
+                    Platform.runLater(() -> textArea.setText("生成: \n"+text+"\n..."));
 
                     String prop = DailyPaper.getInstance().getQwen3_8BAgent().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("\n","，")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。");
 
-                    Platform.runLater(() -> textArea.setText("生成: "+prop+"..."));
+                    Platform.runLater(() -> textArea.setText("生成: \n"+prop+"\n..."));
 
                     BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(
                             DailyPaper.getInstance().getKolorsAgent().turnTextToImage(prop)[0]
@@ -70,7 +70,7 @@ public class DailyPaperApplication extends Application {
                         DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getKolorsFilePath().get()+"\\"+DailyPaper.getInstance().getKolorsFileName().get());
                     }
 
-                    Platform.runLater(() -> textArea.setText("完成: "+prop+"!"));
+                    Platform.runLater(() -> textArea.setText("完成: \n"+prop+"\n!"));
 
                     try {
                         Thread.sleep(1000);
