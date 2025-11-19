@@ -19,11 +19,13 @@
 
 package com.probie.dailypaper;
 
+import com.probie.dailypaper.DailyPaper.DailyPaper;
 import javafx.application.Application;
 import com.probie.dailypaper.DailyPaper.DailyPaperApplication;
 
 public class Main {
     public static void main(String[] args) {
         Application.launch(DailyPaperApplication.class, args);
+        System.out.println(DailyPaper.getInstance().getRenewConfig().getLocalDB().get("run", "run"));
     }
 }

@@ -1,7 +1,10 @@
 package com.probie.dailypaper.Config;
 
 import com.probie.dailypaper.DailyPaper.DailyPaper;
+import com.probie.easydb.Database.Local.LocalDB;
 import com.probie.dailypaper.Config.Interface.IRenewConfig;
+import com.probie.easydb.Database.Local.LocalRemoteDB;
+import com.probie.easydb.EasyDB;
 
 public class RenewConfig extends Config implements IRenewConfig {
 
@@ -12,7 +15,10 @@ public class RenewConfig extends Config implements IRenewConfig {
 
     @Override
     protected void init() {
-        getLocalDB().setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+"\\"+DailyPaper.getInstance().getRenewConfigFileName());
+        LocalRemoteDB localRemoteDB = EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigFileUrl());
+        localRemoteDB.setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+"\\"+DailyPaper.getInstance().getRenewConfigFileName());
+        localRemoteDB.downloadDatabase();
+        getLocalDB().setFullFilePath(localRemoteDB.getFullFilePath());
         getLocalDB().connect();
     }
 
@@ -22,6 +28,7 @@ public class RenewConfig extends Config implements IRenewConfig {
     public synchronized static RenewConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new RenewConfig();
+            INSTANCE.init();
         }
         return INSTANCE;
     }

@@ -50,6 +50,7 @@ public class DailyPaper {
 
     public String KeyRenewConfigFilePath = "RenewConfigFilePath";
     public String KeyRenewConfigFileName = "RenewConfigFileName";
+    public String KeyRenewConfigFileUrl = "RenewConfigFileUrl";
 
     /**
      * 程序默认参数 - 动态更新
@@ -109,6 +110,8 @@ public class DailyPaper {
             getRootPath().get()).toString();
     public String RenewConfigFileName = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileName(),
             "Renew.properties").toString();
+    public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
+            "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
 
     /**
      * 获取懒加载的工具类单例对象
