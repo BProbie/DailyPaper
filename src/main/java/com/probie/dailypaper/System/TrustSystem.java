@@ -6,7 +6,6 @@ import javax.net.ssl.HttpsURLConnection;
 import java.security.cert.X509Certificate;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import com.probie.dailypaper.System.Interface.ITrustSystem;
 
 public class TrustSystem implements ITrustSystem, X509TrustManager {
@@ -35,12 +34,12 @@ public class TrustSystem implements ITrustSystem, X509TrustManager {
     }
 
     @Override
-    public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+    public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
 
     }
 
     @Override
-    public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+    public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
 
     }
 

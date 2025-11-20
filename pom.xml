@@ -27,14 +27,14 @@
         <dependency>
             <groupId>com.github.BProbie</groupId>
             <artifactId>EasyDB</artifactId>
-            <version>2.5.0</version>
+            <version>2.5.1</version>
         </dependency>
 
         <!-- 原创数据加密工具Encryption -->
         <dependency>
             <groupId>com.github.BProbie</groupId>
             <artifactId>Encryption</artifactId>
-            <version>2.1.0</version>
+            <version>2.1.1</version>
         </dependency>
 
         <!-- OkHttp:处理HTTP请求 -->

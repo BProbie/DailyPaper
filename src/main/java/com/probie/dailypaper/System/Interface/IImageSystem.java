@@ -47,7 +47,7 @@ public interface IImageSystem {
      * @return 是否转换成功
      * */
     default boolean turnBufferedImageToLocalFile(BufferedImage bufferedImage, String localFilePath, String localFileName) {
-        return turnBufferedImageToLocalFile(bufferedImage, localFilePath+"\\"+localFileName);
+        return turnBufferedImageToLocalFile(bufferedImage, localFilePath+File.separator+localFileName);
     }
 
     /**

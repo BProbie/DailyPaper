@@ -1,5 +1,6 @@
 package com.probie.dailypaper.Config;
 
+import java.io.File;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.Config.Interface.ITempConfig;
 
@@ -12,7 +13,7 @@ public class TempConfig extends Config implements ITempConfig {
 
     @Override
     protected void init() {
-        getLocalDB().setFullFilePath(DailyPaper.getInstance().getTempConfigFilePath()+"\\"+DailyPaper.getInstance().getTempConfigFileName());
+        getLocalDB().setFullFilePath(DailyPaper.getInstance().getTempConfigFilePath()+File.separator+DailyPaper.getInstance().getTempConfigFileName());
         getLocalDB().connect();
     }
 

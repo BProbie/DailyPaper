@@ -46,7 +46,7 @@ public interface IFileSystem {
      * */
     default boolean download(String urlPath, String localFilePath, String localFileName) {
         try {
-            return download(urlPath, localFilePath+"\\"+localFileName);
+            return download(urlPath, localFilePath+File.separator+localFileName);
         } catch (URISyntaxException | IOException exception) {
             throw new RuntimeException(exception);
         }

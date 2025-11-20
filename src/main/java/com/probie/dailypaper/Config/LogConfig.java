@@ -1,5 +1,6 @@
 package com.probie.dailypaper.Config;
 
+import java.io.File;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.Config.Interface.ILogConfig;
 
@@ -12,7 +13,7 @@ public class LogConfig extends Config implements ILogConfig {
 
     @Override
     protected void init() {
-        getLocalDB().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath()+"\\"+DailyPaper.getInstance().getLogConfigFileName());
+        getLocalDB().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath()+File.separator+DailyPaper.getInstance().getLogConfigFileName());
         getLocalDB().connect();
     }
 

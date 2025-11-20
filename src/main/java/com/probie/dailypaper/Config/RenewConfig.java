@@ -1,5 +1,6 @@
 package com.probie.dailypaper.Config;
 
+import java.io.File;
 import com.probie.easydb.EasyDB;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.easydb.Database.Local.LocalRemoteDB;
@@ -15,7 +16,7 @@ public class RenewConfig extends Config implements IRenewConfig {
     @Override
     protected void init() {
         LocalRemoteDB localRemoteDB = EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigFileUrl());
-        localRemoteDB.setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+"\\"+DailyPaper.getInstance().getRenewConfigFileName());
+        localRemoteDB.setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+File.separator+DailyPaper.getInstance().getRenewConfigFileName());
         localRemoteDB.downloadDatabase();
         getLocalDB().setFullFilePath(localRemoteDB.getFullFilePath());
         getLocalDB().connect();

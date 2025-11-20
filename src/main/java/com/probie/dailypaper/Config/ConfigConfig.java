@@ -1,5 +1,6 @@
 package com.probie.dailypaper.Config;
 
+import java.io.File;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.Config.Interface.IConfigConfig;
 
@@ -12,7 +13,7 @@ public class ConfigConfig extends Config implements IConfigConfig {
 
     @Override
     protected void init() {
-        getLocalDB().setFullFilePath(DailyPaper.getInstance().ConfigConfigFilePath+"\\"+DailyPaper.getInstance().getConfigConfigFileName());
+        getLocalDB().setFullFilePath(DailyPaper.getInstance().ConfigConfigFilePath+File.pathSeparator+DailyPaper.getInstance().getConfigConfigFileName());
         getLocalDB().connect();
     }
 

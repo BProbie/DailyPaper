@@ -2,6 +2,7 @@ package com.probie.dailypaper.DailyPaper;
 
 import java.awt.*;
 import lombok.Data;
+import java.io.File;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
@@ -71,7 +72,7 @@ public class DailyPaperApplication extends Application {
                             Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
 
                             if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
-                                DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+"\\"+DailyPaper.getInstance().getImageFileName().get());
+                                DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+File.separator+DailyPaper.getInstance().getImageFileName().get());
                             }
 
                             Platform.runLater(() -> textArea.setText("完成: \n"+prompt.replace("，","\n")+"\n!"));
