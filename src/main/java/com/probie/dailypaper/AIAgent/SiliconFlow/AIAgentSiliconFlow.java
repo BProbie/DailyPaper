@@ -1,9 +1,10 @@
-package com.probie.dailypaper.AIAgent;
+package com.probie.dailypaper.AIAgent.SiliconFlow;
 
 import java.io.File;
 import java.util.function.Supplier;
 import com.probie.encryption.Encryption;
-import com.probie.dailypaper.AIAgent.Interface.IAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.AIAgent;
+import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.IAIAgentSiliconFlow;
 
 public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSiliconFlow {
 

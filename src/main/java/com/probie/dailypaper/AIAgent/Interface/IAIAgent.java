@@ -1,6 +1,6 @@
 package com.probie.dailypaper.AIAgent.Interface;
 
-import com.probie.dailypaper.AIAgent.AIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
 
 public interface IAIAgent {
 

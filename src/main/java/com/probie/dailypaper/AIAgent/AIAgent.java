@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.AIAgent.Interface.IAIAgent;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
 
 @Data
 public abstract class AIAgent implements IAIAgent {

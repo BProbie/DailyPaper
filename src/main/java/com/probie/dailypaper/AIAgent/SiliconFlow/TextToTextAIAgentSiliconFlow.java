@@ -1,43 +1,34 @@
-package com.probie.dailypaper.AIAgent;
+package com.probie.dailypaper.AIAgent.SiliconFlow;
 
 import lombok.Data;
-import java.io.File;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.RequestBody;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
-import java.util.function.Supplier;
 import java.util.concurrent.TimeUnit;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.probie.encryption.Encryption;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.dailypaper.AIAgent.Interface.ITextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.ITextToTextAIAgentSiliconFlow;
 
 @Data
-public class TextToImageAIAgentSiliconFlow extends AIAgent implements ITextToImageAIAgentSiliconFlow {
+public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements ITextToTextAIAgentSiliconFlow {
 
     /**
      * 维护一个懒加载的类单例对象
      * */
-    private volatile static TextToImageAIAgentSiliconFlow INSTANCE;
-
-    /**
-     * 图片生成参数
-     * */
-    private Supplier<String> imageSize = DailyPaper.getInstance().getImageSize();
-    private Supplier<Integer> imageCount = DailyPaper.getInstance().getImageCount();
+    private volatile static TextToTextAIAgentSiliconFlow INSTANCE;
 
     @Override
     protected void init() {
         setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
-        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToImageSiliconFlow());
-        setAPIModel(DailyPaper.getInstance().getAPIModelTextToImageSiliconFlow());
+        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToTextSiliconFlow());
+        setAPIModel(DailyPaper.getInstance().getAPIModelTextToTextSiliconFlow());
     }
 
     @Override
-    public String[] turnTextToImage(String prompt) {
+    public String turnTextToText(String prompt) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(getConnectTimeout().get(), TimeUnit.SECONDS)
@@ -48,9 +39,14 @@ public class TextToImageAIAgentSiliconFlow extends AIAgent implements ITextToIma
         /// 设置请求体
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
-        requestBodyJson.put("prompt", prompt);
-        requestBodyJson.put("image_size", getImageSize().get());
-        requestBodyJson.put("batch_size", getImageCount().get());
+
+        /// 设置请求体参数
+        JSONArray messages = new JSONArray();
+        JSONObject userMessage = new JSONObject();
+        userMessage.put("role", "user");
+        userMessage.put("content", prompt);
+        messages.add(userMessage);
+        requestBodyJson.put("messages", messages);
 
         /// 设置请求头
         RequestBody requestBody = RequestBody.create(
@@ -73,12 +69,7 @@ public class TextToImageAIAgentSiliconFlow extends AIAgent implements ITextToIma
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
-                    JSONArray images = responseBodyJson.getJSONArray("images");
-                    String[] strings = new String[images.size()];
-                    for (int i = 0; i < strings.length; i++) {
-                        strings[i] = images.getJSONObject(i).getString("url");
-                    }
-                    return strings;
+                    return responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
                 }
             }
         } catch (IOException ioException) {
@@ -87,24 +78,12 @@ public class TextToImageAIAgentSiliconFlow extends AIAgent implements ITextToIma
         return null;
     }
 
-    @Override
-    public Supplier<String> getAPIKey(Supplier<String> APIKey) {
-        if (!Encryption.getInstance().isDebug()) {
-            if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
-                Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
-                return () -> Encryption.getInstance().getDecrypterFactory().getMapDecrypter().decryptByMap(APIKey.get());
-            }
-        }
-        System.exit(0);
-        return null;
-    }
-
     /**
      * 获取懒加载的类单例对象
      * */
-    public synchronized static TextToImageAIAgentSiliconFlow getInstance() {
+    public synchronized static TextToTextAIAgentSiliconFlow getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TextToImageAIAgentSiliconFlow();
+            INSTANCE = new TextToTextAIAgentSiliconFlow();
             INSTANCE.init();
         }
         return INSTANCE;

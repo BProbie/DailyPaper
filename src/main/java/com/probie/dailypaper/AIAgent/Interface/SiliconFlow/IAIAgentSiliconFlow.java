@@ -1,7 +1,7 @@
-package com.probie.dailypaper.AIAgent.Interface;
+package com.probie.dailypaper.AIAgent.Interface.SiliconFlow;
 
-import com.probie.dailypaper.AIAgent.TextToTextAIAgentSiliconFlow;
-import com.probie.dailypaper.AIAgent.TextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 
 public interface IAIAgentSiliconFlow {
 

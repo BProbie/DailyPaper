@@ -1,4 +1,4 @@
-package com.probie.dailypaper.AIAgent.Interface;
+package com.probie.dailypaper.AIAgent.Interface.SiliconFlow;
 
 public interface ITextToImageAIAgentSiliconFlow {
 

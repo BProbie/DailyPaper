@@ -6,9 +6,9 @@ import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import com.probie.dailypaper.Enum.Date;
 import com.probie.dailypaper.AIAgent.AIAgent;
-import com.probie.dailypaper.AIAgent.AIAgentSiliconFlow;
-import com.probie.dailypaper.AIAgent.TextToTextAIAgentSiliconFlow;
-import com.probie.dailypaper.AIAgent.TextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 
 @Data
 public class DailyPaper {
