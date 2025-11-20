@@ -1,12 +1,12 @@
 package com.probie.dailypaper.DailyPaper;
 
-import com.probie.dailypaper.AIAgent.AIAgentSiliconFlow;
 import lombok.Data;
 import java.util.function.Supplier;
 import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import com.probie.dailypaper.Enum.Date;
 import com.probie.dailypaper.AIAgent.AIAgent;
+import com.probie.dailypaper.AIAgent.AIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.TextToImageAIAgentSiliconFlow;
 
