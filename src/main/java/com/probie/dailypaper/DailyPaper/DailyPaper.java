@@ -1,13 +1,14 @@
 package com.probie.dailypaper.DailyPaper;
 
+import com.probie.dailypaper.AIAgent.AIAgentSiliconFlow;
 import lombok.Data;
 import java.util.function.Supplier;
 import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import com.probie.dailypaper.Enum.Date;
 import com.probie.dailypaper.AIAgent.AIAgent;
-import com.probie.dailypaper.AIAgent.KolorsAgent;
-import com.probie.dailypaper.AIAgent.Qwen3_8BAgent;
+import com.probie.dailypaper.AIAgent.TextToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.TextToImageAIAgentSiliconFlow;
 
 @Data
 public class DailyPaper {
@@ -27,17 +28,19 @@ public class DailyPaper {
     private String KeyReadTimeout = "ReadTimeout";
     private String KeyWriteTimeout = "WriteTimeout";
 
-    public String KeyKolorsAPIKey = "KolorsAPIKey";
-    public String KeyKolorsAPIUrl = "KolorsAPIUrl";
-    public String KeyKolorsAPIModel = "KolorsAPIModel";
-    public String KeyKolorsImageSize = "KolorsImageSize";
-    public String KeyKolorsImageCount = "KolorsImageCount";
-    public String KeyKolorsFilePath = "KolorsFilePath";
-    public String KeyKolorsFileName = "KolorsFileName";
+    public String KeyKolorsAPIModelSiliconFlow = "KolorsAPIModelSiliconFlow";
+    public String KeyQwen3_8BAPIModelSiliconFlow = "Qwen3_8BAPIModelSiliconFlow";
 
-    public String KeyQwen3_8BAPIKey = "Qwen3_8BAPIKey";
-    public String KeyQwen3_8BAPIUrl = "Qwen3_8BAPIUrl";
-    public String KeyQwen3_8BAPIModel = "Qwen3_8BAPIModel";
+    public String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
+    public String KeyAPIUrlTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
+    public String KeyAPIUrlTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
+    public String KeyAPIModelTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
+    public String KeyAPIModelTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
+
+    public String KeyImageSize = "ImageSize";
+    public String KeyImageCount = "ImageCount";
+
+    public String KeyImageFileName = "ImageFileName";
 
     public String KeyLogConfigFilePath = "LogConfigFilePath";
     public String KeyLogConfigFileName = "LogConfigFileName";
@@ -60,33 +63,36 @@ public class DailyPaper {
     public Supplier<String> CurrentDateFormat = () -> getConfigConfig().getLocalDB().get(getKeyCurrentDateFormat(),
             "[yyyy.MM.dd-HH:mm:ss]").toString();
 
-    public Supplier<String> KolorsAPIKey = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIKey(),
-            "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
-    public Supplier<String> KolorsAPIUrl = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIUrl(),
-            "https://api.siliconflow.cn/v1/images/generations").toString();
-    public Supplier<String> KolorsModel = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIModel(),
-            "Kwai-Kolors/Kolors").toString();
     private Supplier<Integer> ConnectTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyConnectTimeout(),
             60).toString());
     private Supplier<Integer> ReadTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyReadTimeout(),
             180).toString());
     private Supplier<Integer> WriteTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyWriteTimeout(),
             60).toString());
-    public Supplier<String> KolorsImageSize = () -> getConfigConfig().getLocalDB().get(getKeyKolorsImageSize(),
-            ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(getMathSystem().getFitDimension(getComputerSystem().getDimension()).getHeight()))).toString();
-    public Supplier<Integer> KolorsImageCount = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyKolorsImageCount(),
-            1).toString());
-    public Supplier<String> KolorsFilePath = () -> getConfigConfig().getLocalDB().get(getKeyKolorsFilePath(),
-            getRootPath().get()).toString();
-    public Supplier<String> KolorsFileName = () -> getConfigConfig().getLocalDB().get(getKeyKolorsFileName(),
-            "Wallpaper.png").toString();
 
-    public Supplier<String> Qwen3_8BAPIKey = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIKey(),
-            "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
-    public Supplier<String> Qwen3_8BAPIUrl = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIUrl(),
-            "https://api.siliconflow.cn/v1/chat/completions").toString();
-    public Supplier<String> Qwen3_8BModel = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIModel(),
+    public Supplier<String> KolorsModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIModelSiliconFlow(),
+            "Kwai-Kolors/Kolors").toString();
+    public Supplier<String> Qwen3_8BModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIModelSiliconFlow(),
             "Qwen/Qwen3-8B").toString();
+
+    public Supplier<String> APIKeySiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIKeySiliconFlow(),
+            "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
+    public Supplier<String> APIUrlTextToTextSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIUrlTextToTextSiliconFlow(),
+            "https://api.siliconflow.cn/v1/chat/completions").toString();
+    public Supplier<String> APIUrlTextToImageSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIUrlTextToImageSiliconFlow(),
+            "https://api.siliconflow.cn/v1/images/generations").toString();
+    public Supplier<String> APIModelTextToTextSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIModelTextToTextSiliconFlow(),
+            getQwen3_8BModelSiliconFlow().get()).toString();
+    public Supplier<String> APIModelTextToImageSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(),
+            getKolorsModelSiliconFlow().get()).toString();
+
+    public Supplier<String> ImageSize = () -> getConfigConfig().getLocalDB().get(getKeyImageSize(),
+            ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(getMathSystem().getFitDimension(getComputerSystem().getDimension()).getHeight()))).toString();
+    public Supplier<Integer> ImageCount = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyImageCount(),
+            1).toString());
+
+    public Supplier<String> ImageFileName = () -> getConfigConfig().getLocalDB().get(getKeyImageFileName(),
+            "Image.png").toString();
 
     /**
      * 程序默认参数 - 静态存储
@@ -120,12 +126,16 @@ public class DailyPaper {
         return AIAgent.getInstance();
     }
 
-    public KolorsAgent getKolorsAgent() {
-        return getAIAgent().getKolorsAgent();
+    public AIAgentSiliconFlow getAIAgentSiliconFlow() {
+        return getAIAgent().getAIAgentSiliconFlow();
     }
 
-    public Qwen3_8BAgent getQwen3_8BAgent() {
-        return getAIAgent().getQwen3_8BAgent();
+    public TextToTextAIAgentSiliconFlow getTextToTextAIAgentSiliconFlow() {
+        return getAIAgent().getAIAgentSiliconFlow().getTextToTextAIAgentSiliconFlow();
+    }
+
+    public TextToImageAIAgentSiliconFlow getTextToImageAIAgentSiliconFlow() {
+        return getAIAgent().getAIAgentSiliconFlow().getTextToImageAIAgentSiliconFlow();
     }
 
     public ComputerSystem getComputerSystem() {

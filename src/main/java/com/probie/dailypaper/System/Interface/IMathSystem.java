@@ -10,9 +10,10 @@ public interface IMathSystem {
      * @return 规范的Dimension实例化对象
      * */
     default Dimension getFitDimension(Dimension dimension) {
-        Dimension temp = (Dimension) dimension.clone();
-        temp.setSize(1024, ((int) Math.floor(1024*(dimension.getHeight()/dimension.getWidth()))));
-        return temp;
+        double height = dimension.getHeight();
+        double width = dimension.getWidth();
+        dimension.setSize(1024, ((int) Math.floor(1024*(height/width))));
+        return dimension;
     }
 
 }

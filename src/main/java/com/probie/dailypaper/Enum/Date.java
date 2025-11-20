@@ -2,6 +2,9 @@ package com.probie.dailypaper.Enum;
 
 import lombok.Getter;
 
+/**
+ * 日期时间枚举
+ * */
 public enum Date {
 
     YEAR(0, "年"),

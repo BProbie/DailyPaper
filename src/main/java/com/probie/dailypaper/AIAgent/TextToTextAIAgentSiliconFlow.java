@@ -13,56 +13,51 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.probie.encryption.Encryption;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.dailypaper.AIAgent.Interface.IKolorsAgent;
+import com.probie.dailypaper.AIAgent.Interface.ITextToTextAIAgentSiliconFlow;
 
 @Data
-public class KolorsAgent extends AIAgent implements IKolorsAgent {
+public class TextToTextAIAgentSiliconFlow extends AIAgent implements ITextToTextAIAgentSiliconFlow {
 
     /**
      * 维护一个懒加载的类单例对象
      * */
-    private volatile static KolorsAgent INSTANCE;
-
-    /**
-     * 请求连接参数
-     * */
-    private Supplier<Integer> connectTimeout = DailyPaper.getInstance().getConnectTimeout();
-    private Supplier<Integer> readTimeout = DailyPaper.getInstance().getReadTimeout();
-    private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
-
-    /**
-     * 图片生成参数
-     * */
-    private Supplier<String> imageSize = DailyPaper.getInstance().getKolorsImageSize();
-    private Supplier<Integer> imageCount = DailyPaper.getInstance().getKolorsImageCount();
+    private volatile static TextToTextAIAgentSiliconFlow INSTANCE;
 
     @Override
     protected void init() {
-        setAPIKey(getAPIKey(DailyPaper.getInstance().getKolorsAPIKey()));
-        setAPIUrl(DailyPaper.getInstance().getKolorsAPIUrl());
-        setAPIModel(DailyPaper.getInstance().getKolorsModel());
+        setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
+        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToTextSiliconFlow());
+        setAPIModel(DailyPaper.getInstance().getAPIModelTextToTextSiliconFlow());
     }
 
     @Override
-    public String[] turnTextToImage(String text) {
+    public String turnTextToText(String prompt) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(getConnectTimeout(), TimeUnit.SECONDS)
-                .readTimeout(getReadTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(getWriteTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(getConnectTimeout().get(), TimeUnit.SECONDS)
+                .readTimeout(getReadTimeout().get(), TimeUnit.SECONDS)
+                .writeTimeout(getWriteTimeout().get(), TimeUnit.SECONDS)
                 .build();
 
+        /// 设置请求体
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
-        requestBodyJson.put("prompt", text);
-        requestBodyJson.put("image_size", getImageSize());
-        requestBodyJson.put("batch_size", getImageCount());
 
+        /// 设置请求体参数
+        JSONArray messages = new JSONArray();
+        JSONObject userMessage = new JSONObject();
+        userMessage.put("role", "user");
+        userMessage.put("content", prompt);
+        messages.add(userMessage);
+        requestBodyJson.put("messages", messages);
+
+        /// 设置请求头
         RequestBody requestBody = RequestBody.create(
                 requestBodyJson.toString(),
                 okhttp3.MediaType.parse("application/json; charset=utf-8")
         );
 
+        /// 构造请求
         Request request = new Request.Builder()
                 .url(getAPIUrl())
                 .addHeader("Authorization", "Bearer " + getAPIKey())
@@ -75,13 +70,9 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
             if (response.body() != null) {
                 String responseBody = response.body().string();
                 if (response.isSuccessful()) {
+                    /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
-                    JSONArray images = responseBodyJson.getJSONArray("images");
-                    String[] strings = new String[images.size()];
-                    for (int i = 0; i < strings.length; i++) {
-                        strings[i] = images.getJSONObject(i).getString("url");
-                    }
-                    return strings;
+                    return responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
                 }
             }
         } catch (IOException ioException) {
@@ -91,7 +82,7 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
     }
 
     @Override
-    public Supplier<String> getAPIKey(Supplier<String> APIKey) {
+    protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
         if (!Encryption.getInstance().isDebug()) {
             if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
                 Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
@@ -105,35 +96,12 @@ public class KolorsAgent extends AIAgent implements IKolorsAgent {
     /**
      * 获取懒加载的类单例对象
      * */
-    public synchronized static KolorsAgent getInstance() {
+    public synchronized static TextToTextAIAgentSiliconFlow getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new KolorsAgent();
+            INSTANCE = new TextToTextAIAgentSiliconFlow();
             INSTANCE.init();
         }
         return INSTANCE;
-    }
-
-    /**
-     * 获取动态参数的静态值
-     * */
-    public int getConnectTimeout() {
-        return connectTimeout.get();
-    }
-
-    public int getReadTimeout() {
-        return readTimeout.get();
-    }
-
-    public int getWriteTimeout() {
-        return writeTimeout.get();
-    }
-
-    public String getImageSize() {
-        return imageSize.get();
-    }
-
-    public int getImageCount() {
-        return imageCount.get();
     }
 
 }

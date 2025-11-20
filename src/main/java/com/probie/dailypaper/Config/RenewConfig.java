@@ -1,10 +1,9 @@
 package com.probie.dailypaper.Config;
 
-import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.easydb.Database.Local.LocalDB;
-import com.probie.dailypaper.Config.Interface.IRenewConfig;
-import com.probie.easydb.Database.Local.LocalRemoteDB;
 import com.probie.easydb.EasyDB;
+import com.probie.dailypaper.DailyPaper.DailyPaper;
+import com.probie.easydb.Database.Local.LocalRemoteDB;
+import com.probie.dailypaper.Config.Interface.IRenewConfig;
 
 public class RenewConfig extends Config implements IRenewConfig {
 

@@ -1,8 +1,6 @@
 package com.probie.dailypaper.DailyPaper;
 
 import java.awt.*;
-
-import javafx.application.Platform;
 import lombok.Data;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.application.Platform;
 import java.awt.image.BufferedImage;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextArea;
@@ -51,35 +50,44 @@ public class DailyPaperApplication extends Application {
         textArea.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER && event.isShiftDown() && textArea.isEditable()) {
                 new Thread(() -> {
+
                     String text = textArea.getText();
 
                     Platform.runLater(() -> textArea.setEditable(false));
                     Platform.runLater(() -> textArea.setText("生成: \n"+text+"\n..."));
 
-                    String prop = DailyPaper.getInstance().getQwen3_8BAgent().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("\n","，")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。");
+                    String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("\n","，")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。");
 
-                    Platform.runLater(() -> textArea.setText("生成: \n"+prop+"\n..."));
+                    if (prompt != null) {
 
-                    BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(
-                            DailyPaper.getInstance().getKolorsAgent().turnTextToImage(prop)[0]
-                    );
+                        Platform.runLater(() -> textArea.setText("生成: \n"+prompt.replace("，","\n")+"\n..."));
 
-                    Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
+                        BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(
+                                DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt)[0]
+                        );
 
-                    if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getKolorsFilePath().get(), DailyPaper.getInstance().getKolorsFileName().get())) {
-                        DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getKolorsFilePath().get()+"\\"+DailyPaper.getInstance().getKolorsFileName().get());
-                    }
+                        if (bufferedImage != null) {
 
-                    Platform.runLater(() -> textArea.setText("完成: \n"+prop+"\n!"));
+                            Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException interruptedException) {
-                        throw new RuntimeException(interruptedException);
+                            if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
+                                DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+"\\"+DailyPaper.getInstance().getImageFileName().get());
+                            }
+
+                            Platform.runLater(() -> textArea.setText("完成: \n"+prompt.replace("，","\n")+"\n!"));
+
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException interruptedException) {
+                                throw new RuntimeException(interruptedException);
+                            }
+
+                        }
                     }
 
                     Platform.runLater(() -> textArea.setText(text));
                     Platform.runLater(() -> textArea.setEditable(true));
+
                 }).start();
             }
         });

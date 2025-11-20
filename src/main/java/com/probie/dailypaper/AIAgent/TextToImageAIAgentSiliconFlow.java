@@ -13,54 +13,52 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.probie.encryption.Encryption;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.dailypaper.AIAgent.Interface.IQwen3_8B;
+import com.probie.dailypaper.AIAgent.Interface.ITextToImageAIAgentSiliconFlow;
 
 @Data
-public class Qwen3_8BAgent extends AIAgent implements IQwen3_8B {
+public class TextToImageAIAgentSiliconFlow extends AIAgent implements ITextToImageAIAgentSiliconFlow {
 
     /**
      * 维护一个懒加载的类单例对象
      * */
-    private volatile static Qwen3_8BAgent INSTANCE;
+    private volatile static TextToImageAIAgentSiliconFlow INSTANCE;
 
     /**
-     * 请求连接参数
+     * 图片生成参数
      * */
-    private Supplier<Integer> connectTimeout = DailyPaper.getInstance().getConnectTimeout();
-    private Supplier<Integer> readTimeout = DailyPaper.getInstance().getReadTimeout();
-    private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
+    private Supplier<String> imageSize = DailyPaper.getInstance().getImageSize();
+    private Supplier<Integer> imageCount = DailyPaper.getInstance().getImageCount();
 
     @Override
     protected void init() {
-        setAPIKey(getAPIKey(DailyPaper.getInstance().getQwen3_8BAPIKey()));
-        setAPIUrl(DailyPaper.getInstance().getQwen3_8BAPIUrl());
-        setAPIModel(DailyPaper.getInstance().Qwen3_8BModel);
+        setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
+        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToImageSiliconFlow());
+        setAPIModel(DailyPaper.getInstance().getAPIModelTextToImageSiliconFlow());
     }
 
     @Override
-    public String turnTextToText(String text) {
+    public String[] turnTextToImage(String prompt) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(getConnectTimeout(), TimeUnit.SECONDS)
-                .readTimeout(getReadTimeout(), TimeUnit.SECONDS)
-                .writeTimeout(getWriteTimeout(), TimeUnit.SECONDS)
+                .connectTimeout(getConnectTimeout().get(), TimeUnit.SECONDS)
+                .readTimeout(getReadTimeout().get(), TimeUnit.SECONDS)
+                .writeTimeout(getWriteTimeout().get(), TimeUnit.SECONDS)
                 .build();
 
+        /// 设置请求体
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
+        requestBodyJson.put("prompt", prompt);
+        requestBodyJson.put("image_size", getImageSize().get());
+        requestBodyJson.put("batch_size", getImageCount().get());
 
-        JSONArray messages = new JSONArray();
-        JSONObject userMessage = new JSONObject();
-        userMessage.put("role", "user");
-        userMessage.put("content", text);
-        messages.add(userMessage);
-        requestBodyJson.put("messages", messages);
-
+        /// 设置请求头
         RequestBody requestBody = RequestBody.create(
                 requestBodyJson.toString(),
                 okhttp3.MediaType.parse("application/json; charset=utf-8")
         );
 
+        /// 构造请求
         Request request = new Request.Builder()
                 .url(getAPIUrl())
                 .addHeader("Authorization", "Bearer " + getAPIKey())
@@ -73,8 +71,14 @@ public class Qwen3_8BAgent extends AIAgent implements IQwen3_8B {
             if (response.body() != null) {
                 String responseBody = response.body().string();
                 if (response.isSuccessful()) {
+                    /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
-                    return responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
+                    JSONArray images = responseBodyJson.getJSONArray("images");
+                    String[] strings = new String[images.size()];
+                    for (int i = 0; i < strings.length; i++) {
+                        strings[i] = images.getJSONObject(i).getString("url");
+                    }
+                    return strings;
                 }
             }
         } catch (IOException ioException) {
@@ -84,7 +88,7 @@ public class Qwen3_8BAgent extends AIAgent implements IQwen3_8B {
     }
 
     @Override
-    protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
+    public Supplier<String> getAPIKey(Supplier<String> APIKey) {
         if (!Encryption.getInstance().isDebug()) {
             if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
                 Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
@@ -98,27 +102,12 @@ public class Qwen3_8BAgent extends AIAgent implements IQwen3_8B {
     /**
      * 获取懒加载的类单例对象
      * */
-    public synchronized static Qwen3_8BAgent getInstance() {
+    public synchronized static TextToImageAIAgentSiliconFlow getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Qwen3_8BAgent();
+            INSTANCE = new TextToImageAIAgentSiliconFlow();
             INSTANCE.init();
         }
         return INSTANCE;
-    }
-
-    /**
-     * 获取动态参数的静态值
-     * */
-    public int getConnectTimeout() {
-        return connectTimeout.get();
-    }
-
-    public int getReadTimeout() {
-        return readTimeout.get();
-    }
-
-    public int getWriteTimeout() {
-        return writeTimeout.get();
     }
 
 }

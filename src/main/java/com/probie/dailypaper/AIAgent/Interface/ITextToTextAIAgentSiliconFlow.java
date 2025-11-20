@@ -1,12 +1,12 @@
 package com.probie.dailypaper.AIAgent.Interface;
 
-public interface IQwen3_8B {
+public interface ITextToTextAIAgentSiliconFlow {
 
     /**
      * 提示词生成文本
-     * @param text 输入的提示词
+     * @param prompt 输入的提示词
      * @return 生成的文本
      * */
-    String turnTextToText(String text);
+    String turnTextToText(String prompt);
 
 }

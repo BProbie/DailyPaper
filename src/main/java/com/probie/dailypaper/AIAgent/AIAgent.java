@@ -3,6 +3,7 @@ package com.probie.dailypaper.AIAgent;
 import lombok.Data;
 import java.util.function.Supplier;
 import java.util.concurrent.locks.Lock;
+import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.AIAgent.Interface.IAIAgent;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -10,13 +11,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public abstract class AIAgent implements IAIAgent {
 
     /**
-     * 继承的子类必须重写初始化AI-API参数的方法
+     * 继承的子类必须重写初始化 AI-API 参数的方法
      * */
     protected abstract void init();
 
     /**
-     * 承的子类必须重写获取真正APIKey的方法
-     * @param APIKey 被加密过的APIKey
+     * 承的子类必须重写获取真正 APIKey 的方法
+     * @param APIKey 被加密过的 APIKey
      * */
     protected abstract Supplier<String> getAPIKey(Supplier<String> APIKey);
 
@@ -33,6 +34,13 @@ public abstract class AIAgent implements IAIAgent {
     private final Lock writeLock = reentrantReadWriteLock.writeLock();
 
     /**
+     * 请求连接参数
+     * */
+    private Supplier<Integer> connectTimeout = DailyPaper.getInstance().getConnectTimeout();
+    private Supplier<Integer> readTimeout = DailyPaper.getInstance().getReadTimeout();
+    private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
+
+    /**
      * AI-API基本参数
      * */
     private Supplier<String> APIKey;
@@ -40,13 +48,8 @@ public abstract class AIAgent implements IAIAgent {
     private Supplier<String> APIModel;
 
     @Override
-    public KolorsAgent getKolorsAgent() {
-        return KolorsAgent.getInstance();
-    }
-
-    @Override
-    public Qwen3_8BAgent getQwen3_8BAgent() {
-        return Qwen3_8BAgent.getInstance();
+    public AIAgentSiliconFlow getAIAgentSiliconFlow() {
+        return AIAgentSiliconFlow.getInstance();
     }
 
     /**
