@@ -13,7 +13,7 @@ public class ConfigConfig extends Config implements IConfigConfig {
 
     @Override
     protected void init() {
-        getLocalDB().setFullFilePath(DailyPaper.getInstance().ConfigConfigFilePath+File.pathSeparator+DailyPaper.getInstance().getConfigConfigFileName());
+        getLocalDB().setFullFilePath(DailyPaper.getInstance().ConfigConfigFilePath+File.separator+DailyPaper.getInstance().getConfigConfigFileName());
         getLocalDB().connect();
     }
 
