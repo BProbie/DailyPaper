@@ -63,26 +63,28 @@ public class DailyPaperApplication extends Application {
 
                         Platform.runLater(() -> textArea.setText("生成: \n"+prompt.replace("，","\n")+"\n..."));
 
-                        BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(
-                                DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt)[0]
-                        );
+                        String[] strings = DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt);
 
-                        if (bufferedImage != null) {
+                        if (strings != null) {
 
-                            Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
+                            BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(strings[0]);
+                            if (bufferedImage != null) {
 
-                            if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
-                                DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+File.separator+DailyPaper.getInstance().getImageFileName().get());
+                                Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
+
+                                if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
+                                    DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+File.separator+DailyPaper.getInstance().getImageFileName().get());
+                                }
+
+                                Platform.runLater(() -> textArea.setText("完成: \n"+prompt.replace("，","\n")+"\n!"));
+
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException interruptedException) {
+                                    throw new RuntimeException(interruptedException);
+                                }
+
                             }
-
-                            Platform.runLater(() -> textArea.setText("完成: \n"+prompt.replace("，","\n")+"\n!"));
-
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException interruptedException) {
-                                throw new RuntimeException(interruptedException);
-                            }
-
                         }
                     }
 
