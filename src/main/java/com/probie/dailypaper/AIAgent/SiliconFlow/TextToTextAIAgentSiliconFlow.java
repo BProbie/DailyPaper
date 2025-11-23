@@ -28,7 +28,7 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
     }
 
     @Override
-    public String turnTextToText(String prompt) {
+    public String[] turnTextToText(String prompt) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(getConnectTimeout().get(), TimeUnit.SECONDS)
@@ -69,7 +69,11 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
-                    return responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
+                    String[] strings = new String[2];
+                    JSONObject messageJson = responseBodyJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message");
+                    strings[0] = messageJson.getString("content");
+                    strings[1] = messageJson.getString("reasoning_content");
+                    return strings;
                 }
             }
         } catch (IOException ioException) {

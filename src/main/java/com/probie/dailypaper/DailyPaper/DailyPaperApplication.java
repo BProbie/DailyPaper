@@ -35,7 +35,8 @@ public class DailyPaperApplication extends Application {
     public void start(Stage stage) {
         setStage(stage);
 
-        // TODO
+        // TODO ========================================================================================================
+
         ImageView imageView = new ImageView();
         TextArea textArea = new TextArea();
         imageView.setFitWidth(500);
@@ -57,34 +58,32 @@ public class DailyPaperApplication extends Application {
                     Platform.runLater(() -> textArea.setEditable(false));
                     Platform.runLater(() -> textArea.setText("生成: \n"+text+"\n..."));
 
-                    String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("\n","，")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。");
+                    String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("，", "\n").replace(" ", "\n")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。")[0];
 
                     if (prompt != null) {
 
                         Platform.runLater(() -> textArea.setText("生成: \n"+prompt.replace("，","\n")+"\n..."));
 
-                        String[] strings = DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt);
+                        String[] strings = DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt.replace("，","\n"));
 
                         if (strings != null) {
 
                             BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(strings[0]);
-                            if (bufferedImage != null) {
 
-                                Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
+                            Platform.runLater(() -> imageView.setImage(DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImage)));
 
-                                if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
-                                    DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+File.separator+DailyPaper.getInstance().getImageFileName().get());
-                                }
-
-                                Platform.runLater(() -> textArea.setText("完成: \n"+prompt.replace("，","\n")+"\n!"));
-
-                                try {
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException interruptedException) {
-                                    throw new RuntimeException(interruptedException);
-                                }
-
+                            if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(DailyPaper.getInstance().getImageSystem().setBufferedImageSize(bufferedImage, (int) DailyPaper.getInstance().getComputerSystem().getDimension().getWidth(), (int) DailyPaper.getInstance().getComputerSystem().getDimension().getHeight()), DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
+                                DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get()+File.separator+DailyPaper.getInstance().getImageFileName().get());
                             }
+
+                            Platform.runLater(() -> textArea.setText("完成: \n"+prompt+"\n!"));
+
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException interruptedException) {
+                                throw new RuntimeException(interruptedException);
+                            }
+
                         }
                     }
 
@@ -94,6 +93,8 @@ public class DailyPaperApplication extends Application {
                 }).start();
             }
         });
+
+        // TODO ========================================================================================================
 
         stage.show();
     }
