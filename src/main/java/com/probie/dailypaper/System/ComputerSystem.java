@@ -3,7 +3,7 @@ package com.probie.dailypaper.System;
 import java.awt.*;
 import com.probie.dailypaper.System.Interface.IComputerSystem;
 
-public class ComputerSystem implements IComputerSystem {
+public class ComputerSystem extends NetworkSystem implements IComputerSystem {
 
     /**
      * 维护一个懒加载的类单例对象

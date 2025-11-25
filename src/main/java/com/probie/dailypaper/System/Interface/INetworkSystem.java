@@ -1,6 +1,6 @@
 package com.probie.dailypaper.System.Interface;
 
-public interface ITrustSystem {
+public interface INetworkSystem {
 
     /**
      * 信任连接

@@ -6,14 +6,14 @@ import javax.net.ssl.HttpsURLConnection;
 import java.security.cert.X509Certificate;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import com.probie.dailypaper.System.Interface.ITrustSystem;
+import com.probie.dailypaper.System.Interface.INetworkSystem;
 
-public class TrustSystem implements ITrustSystem, X509TrustManager {
+public class NetworkSystem implements INetworkSystem, X509TrustManager {
 
     /**
      * 维护一个懒加载的类单例对象
      * */
-    private volatile static TrustSystem INSTANCE;
+    private volatile static NetworkSystem INSTANCE;
 
     @Override
     public void trustConnect() {
@@ -24,9 +24,9 @@ public class TrustSystem implements ITrustSystem, X509TrustManager {
     @Override
     public void trustSSL() {
         try {
-            TrustSystem[] trustSystem = new TrustSystem[] {new TrustSystem()};
+            NetworkSystem[] networkSystem = new NetworkSystem[] {new NetworkSystem()};
             SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null,trustSystem,null);
+            sslContext.init(null, networkSystem,null);
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
         } catch (NoSuchAlgorithmException | KeyManagementException exception) {
             throw new RuntimeException(exception);
@@ -51,9 +51,9 @@ public class TrustSystem implements ITrustSystem, X509TrustManager {
     /**
      * 获取懒加载的类单例对象
      * */
-    public synchronized static TrustSystem getInstance() {
+    public synchronized static NetworkSystem getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new TrustSystem();
+            INSTANCE = new NetworkSystem();
         }
         return INSTANCE;
     }

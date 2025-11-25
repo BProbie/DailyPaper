@@ -2,7 +2,6 @@ package com.probie.dailypaper.System;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.System.Interface.IFileSystem;
 
 public class FileSystem extends ComputerSystem implements IFileSystem {
@@ -20,7 +19,7 @@ public class FileSystem extends ComputerSystem implements IFileSystem {
         try {
             return IFileSystem.super.readRemoteFile(path);
         } catch (URISyntaxException | IOException ignored) {
-            DailyPaper.getInstance().getTrustSystem().trustConnect();
+            trustConnect();
             try {
                 return IFileSystem.super.readRemoteFile(path);
             } catch (URISyntaxException | IOException exception) {
@@ -37,7 +36,7 @@ public class FileSystem extends ComputerSystem implements IFileSystem {
         try {
             return IFileSystem.super.download(urlPath, fullFilePath);
         } catch (URISyntaxException | IOException ignored) {
-            DailyPaper.getInstance().getTrustSystem().trustConnect();
+            trustConnect();
             try {
                 return IFileSystem.super.download(urlPath, fullFilePath);
             } catch (URISyntaxException | IOException exception) {

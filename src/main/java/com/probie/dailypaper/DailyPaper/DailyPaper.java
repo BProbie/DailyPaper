@@ -142,8 +142,8 @@ public class DailyPaper {
         return ComputerSystem.getInstance();
     }
 
-    public TrustSystem getTrustSystem() {
-        return TrustSystem.getInstance();
+    public NetworkSystem getNetworkSystem() {
+        return NetworkSystem.getInstance();
     }
 
     public FileSystem getFileSystem() {
@@ -156,6 +156,14 @@ public class DailyPaper {
 
     public ImageSystem getImageSystem() {
         return ImageSystem.getInstance();
+    }
+
+    public PictureSystem getPictureSystem() {
+        return PictureSystem.getInstance();
+    }
+
+    public GIFSystem getGIFSystem() {
+        return GIFSystem.getInstance();
     }
 
     public Config getConfig() {

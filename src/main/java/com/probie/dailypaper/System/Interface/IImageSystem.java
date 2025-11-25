@@ -59,6 +59,7 @@ public interface IImageSystem {
     default boolean turnBufferedImageToLocalFile(BufferedImage bufferedImage, String fullFilePath) {
         try {
             File localFile = new File(fullFilePath);
+            if (!localFile.getParentFile().exists()) localFile.getParentFile().mkdirs();
             ImageIO.write(bufferedImage, fullFilePath.contains(".") ? fullFilePath.substring(fullFilePath.lastIndexOf(".")+1).toLowerCase() : "png", localFile);
             return localFile.exists();
         } catch (IOException ioException) {
