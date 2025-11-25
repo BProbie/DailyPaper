@@ -76,4 +76,36 @@ public interface IFileSystem {
         return localFile.exists();
     }
 
+    /**
+     * 复制粘贴文件到目标路径
+     * @param fromFullFilePath 原文件完整文件路径
+     * @param toFullFilePath 目标文件完整文件路径
+     * @return 是否复制粘贴成功
+     * */
+    default boolean copyFile(String fromFullFilePath, String toFullFilePath) {
+        return copyFile(fromFullFilePath, toFullFilePath, true);
+    }
+
+    /**
+     * 复制粘贴文件到目标路径
+     * @param fromFullFilePath 原文件完整文件路径
+     * @param toFullFilePath 目标文件完整文件路径
+     * @param isReplace 若目标文件已存在是否替换
+     * @return 是否复制粘贴成功
+     * */
+    default boolean copyFile(String fromFullFilePath, String toFullFilePath, boolean isReplace) {
+        if (isReplace) {
+            File toFile = new File(toFullFilePath);
+            if (toFile.exists()) {
+                toFile.delete();
+            }
+        }
+        try {
+            Files.copy(Path.of(fromFullFilePath), Path.of(toFullFilePath));
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
+        return true;
+    }
+
 }

@@ -15,18 +15,27 @@ public interface IGIFSystem {
 
     /**
      * 逐帧切割 GIF 动图
-     * @param fullGIFPath 完整本地 GIF 文件路径
+     * @param fullGIFFilePath GIF 完整文件路径
      * @return BufferedImage 数组
      * */
-    default BufferedImage[] turnGIFToBufferedImages(String fullGIFPath) {
+    default BufferedImage[] turnGIFToBufferedImages(String fullGIFFilePath) {
+        return turnGIFToBufferedImages(new File(fullGIFFilePath));
+    }
+
+    /**
+     * 逐帧切割 GIF 动图
+     * @param gifFile GIF 文件对象
+     * @return BufferedImage 数组
+     * */
+    default BufferedImage[] turnGIFToBufferedImages(File gifFile) {
         ArrayList<BufferedImage> bufferedImageArrayList = new ArrayList<>();
-        try {
+        try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(gifFile)) {
+
             /// 初始化流
-            ImageInputStream imageInputStream = ImageIO.createImageInputStream(new File(fullGIFPath));
             ImageReader imageReader = ImageIO.getImageReadersBySuffix("gif").next();
             imageReader.setInput(imageInputStream, false);
 
-            ///  获取 GIF 信息
+            /// 获取 GIF 信息
             int count = imageReader.getNumImages(true);
             int width = imageReader.getWidth(0);
             int height = imageReader.getHeight(0);
@@ -58,7 +67,6 @@ public interface IGIFSystem {
                     /// 映射字符串枚举到数字
                     switch (disposalAttr) {
                         case "doNotDispose":
-                            disposalMethod = 0;
                             break;
                         case "restoreToBackground":
                             disposalMethod = 2;
@@ -69,8 +77,8 @@ public interface IGIFSystem {
                         default:
                             try {
                                 disposalMethod = Integer.parseInt(disposalAttr);
-                            } catch (NumberFormatException e) {
-                                disposalMethod = 0;
+                            } catch (NumberFormatException numberFormatException) {
+                                throw new RuntimeException(numberFormatException);
                             }
                     }
                 }
@@ -93,16 +101,70 @@ public interface IGIFSystem {
 
             /// 释放资源
             graphics2D.dispose();
-            try {
-                imageInputStream.close();
-            } catch (IOException ioException) {
-                throw new RuntimeException(ioException);
-            }
-
+            imageReader.dispose();
         } catch (IOException ioException) {
             throw new RuntimeException(ioException);
         }
         return bufferedImageArrayList.toArray(new BufferedImage[]{});
+    }
+
+    /**
+     * 获取 GIF 动图每张图片播放的时间
+     * @param fullGIFFilePath GIF 完整文件路径
+     * @return 播放时间数组(单位为 ms 即千分之一秒)
+     * */
+    default Integer[] getGIFPlaySpeed(String fullGIFFilePath) {
+        return getGIFPlaySpeed(new File(fullGIFFilePath));
+    }
+
+    /**
+     * 获取 GIF 动图每张图片播放的时间
+     * @param gifFile GIF 文件对象
+     * @return 播放时间数组(单位为 ms 即千分之一秒)
+     * */
+    default Integer[] getGIFPlaySpeed(File gifFile) {
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
+        try (ImageInputStream imageInputStream = ImageIO.createImageInputStream(gifFile)) {
+
+            /// 初始化流
+            ImageReader imageReader = ImageIO.getImageReadersBySuffix("gif").next();
+            imageReader.setInput(imageInputStream, false);
+
+            /// 获取 GIF 信息
+            int count = imageReader.getNumImages(true);
+
+            /// 逐帧遍历
+            for (int frameIndex = 0; frameIndex < count; frameIndex++) {
+
+                /// 当前帧的元数据
+                IIOMetadata metadata = imageReader.getImageMetadata(frameIndex);
+
+                ///验证元数据格式是否支持
+                if (metadata.isStandardMetadataFormatSupported()) {
+
+                    /// 解析元数据树
+                    IIOMetadataNode rootNode = (IIOMetadataNode) metadata.getAsTree("javax_imageio_gif_image_1.0");
+                    IIOMetadataNode controlNode = (IIOMetadataNode) rootNode.getElementsByTagName("GraphicControlExtension").item(0);
+
+                    /// 提取延迟时间: GIF原生单位是1/100秒,换算为ms需×10
+                    int delay100Sec = Integer.parseInt(controlNode.getAttribute("delayTime"));
+                    int delayMs = delay100Sec * 10;
+
+                    /// 处理默认延迟
+                    integerArrayList.add(delayMs == 0 ? 100 : delayMs);
+                } else {
+
+                    /// 格式不支持时,添加默认延迟100ms
+                    integerArrayList.add(100);
+                }
+            }
+
+            /// 释放资源
+            imageReader.dispose();
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
+        return integerArrayList.toArray(new Integer[]{});
     }
 
 }
