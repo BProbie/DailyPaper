@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Date;
 import java.util.Calendar;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.awt.image.BufferedImage;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
@@ -71,6 +72,18 @@ public interface IComputerSystem {
             return User32.INSTANCE.SystemParametersInfo(User32.setWallpaper, 0, file.getAbsolutePath(), User32.updateFile | User32.sendChange);
         }
         return false;
+    }
+
+    /**
+     * 打开文件
+     * @param fullFilePath 完整本地文件路径
+     * */
+    default void open(String fullFilePath) {
+        try {
+            Desktop.getDesktop().open(new File(fullFilePath));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
 }

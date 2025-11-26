@@ -77,9 +77,7 @@ public interface IGIFSystem {
                         default:
                             try {
                                 disposalMethod = Integer.parseInt(disposalAttr);
-                            } catch (NumberFormatException numberFormatException) {
-                                throw new RuntimeException(numberFormatException);
-                            }
+                            } catch (NumberFormatException ignored) {}
                     }
                 }
 

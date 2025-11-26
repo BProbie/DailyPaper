@@ -1,6 +1,9 @@
 package com.probie.dailypaper.DailyPaper;
 
 import java.awt.*;
+
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Scene;
@@ -11,6 +14,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
 import java.awt.image.BufferedImage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextArea;
 import javafx.application.Application;
@@ -37,6 +46,52 @@ public class DailyPaperApplication extends Application {
 
         // TODO ========================================================================================================
 
+        javafx.scene.control.Button choseButton = new javafx.scene.control.Button();
+        choseButton.setMinWidth(250);
+        choseButton.setMinHeight(100);
+        AtomicReference<File> gif = new AtomicReference<>();
+        choseButton.setOnAction(actionEvent -> {
+            FileChooser fileChooser = new FileChooser();
+
+            gif.set(fileChooser.showOpenDialog(getStage()));
+            choseButton.setText(gif.get().getAbsolutePath());
+        });
+
+        javafx.scene.control.Button gifButton = new javafx.scene.control.Button();
+        gifButton.setMinWidth(250);
+        gifButton.setMinHeight(100);
+        gifButton.setOnAction(actionEvent -> {
+            BufferedImage[] bufferedImages = DailyPaper.getInstance().getGIFSystem().turnGIFToBufferedImages(gif.get());
+            Integer[] gifPlaySpeed = DailyPaper.getInstance().getGIFSystem().getGIFPlaySpeed(gif.get());
+
+            for (int i = 0; i < bufferedImages.length; i++) {
+                DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(bufferedImages[i], gif.get().getParentFile().getAbsolutePath()+File.separator+i+".png");
+            }
+
+            ArrayList<File> fileArrayList = new ArrayList<>(Arrays.asList(Objects.requireNonNull(new File(gif.get().getParentFile().getAbsolutePath()).listFiles())));
+            for (int i = 0; i < fileArrayList.size(); i++) {
+                if (!fileArrayList.get(i).getName().endsWith(".png")) {
+                    fileArrayList.remove(i);
+                    i--;
+                }
+            }
+
+            new Thread(() -> {
+                while (true) {
+                    for (int i = 0; i < fileArrayList.size(); i++) {
+                        DailyPaper.getInstance().getComputerSystem().setWallPaper(fileArrayList.get(i).getAbsolutePath());
+                        try {
+                            Thread.sleep(gifPlaySpeed[i]/2);
+                        } catch (InterruptedException interruptedException) {
+                            throw new RuntimeException(interruptedException);
+                        }
+                    }
+                }
+            }).start();
+        });
+
+        HBox hBox = new HBox(choseButton, gifButton);
+
         ImageView imageView = new ImageView();
         TextArea textArea = new TextArea();
         imageView.setFitWidth(500);
@@ -45,7 +100,7 @@ public class DailyPaperApplication extends Application {
         textArea.setMaxHeight(250);
         textArea.setFont(new Font(25));
 
-        javafx.scene.layout.VBox vBox = new VBox(imageView, textArea);
+        VBox vBox = new VBox(hBox, imageView, textArea);
         Scene scene = new Scene(vBox);
         stage.setScene(scene);
 
