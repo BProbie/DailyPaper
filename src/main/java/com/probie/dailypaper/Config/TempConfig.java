@@ -7,6 +7,13 @@ import com.probie.dailypaper.Config.Interface.ITempConfig;
 public class TempConfig extends Config implements ITempConfig {
 
     /**
+     * 构造函数
+     * */
+    public TempConfig() {
+        init();
+    }
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static TempConfig INSTANCE;
@@ -23,7 +30,6 @@ public class TempConfig extends Config implements ITempConfig {
     public synchronized static TempConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TempConfig();
-            INSTANCE.init();
         }
         return INSTANCE;
     }

@@ -9,6 +9,13 @@ import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.IAIAgentSiliconFlow;
 public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSiliconFlow {
 
     /**
+     * 构造函数
+     * */
+    public AIAgentSiliconFlow() {
+        init();
+    }
+
+    /**
      * 继承的子类必须重写初始化AI-API参数的方法
      * */
     protected abstract void init();
@@ -51,7 +58,6 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
                     /// 空实现
                 }
             };
-            INSTANCE.init();
         }
         return INSTANCE;
     }

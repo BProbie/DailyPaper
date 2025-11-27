@@ -7,6 +7,13 @@ import com.probie.dailypaper.Config.Interface.IConfigConfig;
 public class ConfigConfig extends Config implements IConfigConfig {
 
     /**
+     * 构造函数
+     * */
+    public ConfigConfig() {
+        init();
+    }
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static ConfigConfig INSTANCE;
@@ -23,7 +30,6 @@ public class ConfigConfig extends Config implements IConfigConfig {
     public synchronized static ConfigConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ConfigConfig();
-            INSTANCE.init();
         }
         return INSTANCE;
     }

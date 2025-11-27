@@ -12,6 +12,13 @@ import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
 public abstract class AIAgent implements IAIAgent {
 
     /**
+     * 构造函数
+     * */
+    public AIAgent() {
+        init();
+    }
+
+    /**
      * 继承的子类必须重写初始化 AI-API 参数的方法
      * */
     protected abstract void init();
@@ -70,7 +77,6 @@ public abstract class AIAgent implements IAIAgent {
                     return null;
                 }
             };
-            INSTANCE.init();
         }
         return INSTANCE;
     }

@@ -9,6 +9,13 @@ import com.probie.dailypaper.Config.Interface.IRenewConfig;
 public class RenewConfig extends Config implements IRenewConfig {
 
     /**
+     * 构造函数
+     * */
+    public RenewConfig() {
+        init();
+    }
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static RenewConfig INSTANCE;
@@ -28,7 +35,6 @@ public class RenewConfig extends Config implements IRenewConfig {
     public synchronized static RenewConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new RenewConfig();
-            INSTANCE.init();
         }
         return INSTANCE;
     }

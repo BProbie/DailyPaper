@@ -1,9 +1,11 @@
 package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
+import java.io.File;
 import java.util.function.Supplier;
 import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
+import javafx.application.Application;
 import com.probie.dailypaper.Enum.Date;
 import com.probie.dailypaper.AIAgent.AIAgent;
 import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
@@ -42,6 +44,9 @@ public class DailyPaper {
 
     public String KeyImageFileName = "ImageFileName";
 
+    public String KeyDailyPaperDownloadUrl = "DailyPaperDownloadUrl";
+    public String KeyDailyPaperDownloadFullFilePath = "DailyPaperDownloadFullFilePath";
+
     public String KeyLogConfigFilePath = "LogConfigFilePath";
     public String KeyLogConfigFileName = "LogConfigFileName";
 
@@ -54,6 +59,7 @@ public class DailyPaper {
     public String KeyRenewConfigFilePath = "RenewConfigFilePath";
     public String KeyRenewConfigFileName = "RenewConfigFileName";
     public String KeyRenewConfigFileUrl = "RenewConfigFileUrl";
+
 
     /**
      * 程序默认参数 - 动态更新
@@ -94,6 +100,11 @@ public class DailyPaper {
     public Supplier<String> ImageFileName = () -> getConfigConfig().getLocalDB().get(getKeyImageFileName(),
             "Image.png").toString();
 
+    public Supplier<String> DailyPaperDownloadUrl = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrl(),
+            "https://github.com/BProbie/DailyPaper/DailyPaper.exe").toString();
+    public Supplier<String> DailyPaperDownloadFullFilePath = () -> getConfigConfig().getLocalDB().get(getDailyPaperDownloadFullFilePath(),
+            getRootPath().get()+File.separator+"DailyPaper.exe").toString();
+
     /**
      * 程序默认参数 - 静态存储
      * */
@@ -118,6 +129,13 @@ public class DailyPaper {
             "Renew.properties").toString();
     public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
             "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
+
+    /**
+     * 启动应用程序
+     * */
+    public void launch(String[] args) {
+        Application.launch(DailyPaperApplication.class, args);
+    }
 
     /**
      * 获取懒加载的工具类单例对象

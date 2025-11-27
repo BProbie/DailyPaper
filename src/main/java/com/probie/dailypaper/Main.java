@@ -16,14 +16,15 @@
  * UI
  * */
 
-package com.probie.dailypaper;
+/**
+ *
+ * */
 
-import javafx.application.Application;
-import com.probie.dailypaper.DailyPaper.DailyPaperApplication;
+package com.probie.dailypaper;
 
 public class Main {
     public static void main(String[] args) {
-        Application.launch(DailyPaperApplication.class, args);
+        com.probie.dailypaper.DailyPaper.DailyPaper.getInstance().launch(args);
     }
 
 

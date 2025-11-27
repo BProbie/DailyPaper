@@ -17,6 +17,13 @@ import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.ITextToImageAIAgentSi
 public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements ITextToImageAIAgentSiliconFlow {
 
     /**
+     * 构造函数
+     * */
+    public TextToImageAIAgentSiliconFlow() {
+        init();
+    }
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static TextToImageAIAgentSiliconFlow INSTANCE;
@@ -91,7 +98,6 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
     public synchronized static TextToImageAIAgentSiliconFlow getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TextToImageAIAgentSiliconFlow();
-            INSTANCE.init();
         }
         return INSTANCE;
     }

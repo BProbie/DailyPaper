@@ -7,6 +7,13 @@ import com.probie.dailypaper.Config.Interface.ILogConfig;
 public class LogConfig extends Config implements ILogConfig {
 
     /**
+     * 构造函数
+     * */
+    public LogConfig() {
+        init();
+    }
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static LogConfig INSTANCE;
@@ -63,7 +70,6 @@ public class LogConfig extends Config implements ILogConfig {
     public synchronized static LogConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new LogConfig();
-            INSTANCE.init();
         }
         return INSTANCE;
     }

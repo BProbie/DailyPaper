@@ -9,6 +9,13 @@ import com.probie.dailypaper.Config.Interface.IConfig;
 public abstract class Config implements IConfig {
 
     /**
+     * 构造函数
+     * */
+    public Config() {
+        getLocalDB().setIsAutoCommit(false);
+    }
+
+    /**
      * 继承的子类必须重写初始化参数方法
      * */
     protected abstract void init();
@@ -34,7 +41,6 @@ public abstract class Config implements IConfig {
                     /// 空实现
                 }
             };
-            INSTANCE.getLocalDB().setIsAutoCommit(false);
         }
         return INSTANCE;
     }
