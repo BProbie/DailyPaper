@@ -49,7 +49,7 @@ public abstract class AIAgent implements IAIAgent {
     private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
 
     /**
-     * AI-API基本参数
+     * AI-API 基本参数
      * */
     private Supplier<String> APIKey;
     private Supplier<String> APIUrl;

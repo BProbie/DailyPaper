@@ -1,31 +1,29 @@
 package com.probie.dailypaper.DailyPaper;
 
 import java.awt.*;
-
-import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
 import lombok.Data;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Objects;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 import javafx.scene.text.Font;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
 import java.awt.image.BufferedImage;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TextArea;
 import javafx.application.Application;
+import java.util.concurrent.atomic.AtomicReference;
+import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperApplication;
 
 @Data
-public class DailyPaperApplication extends Application {
+public class DailyPaperApplication extends Application implements IDailyPaperApplication {
 
     /**
      * 维护一个懒加载的类单例对象
@@ -44,7 +42,7 @@ public class DailyPaperApplication extends Application {
     public void start(Stage stage) {
         setStage(stage);
 
-        // TODO ========================================================================================================
+        /// TODO ========================================================================================================
 
         javafx.scene.control.Button choseButton = new javafx.scene.control.Button();
         choseButton.setMinWidth(250);
@@ -149,7 +147,7 @@ public class DailyPaperApplication extends Application {
             }
         });
 
-        // TODO ========================================================================================================
+        /// TODO ========================================================================================================
 
         stage.show();
     }

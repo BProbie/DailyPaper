@@ -8,12 +8,13 @@ import com.probie.dailypaper.System.*;
 import javafx.application.Application;
 import com.probie.dailypaper.Enum.Date;
 import com.probie.dailypaper.AIAgent.AIAgent;
+import com.probie.dailypaper.DailyPaper.Interface.IDailyPaper;
 import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 
 @Data
-public class DailyPaper {
+public class DailyPaper implements IDailyPaper {
 
     /**
      * 维护一个懒加载的类单例对象
@@ -130,76 +131,87 @@ public class DailyPaper {
     public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
             "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
 
-    /**
-     * 启动应用程序
-     * */
+    @Override
     public void launch(String[] args) {
         Application.launch(DailyPaperApplication.class, args);
     }
 
-    /**
-     * 获取懒加载的工具类单例对象
-     * */
+    @Override
     public AIAgent getAIAgent() {
         return AIAgent.getInstance();
     }
 
+    @Override
     public AIAgentSiliconFlow getAIAgentSiliconFlow() {
         return getAIAgent().getAIAgentSiliconFlow();
     }
 
+    @Override
     public TextToTextAIAgentSiliconFlow getTextToTextAIAgentSiliconFlow() {
         return getAIAgent().getAIAgentSiliconFlow().getTextToTextAIAgentSiliconFlow();
     }
 
+    @Override
     public TextToImageAIAgentSiliconFlow getTextToImageAIAgentSiliconFlow() {
         return getAIAgent().getAIAgentSiliconFlow().getTextToImageAIAgentSiliconFlow();
     }
 
+    @Override
     public ComputerSystem getComputerSystem() {
         return ComputerSystem.getInstance();
     }
 
+    @Override
     public NetworkSystem getNetworkSystem() {
         return NetworkSystem.getInstance();
     }
 
+    @Override
     public FileSystem getFileSystem() {
         return FileSystem.getInstance();
     }
 
+    @Override
     public MathSystem getMathSystem() {
         return MathSystem.getInstance();
     }
 
+    @Override
     public ImageSystem getImageSystem() {
         return ImageSystem.getInstance();
     }
 
+    @Override
     public PictureSystem getPictureSystem() {
         return PictureSystem.getInstance();
     }
 
+    @Override
     public GIFSystem getGIFSystem() {
         return GIFSystem.getInstance();
     }
 
+    @Override
     public Config getConfig() {
         return Config.getInstance();
     }
 
+    @Override
     public LogConfig getLogConfig() {
         return getConfig().getLogConfig();
     }
 
+    @Override
     public TempConfig getTempConfig() {
         return getConfig().getTempConfig();
     }
 
+    @Override
     public ConfigConfig getConfigConfig() {
         return getConfig().getConfigConfig();
     }
 
+    @Override
     public RenewConfig getRenewConfig() {
         return getConfig().getRenewConfig();
     }
