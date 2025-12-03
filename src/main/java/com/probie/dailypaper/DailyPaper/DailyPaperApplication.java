@@ -79,7 +79,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                     for (int i = 0; i < fileArrayList.size(); i++) {
                         DailyPaper.getInstance().getComputerSystem().setWallPaper(fileArrayList.get(i).getAbsolutePath());
                         try {
-                            Thread.sleep(gifPlaySpeed[i]/2);
+                            Thread.sleep(gifPlaySpeed[i]);
                         } catch (InterruptedException interruptedException) {
                             throw new RuntimeException(interruptedException);
                         }

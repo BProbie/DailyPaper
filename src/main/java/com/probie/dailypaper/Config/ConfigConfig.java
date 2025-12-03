@@ -10,7 +10,7 @@ public class ConfigConfig extends Config implements IConfigConfig {
      * 构造函数
      * */
     public ConfigConfig() {
-        init();
+
     }
 
     /**
@@ -30,6 +30,7 @@ public class ConfigConfig extends Config implements IConfigConfig {
     public synchronized static ConfigConfig getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ConfigConfig();
+            INSTANCE.init();
         }
         return INSTANCE;
     }

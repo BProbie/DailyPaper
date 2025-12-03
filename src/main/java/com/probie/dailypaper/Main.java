@@ -8,7 +8,6 @@
 /**
  * TODO
  * 日志功能
- * 注册表
  * 更新
  * 对话
  * 修图
@@ -26,6 +25,4 @@ public class Main {
     public static void main(String[] args) {
         com.probie.dailypaper.DailyPaper.DailyPaper.getInstance().launch(args);
     }
-
-
 }
