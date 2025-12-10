@@ -17,6 +17,14 @@ import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 public class DailyPaper implements IDailyPaper {
 
     /**
+     * DailyPaper 版本参数
+     * */
+    private final String NAME = "DailyPaper";
+    private final String VERSION = "1.0.0";
+    private final String AUTHOR = "probie";
+    private final String URL = "https://github.com/BProbie/DailyPaper";
+
+    /**
      * 维护一个懒加载的类单例对象
      * */
     private volatile static DailyPaper INSTANCE;
@@ -102,7 +110,7 @@ public class DailyPaper implements IDailyPaper {
             "Image.png").toString();
 
     public Supplier<String> DailyPaperDownloadUrl = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrl(),
-            "https://github.com/BProbie/DailyPaper/DailyPaper.exe").toString();
+            "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/DailyPaper.exe").toString();
     public Supplier<String> DailyPaperDownloadFullFilePath = () -> getConfigConfig().getLocalDB().get(getDailyPaperDownloadFullFilePath(),
             getRootPath().get()+File.separator+"DailyPaper.exe").toString();
 

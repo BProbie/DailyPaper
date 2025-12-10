@@ -22,11 +22,12 @@ public class RenewConfig extends Config implements IRenewConfig {
 
     @Override
     protected void init() {
-        LocalRemoteDB localRemoteDB = EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigFileUrl());
-        localRemoteDB.setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+File.separator+DailyPaper.getInstance().getRenewConfigFileName());
-        localRemoteDB.downloadDatabase();
-        getLocalDB().setFullFilePath(localRemoteDB.getFullFilePath());
-        getLocalDB().connect();
+        try (LocalRemoteDB localRemoteDB = EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigFileUrl())) {
+            localRemoteDB.setFullFilePath(DailyPaper.getInstance().getRenewConfigFilePath()+File.separator+DailyPaper.getInstance().getRenewConfigFileName());
+            localRemoteDB.downloadDatabase();
+            getLocalDB().setFullFilePath(localRemoteDB.getFullFilePath());
+            getLocalDB().connect();
+        }
     }
 
     /**
