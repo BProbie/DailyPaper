@@ -111,7 +111,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                     Platform.runLater(() -> textArea.setEditable(false));
                     Platform.runLater(() -> textArea.setText("生成: \n"+text+"\n..."));
 
-                    String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText("我要生成一张电脑桌面壁纸，提示词是："+text.replace("，", "\n").replace(" ", "\n")+"。你帮我优化一下提示词。要求：充分理解用户想要什么，字数不超过100，直接返回提示词给我。")[0];
+                    String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText("用户要生成一张电脑桌面壁纸，提示词是："+text.replace("，", "\n").replace(" ", "\n")+"。你帮我优化一下用户的提示词。要求：充分理解用户想要什么，字数不超过200，直接返回优化后的提示词给我。")[0];
 
                     if (prompt != null) {
 

@@ -12,14 +12,6 @@ import com.probie.dailypaper.System.Interface.Native.User32;
 public interface IComputerSystem {
 
     /**
-     * 获取当前程序的路径
-     * @return 当前程序的路径
-     * */
-    default String getHere() {
-        return System.getProperty("user.dir");
-    }
-
-    /**
      * 获取当前屏幕大小
      * @return 当前屏幕大小
      * */
@@ -47,6 +39,22 @@ public interface IComputerSystem {
      * */
     default String getCurrentFormatDate() {
         return new SimpleDateFormat(DailyPaper.getInstance().getCurrentDateFormat().get()).format(new Date());
+    }
+
+    /**
+     * 获取当前程序的路径
+     * @return 当前程序的路径
+     * */
+    default String getHere() {
+        return System.getProperty("user.dir");
+    }
+
+    /**
+     * 获取用户名称
+     * @return 用户名称
+     * */
+    default String getUserName() {
+        return System.getenv().get("USERNAME");
     }
 
     /**
@@ -221,8 +229,7 @@ public interface IComputerSystem {
     default String getOpCommand(String command) {
         String systemName = getSystemName().toLowerCase();
         if (systemName.contains("windows")) {
-            String adminUser = System.getenv("USERDOMAIN")+"\\"+System.getenv("UERNAME");
-            return String.format("runas /user:%s /savecred \"cmd /c %s\"", adminUser, command.replace("\\","\\\\\\"));
+            return String.format("powershell -Command \"Start-Process cmd -ArgumentList '/c %s C:\\Windows' -Verb RunAs\"", command.replace("\\","\\\\\\"));
         }
         return command;
     }
