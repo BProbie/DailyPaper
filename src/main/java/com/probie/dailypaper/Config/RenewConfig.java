@@ -1,7 +1,7 @@
 package com.probie.dailypaper.Config;
 
 import java.io.File;
-import com.probie.easydb.EasyDB;
+import com.probie.easydb.EasyDB.EasyDB;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.easydb.Database.Local.LocalRemoteDB;
 import com.probie.dailypaper.Config.Interface.IRenewConfig;

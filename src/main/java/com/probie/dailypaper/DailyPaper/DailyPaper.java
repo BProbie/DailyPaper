@@ -32,6 +32,7 @@ public class DailyPaper implements IDailyPaper {
     /**
      * 默认参数键 KEY
      * */
+    /// 动态
     public String KeyRootPath = "RootPath";
     public String KeyCurrentDateFormat = "CurrentDateFormat";
 
@@ -53,9 +54,18 @@ public class DailyPaper implements IDailyPaper {
 
     public String KeyImageFileName = "ImageFileName";
 
-    public String KeyDailyPaperDownloadUrl = "DailyPaperDownloadUrl";
-    public String KeyDailyPaperDownloadFullFilePath = "DailyPaperDownloadFullFilePath";
+    public String KeyDailyPaperRenewFilePath = "DailyPaperRenewFilePath";
+    public String KeyDailyPaperRenewFileNameWindows = "DailyPaperRenewFileNameWindows";
 
+    public String KeyDailyPaperDownloadFilePath = "DailyPaperDownloadFilePath";
+    public String KeyDailyPaperDownloadFileNameWindows = "DailyPaperDownloadFileNameWindows";
+    public String KeyDailyPaperDownloadFileIsOpen = "DailyPaperDownloadFileIsOpen";
+    public String KeyDailyPaperDownloadUrlWindows = "DailyPaperDownloadUrlWindows";
+
+    public String KeyDailyPaperStageWidth = "DailyPaperStageWidth";
+    public String KeyDailyPaperStageHeight = "DailyPaperStageHeight";
+
+    /// 静态
     public String KeyLogConfigFilePath = "LogConfigFilePath";
     public String KeyLogConfigFileName = "LogConfigFileName";
 
@@ -68,7 +78,6 @@ public class DailyPaper implements IDailyPaper {
     public String KeyRenewConfigFilePath = "RenewConfigFilePath";
     public String KeyRenewConfigFileName = "RenewConfigFileName";
     public String KeyRenewConfigFileUrl = "RenewConfigFileUrl";
-
 
     /**
      * 程序默认参数 - 动态更新
@@ -109,10 +118,24 @@ public class DailyPaper implements IDailyPaper {
     public Supplier<String> ImageFileName = () -> getConfigConfig().getLocalDB().get(getKeyImageFileName(),
             "Image.png").toString();
 
-    public Supplier<String> DailyPaperDownloadUrl = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrl(),
+    public Supplier<String> DailyPaperRenewFilePath = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperRenewFilePath(),
+            getRootPath().get()).toString();
+    public Supplier<String> DailyPaperRenewFileNameWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperRenewFileNameWindows(),
+            "Renew.exe").toString();
+
+    public Supplier<String> DailyPaperDownloadFilePath = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFilePath(),
+            getRootPath().get()).toString();
+    public Supplier<String> DailyPaperDownloadFileNameWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileNameWindows(),
+            "DailyPaper.exe").toString();
+    public Supplier<Boolean> DailyPaperDownloadFileIsOpen = () -> (Boolean) getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileIsOpen(),
+            true);
+    public Supplier<String> DailyPaperDownloadUrlWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrlWindows(),
             "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/DailyPaper.exe").toString();
-    public Supplier<String> DailyPaperDownloadFullFilePath = () -> getConfigConfig().getLocalDB().get(getDailyPaperDownloadFullFilePath(),
-            getRootPath().get()+File.separator+"DailyPaper.exe").toString();
+
+    public Supplier<Integer> DailyPaperStageWidth = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageWidth(),
+            1200);
+    public Supplier<Integer> DailyPaperStageHeight = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
+            600);
 
     /**
      * 程序默认参数 - 静态存储
@@ -141,6 +164,19 @@ public class DailyPaper implements IDailyPaper {
 
     @Override
     public void launch(String[] args) {
+        ///  自动检测更新
+        if (!DailyPaper.getInstance().getConfig().getRenewConfig().getLocalDB().get("VERSION").equals(DailyPaper.getInstance().getVERSION())) {
+            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
+                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
+                    System.exit(0);
+                    DailyPaper.getInstance().getComputerSystem().runCommand(
+                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
+                }
+            }
+        }
         Application.launch(DailyPaperApplication.class, args);
     }
 
@@ -165,13 +201,13 @@ public class DailyPaper implements IDailyPaper {
     }
 
     @Override
-    public ComputerSystem getComputerSystem() {
-        return ComputerSystem.getInstance();
+    public NetworkSystem getNetworkSystem() {
+        return NetworkSystem.getInstance();
     }
 
     @Override
-    public NetworkSystem getNetworkSystem() {
-        return NetworkSystem.getInstance();
+    public ComputerSystem getComputerSystem() {
+        return ComputerSystem.getInstance();
     }
 
     @Override

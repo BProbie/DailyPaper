@@ -11,7 +11,7 @@ public class ComputerSystem extends NetworkSystem implements IComputerSystem {
     private volatile static ComputerSystem INSTANCE;
 
     /**
-     * Computer的一些相关参数
+     * Computer 的一些相关参数
      * */
     private Dimension dimension;
 

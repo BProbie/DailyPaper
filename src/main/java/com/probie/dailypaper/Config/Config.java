@@ -1,7 +1,7 @@
 package com.probie.dailypaper.Config;
 
 import lombok.Data;
-import com.probie.easydb.EasyDB;
+import com.probie.easydb.EasyDB.EasyDB;
 import com.probie.easydb.Database.Local.LocalDB;
 import com.probie.dailypaper.Config.Interface.IConfig;
 
