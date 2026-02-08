@@ -7,4 +7,29 @@ public interface IDailyPaperStyle {
      * */
     void createStyle();
 
+    /**
+     * 创建 Stage 舞台样式
+     * */
+    void createStageStyle();
+
+    /**
+     * 创建 Scene 帷幕样式
+     * */
+    void createSceneStyle();
+
+    /**
+     * 创建 RootPane 分页样式
+     * */
+    void createRootPaneStyle();
+
+    /**
+     * 创建 ChatPane 分页样式
+     * */
+    void createChatPaneStyle();
+
+    /**
+     * 创建 LivePane 分页样式
+     * */
+    void createLivePaneStyle();
+
 }

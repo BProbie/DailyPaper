@@ -12,7 +12,7 @@ import javafx.embed.swing.SwingFXUtils;
 public interface IImageSystem {
 
     /**
-     * 将网址指向的网页图片转换成BufferedImage实例化对象
+     * 将网址指向的网页图片转换成 BufferedImage 实例化对象
      * @param url url
      * @return bufferedImage
      * */
@@ -25,11 +25,11 @@ public interface IImageSystem {
     }
 
     /**
-     * 更改BufferedImage实例化对象的大小
-     * @param bufferedImage BufferedImage实例化对象
+     * 更改 BufferedImage 实例化对象的大小
+     * @param bufferedImage BufferedImage 实例化对象
      * @param width 宽度
      * @param height 高度
-     * @return 更改后的BufferedImage实例化对象
+     * @return 更改后的 BufferedImage 实例化对象
      * */
     default BufferedImage setBufferedImageSize(BufferedImage bufferedImage, int width, int height) {
         BufferedImage fitBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -40,8 +40,8 @@ public interface IImageSystem {
     }
 
     /**
-     * 将BufferedImage实例化对象转换成本地文件
-     * @param bufferedImage BufferedImage实例化对象
+     * 将 BufferedImage 实例化对象转换成本地文件
+     * @param bufferedImage BufferedImage 实例化对象
      * @param localFilePath 本地文件路径
      * @param localFileName 本地文件名称
      * @return 是否转换成功
@@ -51,8 +51,8 @@ public interface IImageSystem {
     }
 
     /**
-     * 将BufferedImage实例化对象转换成本地文件
-     * @param bufferedImage BufferedImage实例化对象
+     * 将 BufferedImage 实例化对象转换成本地文件
+     * @param bufferedImage BufferedImage 实例化对象
      * @param fullFilePath 完整本地路径
      * @return 是否转换成功
      * */
@@ -68,9 +68,9 @@ public interface IImageSystem {
     }
 
     /**
-     * 本地文件转换成BufferedImage实例化对象
+     * 本地文件转换成 BufferedImage 实例化对象
      * @param fullFilePath 完整本地文件路径
-     * @return BufferedImage实例化对象
+     * @return BufferedImage 实例化对象
      * */
     default BufferedImage turnLocalFileToBufferedImage(String fullFilePath) {
         try {
@@ -81,9 +81,9 @@ public interface IImageSystem {
     }
 
     /**
-     * JavaAWT的BufferedImage 转 JavaFX的Image
+     * JavaAWT的 BufferedImage 转 JavaFX 的 Image
      * @param bufferedImage bufferedImage
-     * @return JavaFX的Image实例化对象
+     * @return JavaFX 的 Image 实例化对象
      * */
     default Image turnBufferedImageToFXImage(BufferedImage bufferedImage) {
         if (bufferedImage != null) {

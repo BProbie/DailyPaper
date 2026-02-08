@@ -1,12 +1,13 @@
 package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
-import java.io.File;
 import java.util.function.Supplier;
+import java.util.concurrent.Executors;
 import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import javafx.application.Application;
 import com.probie.dailypaper.Enum.Date;
+import java.util.concurrent.ExecutorService;
 import com.probie.dailypaper.AIAgent.AIAgent;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaper;
 import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
@@ -162,21 +163,23 @@ public class DailyPaper implements IDailyPaper {
     public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
             "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
 
+    public ExecutorService pool = Executors.newFixedThreadPool(5);
+
     @Override
     public void launch(String[] args) {
-        ///  自动检测更新
-        if (!DailyPaper.getInstance().getConfig().getRenewConfig().getLocalDB().get("VERSION").equals(DailyPaper.getInstance().getVERSION())) {
-            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
-                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
-                    System.exit(0);
-                    DailyPaper.getInstance().getComputerSystem().runCommand(
-                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
-                }
-            }
-        }
+        /// 自动检测更新
+//        if (!DailyPaper.getInstance().getConfig().getRenewConfig().getLocalDB().get("VERSION").equals(DailyPaper.getInstance().getVERSION())) {
+//            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
+//                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
+//                    System.exit(0);
+//                    DailyPaper.getInstance().getComputerSystem().runCommand(
+//                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
+//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
+//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
+//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
+//                }
+//            }
+//        }
         Application.launch(DailyPaperApplication.class, args);
     }
 
