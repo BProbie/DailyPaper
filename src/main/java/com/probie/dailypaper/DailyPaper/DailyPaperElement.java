@@ -72,6 +72,7 @@ public class DailyPaperElement implements IDailyPaperElement {
      * LivePane 控件
      * */
 
+
     /**
      * 动态变量
      * */
@@ -81,11 +82,16 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<String> promptIfImagePrompt = () -> "请你根据用户输入的上下文信息帮我推测判断出用户现在是否需要生成图片，是则回答单个字“是”，否则回答单个字“否”，无法推断或模糊不清则一律回答单个字“否”，以下是用户输入的上下文信息：";
     private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理用户想生成的图片描述信息，尽量简短，以下是用户输入的上下文信息：";
     private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户输入的提示词信息，返回该图片生成成功的信，以下是用户输入的提示词信息：";
-    private Supplier<Integer> chatPaneTextInputAreaFontSize = () -> 20;
-    private Supplier<Integer> chatPaneTextShowAreaFontSize = () -> 20;
+
     private Supplier<Integer> rootPaneTitleBarButtonSize = () -> 30;
     private Supplier<Integer> rootPaneMenuBarButtonWidth = () -> 100;
     private Supplier<Integer> rootPaneMenuBarButtonHeight = () -> 40;
+
+    private Supplier<Integer> chatPaneTextInputAreaFontSize = () -> 20;
+    private Supplier<Integer> chatPaneTextShowAreaFontSize = () -> 20;
+    private Supplier<Integer> chatPaneButtonWidth = () -> 100;
+    private Supplier<Integer> chatPaneButtonHeight = () -> 40;
+
     private Supplier<Integer> offset = () -> 10;
 
     /**

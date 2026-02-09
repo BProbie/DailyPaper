@@ -16,7 +16,7 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
     }
 
     /**
-     * 继承的子类必须重写初始化AI-API参数的方法
+     * 继承的子类必须重写初始化 AI-API 参数的方法
      * */
     protected abstract void init();
 

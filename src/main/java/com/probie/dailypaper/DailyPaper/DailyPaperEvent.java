@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
 import java.awt.image.BufferedImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 
 public class DailyPaperEvent implements IDailyPaperEvent {
@@ -75,6 +77,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     @Override
     public void createRootPaneEvent() {
         /// 创建 RootPane 控件事件
+        /// 拖拽窗口
         dailyPaperElement.getRootPaneTitleBar().setOnMousePressed(mouseEvent -> {
             mouseStartX = mouseEvent::getScreenX;
             mouseStartY = mouseEvent::getScreenY;
@@ -88,6 +91,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             mouseEvent.consume();
         });
 
+        /// 最小化 最大化 关闭
         dailyPaperElement.getRootPaneTileBarMinButton().setOnAction(actionEvent -> dailyPaperElement.getStage().setIconified(true));
         dailyPaperElement.getRootPaneTitleBarMaxButton().setOnAction(actionEvent -> {
             dailyPaperElement.getStage().setMaximized(!dailyPaperElement.getStage().isMaximized());
@@ -101,6 +105,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             dailyPaperElement.getStage().close();
         });
 
+        /// 菜单选择
         dailyPaperElement.getRootPaneMenuBarChatButton().setOnAction(actionEvent -> {
             if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getChatPane()) {
                 clearChatPane();
@@ -122,6 +127,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaperElement.getChatPaneTextInputArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 if (keyEvent.isShiftDown() || keyEvent.isControlDown() || keyEvent.isAltDown()) {
+                    /// 用户
                     VBox chatPaneUserMessageVBox = new VBox();
                     Label chatPaneUserMessageLabel = new Label();
 
@@ -146,9 +152,9 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     chatPaneUserMessageVBox.getChildren().addAll(chatPaneUserMessageLabel);
                     dailyPaperElement.getChatPaneMessageVBox().getChildren().addAll(chatPaneUserMessageVBox);
                     dailyPaperElement.getChatPaneUserMessageArrayList().add(chatPaneUserMessageLabel.getText());
+                    scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
 
-                    dailyPaperElement.getAgentConnectPool().submit(() -> scrollToBottom(dailyPaperElement.getChatPaneTextShowArea()));
-
+                    /// AI
                     VBox chatPaneAgentMessageVBox = new VBox();
                     Label chatPaneAgentMessageLabel = new Label();
 
@@ -173,11 +179,12 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
                     chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageLabel);
                     dailyPaperElement.getChatPaneMessageVBox().getChildren().addAll(chatPaneAgentMessageVBox);
-
-                    dailyPaperElement.getAgentConnectPool().submit(() -> scrollToBottom(dailyPaperElement.getChatPaneTextShowArea()));
+                    scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
                     dailyPaperElement.getChatPaneTextInputArea().clear();
 
+                    /// 调用 API
                     dailyPaperElement.getAgentConnectPool().submit(() -> {
+                        /// 收集上下文
                         try {
                             Platform.runLater(() -> chatPaneAgentMessageLabel.setText("收集上下文..."));
                             String prompt = "";
@@ -196,41 +203,81 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             Platform.runLater(() -> chatPaneAgentMessageLabel.setText("需求分析中..."));
                             String[] ifImage = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptIfImagePrompt().get() + prompt);
 
+                            /// 文本
                             if (!ifImage[0].contains("是")) {
                                 Platform.runLater(() -> chatPaneAgentMessageLabel.setText("文本生成中..."));
                                 String[] result = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(prompt);
+                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText(result[0]));
+
                                 Platform.runLater(() -> {
-                                    chatPaneAgentMessageLabel.setText(result[0]);
+                                    HBox chatPaneAgentMessageButtonBar = new HBox();
+                                    Button button = new Button("点击复制文本");
+
+                                    chatPaneAgentMessageButtonBar.setMaxWidth(chatPaneAgentMessageLabel.widthProperty().get());
+
+                                    button.setOnAction(actionEvent -> {
+                                        Clipboard clipboard = Clipboard.getSystemClipboard();
+                                        ClipboardContent clipboardContent = new ClipboardContent();
+                                        clipboardContent.putString(chatPaneAgentMessageLabel.getText());
+                                        clipboard.setContent(clipboardContent);
+                                    });
+                                    button.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
+                                    if (dailyPaperElement.getChatPaneButtonWidth().get() > chatPaneAgentMessageLabel.widthProperty().get()) {
+                                        button.setMinWidth(chatPaneAgentMessageLabel.widthProperty().get());
+                                    }
+                                    button.setMinHeight(dailyPaperElement.getChatPaneButtonHeight().get());
+
+                                    chatPaneAgentMessageButtonBar.getChildren().addAll(button);
+                                    chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageButtonBar);
                                 });
+
                                 scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
                                 dailyPaperElement.getChatPaneAgentMessageArrayList().add(result[0]);
                             }
 
+                            /// 图片
                             else {
                                 Platform.runLater(() -> chatPaneAgentMessageLabel.setText("图片生成中..."));
+
+                                String result = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptSpawnImageResultPrompt().get() + prompt)[0];
+                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText(result));
+
+                                HBox chatPaneAgentMessageButtonBar = new HBox();
+                                chatPaneAgentMessageButtonBar.setMaxWidth(chatPaneAgentMessageLabel.maxWidthProperty().get());
+
                                 prompt = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptSpawnImagePrompt().get() + prompt)[0];
                                 String[] imageURIs = dailyPaper.getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt);
-                                BufferedImage bufferedImage = dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[0]);
-                                bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, (int) ((chatPaneAgentMessageVBox.widthProperty().divide(2.0).get())), (int) ((double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[1]) * (((chatPaneAgentMessageVBox.widthProperty().divide(2.0).get())) / (double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[0]))));
-                                ImageView imageView = new ImageView(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
-                                String result = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptSpawnImageResultPrompt().get() + prompt)[0];
-                                Platform.runLater(() -> {
-                                    chatPaneAgentMessageVBox.getChildren().addAll(imageView);
-                                    chatPaneAgentMessageLabel.setText(result);
-
-                                    Button button = new Button("点击设为壁纸");
-                                    button.setOnAction(actionEvent -> {
-                                        dailyPaper.getImageSystem().turnBufferedImageToLocalFile(dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[0]), dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
-                                        dailyPaper.getImageSystem().setWallPaper(dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
+                                for (int i = 0; i < imageURIs.length; i++) {
+                                    BufferedImage bufferedImage = dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[i]);
+                                    bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, (int) ((chatPaneAgentMessageLabel.maxWidthProperty().divide(2.0).get())), (int) ((double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[1]) * (((chatPaneAgentMessageLabel.maxWidthProperty().divide(2.0).get())) / (double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[0]))));
+                                    ImageView imageView = new ImageView(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
+                                    int index = i;
+                                    Platform.runLater(() -> {
+                                        System.out.println("run");
+                                        chatPaneAgentMessageVBox.getChildren().addAll(imageView);
+                                        Button button = new Button("点击设为壁纸");
+                                        if (imageURIs.length > 1) {
+                                            button.setText("点击设置图片%d为壁纸".formatted(index + 1));
+                                        }
+                                        button.setOnAction(actionEvent -> {
+                                            dailyPaper.getImageSystem().turnBufferedImageToLocalFile(dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[index]), dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
+                                            dailyPaper.getImageSystem().setWallPaper(dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
+                                        });
+                                        button.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
+                                        if (imageURIs.length * dailyPaperElement.getChatPaneButtonWidth().get() > chatPaneAgentMessageLabel.maxWidthProperty().get()) {
+                                            button.setMinWidth(chatPaneAgentMessageLabel.widthProperty().get() / imageURIs.length);
+                                        }
+                                        button.setMinHeight(dailyPaperElement.getChatPaneButtonHeight().get());
+                                        chatPaneAgentMessageButtonBar.getChildren().addAll(button);
                                     });
-                                    chatPaneAgentMessageVBox.getChildren().addAll(button);
+                                }
 
-                                    scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
-                                });
+                                Platform.runLater(() -> chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageButtonBar));
+                                scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
                                 dailyPaperElement.getChatPaneAgentMessageArrayList().add(result);
                             }
                         } catch (Exception exception) {
-                            Platform.runLater(() -> chatPaneAgentMessageLabel.setText("不小心出错了:\n" + exception.getMessage()));
+                            Platform.runLater(() -> chatPaneAgentMessageLabel.setText("不小心出错了:\n" + exception));
                             scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
                         }
                     });
@@ -265,12 +312,15 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void scrollToBottom(ScrollPane scrollPane) {
-        Platform.runLater(() -> {
-            ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
-            if (verticalScrollBar != null) {
-                verticalScrollBar.setValue(verticalScrollBar.getMax());
+        ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
+        if (verticalScrollBar != null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException interruptedException) {
+                throw new RuntimeException(interruptedException);
             }
-        });
+            Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
+        }
     }
 
     /**
