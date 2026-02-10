@@ -1,6 +1,8 @@
 package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
+
+import java.io.File;
 import java.util.function.Supplier;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Config.*;
@@ -66,10 +68,13 @@ public class DailyPaper implements IDailyPaper {
     public String KeyDailyPaperStageWidth = "DailyPaperStageWidth";
     public String KeyDailyPaperStageHeight = "DailyPaperStageHeight";
 
-    public String KeyImagesShowFilePath = "ImagesShowFilePath";
-    public String KeyImagesShowFileName = "ImagesShowFileName";
     public String KeyImagesWallpaperFilePath = "ImagesWallpaperFilePath";
     public String KeyImagesWallpaperFileName = "ImagesWallpaperFileName";
+
+    public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
+    public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
+
+    public String KeySplitMark = "SplitMark";
 
     /// 静态
     public String KeyLogConfigFilePath = "LogConfigFilePath";
@@ -143,14 +148,18 @@ public class DailyPaper implements IDailyPaper {
     public Supplier<Integer> DailyPaperStageHeight = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
             600);
 
-    public Supplier<String> ImagesShowFilePath = () -> getConfigConfig().getLocalDB().get(getKeyImagesShowFilePath(),
-            getRootPath()).toString();
-    public Supplier<String> ImagesShowFileName = () ->  getConfigConfig().getLocalDB().get(getKeyImagesShowFileName(),
-            "ImagesShow").toString();
     public Supplier<String> ImagesWallpaperFilePath = () -> getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFilePath(),
-            getRootPath()).toString();
+            getRootPath().get()).toString();
     public Supplier<String> ImagesWallpaperFileName = () ->  getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFileName(),
             "ImagesWallpaper").toString();
+
+    public Supplier<String> LiveImageConfigFilePath = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFilePath(),
+            getImagesWallpaperFilePath().get()+File.separator+getImagesWallpaperFileName().get()).toString();
+    public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
+          "LiveImage.config").toString();
+
+    public Supplier<String> SplitMark = () -> getConfigConfig().getLocalDB().get(getKeySplitMark(),
+            " ").toString();
 
     /**
      * 程序默认参数 - 静态存储
@@ -275,6 +284,11 @@ public class DailyPaper implements IDailyPaper {
     @Override
     public RenewConfig getRenewConfig() {
         return getConfig().getRenewConfig();
+    }
+
+    @Override
+    public LiveImageConfig getLiveImageConfig() {
+        return getConfig().getLiveImageConfig();
     }
 
     /**

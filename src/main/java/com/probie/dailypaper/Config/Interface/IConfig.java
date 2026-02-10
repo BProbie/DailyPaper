@@ -1,9 +1,6 @@
 package com.probie.dailypaper.Config.Interface;
 
-import com.probie.dailypaper.Config.LogConfig;
-import com.probie.dailypaper.Config.TempConfig;
-import com.probie.dailypaper.Config.RenewConfig;
-import com.probie.dailypaper.Config.ConfigConfig;
+import com.probie.dailypaper.Config.*;
 
 public interface IConfig {
 
@@ -30,5 +27,11 @@ public interface IConfig {
      * @return RenewConfig 代理单例
      * */
     RenewConfig getRenewConfig();
+
+    /**
+     * 获取 LiveImageConfig 代理单例
+     * @return LiveImageConfig 代理单例
+     * */
+    LiveImageConfig getLiveImageConfig();
 
 }

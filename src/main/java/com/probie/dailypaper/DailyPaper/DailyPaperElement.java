@@ -1,6 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import javafx.scene.image.ImageView;
 import lombok.Data;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -10,6 +9,7 @@ import javafx.stage.FileChooser;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import java.util.function.Supplier;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TextArea;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Enum.Date;
@@ -41,6 +41,9 @@ public class DailyPaperElement implements IDailyPaperElement {
     private BorderPane rootPane = new BorderPane();
     private VBox chatPane = new VBox();
     private VBox livePane = new VBox();
+    private VBox dailyPane = new VBox();
+    private VBox hobbyPane = new VBox();
+    private VBox settingPane = new VBox();
 
     /**
      * Scene 帷幕
@@ -58,8 +61,13 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Button rootPaneTitleBarCloseButton = new Button();
     private StackPane rootPaneLeftPane = new StackPane();
     private VBox rootPaneMenuBar = new VBox();
+
     private Button rootPaneMenuBarChatButton = new Button();
     private Button rootPaneMenuBarLiveButton = new Button();
+    private Button rootPaneMenuBarDailyButton = new Button();
+    private Button rootPaneMenuBarHobbyButton = new Button();
+    private Button rootPaneMenuBarSettingButton = new Button();
+
     private StackPane rootPaneCenterPane = new StackPane();
 
     /**
@@ -80,8 +88,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     private FileChooser livePaneImageFileChooser = new FileChooser();
     private HBox livePaneImageShowHBox = new HBox();
     private ImageView livePaneImageShowImageView = new ImageView();
-
-
+    private HBox livePaneImageSureHBox = new HBox();
 
     /**
      * 动态变量
@@ -104,14 +111,17 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     private Supplier<Integer> livePaneImageInputFontSize = () -> 20;
     private Supplier<Boolean> livePaneImagesShowing = () -> false;
+    private Supplier<Boolean> livePaneImagesWallPerShowing = () -> false;
 
     private Supplier<Integer> offset = () -> 10;
+    private Supplier<Integer> delay = () -> 100;
 
     /**
      * 静态变量
      * */
     private final ExecutorService agentConnectPool = Executors.newFixedThreadPool(5);
     private final ExecutorService imagesShowPool = Executors.newFixedThreadPool(1);
+    private final ExecutorService imagesWallpaperPool = Executors.newFixedThreadPool(1);
 
     @Override
     public void createElement(Stage stage) {
@@ -156,7 +166,7 @@ public class DailyPaperElement implements IDailyPaperElement {
         rootPaneTopPane.getChildren().addAll(rootPaneTitleBar);
         rootPane.setTop(rootPaneTopPane);
 
-        rootPaneMenuBar.getChildren().addAll(rootPaneMenuBarChatButton, rootPaneMenuBarLiveButton);
+        rootPaneMenuBar.getChildren().addAll(rootPaneMenuBarChatButton, rootPaneMenuBarLiveButton, rootPaneMenuBarDailyButton, rootPaneMenuBarHobbyButton, rootPaneMenuBarSettingButton);
         rootPaneLeftPane.getChildren().addAll(rootPaneMenuBar);
         rootPane.setLeft(rootPaneLeftPane);
 
@@ -177,6 +187,23 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         livePaneImageShowHBox.getChildren().addAll(livePaneImageShowImageView);
         livePane.getChildren().addAll(livePaneImageShowHBox);
+
+        livePane.getChildren().addAll(livePaneImageSureHBox);
+    }
+
+    @Override
+    public void createDailyPaneElement() {
+
+    }
+
+    @Override
+    public void createHobbyPaneElement() {
+
+    }
+
+    @Override
+    public void createSettingPaneElement() {
+
     }
 
     /**

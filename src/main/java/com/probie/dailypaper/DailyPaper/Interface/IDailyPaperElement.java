@@ -35,4 +35,19 @@ public interface IDailyPaperElement {
      * */
     void createLivePaneElement();
 
+    /**
+     * 创建 DailyPane 分页元素
+     * */
+    void createDailyPaneElement();
+
+    /**
+     * 创建 HobbyPane 分页元素
+     * */
+    void createHobbyPaneElement();
+
+    /**
+     * 创建 SettingPane 分页元素
+     * */
+    void createSettingPaneElement();
+
 }

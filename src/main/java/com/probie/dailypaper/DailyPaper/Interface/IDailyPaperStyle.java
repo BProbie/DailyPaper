@@ -32,4 +32,19 @@ public interface IDailyPaperStyle {
      * */
     void createLivePaneStyle();
 
+    /**
+     * 创建 DailyPane 分页样式
+     * */
+    void createDailyPaneStyle();
+
+    /**
+     * 创建 HobbyPane 分页样式
+     * */
+    void createHobbyPaneStyle();
+
+    /**
+     * 创建 SettingPane 分页样式
+     * */
+    void createSettingPaneStyle();
+
 }

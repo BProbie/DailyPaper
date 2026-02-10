@@ -7,16 +7,10 @@
 
 /**
  * TODO
- * 日志功能
- * 更新
- * 对话
- * 修图
+ * 日志
+ * 每日
  * 偏好
- * UI
- * */
-
-/**
- *
+ * 设置
  * */
 
 package com.probie.dailypaper;

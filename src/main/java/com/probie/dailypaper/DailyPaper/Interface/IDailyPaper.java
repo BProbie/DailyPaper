@@ -33,5 +33,6 @@ public interface IDailyPaper {
     TempConfig getTempConfig();
     ConfigConfig getConfigConfig();
     RenewConfig getRenewConfig();
+    LiveImageConfig getLiveImageConfig();
 
 }

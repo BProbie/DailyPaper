@@ -1,16 +1,13 @@
 package com.probie.dailypaper.DailyPaper;
 
+import java.io.File;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.scene.layout.Region;
 import javafx.application.Platform;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperStyle;
-
-import java.io.File;
 
 public class DailyPaperStyle implements IDailyPaperStyle {
 
@@ -85,6 +82,15 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRootPaneMenuBarLiveButton().setText("Live");
         dailyPaperElement.getRootPaneMenuBarLiveButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
         dailyPaperElement.getRootPaneMenuBarLiveButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
+        dailyPaperElement.getRootPaneMenuBarDailyButton().setText("Daily");
+        dailyPaperElement.getRootPaneMenuBarDailyButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
+        dailyPaperElement.getRootPaneMenuBarDailyButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
+        dailyPaperElement.getRootPaneMenuBarHobbyButton().setText("Hobby");
+        dailyPaperElement.getRootPaneMenuBarHobbyButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
+        dailyPaperElement.getRootPaneMenuBarHobbyButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
+        dailyPaperElement.getRootPaneMenuBarSettingButton().setText("Setting");
+        dailyPaperElement.getRootPaneMenuBarSettingButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
+        dailyPaperElement.getRootPaneMenuBarSettingButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
     }
 
     @Override
@@ -115,7 +121,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getLivePaneImageInputHBox().prefWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
         dailyPaperElement.getLivePaneImageInputHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6.0));
 
-        dailyPaperElement.getLivePaneImageChooseButton().setText("选择动图");
+        dailyPaperElement.getLivePaneImageChooseButton().setText("选择任意壁纸");
         dailyPaperElement.getLivePaneImageChooseButton().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(6.0));
         dailyPaperElement.getLivePaneImageChooseButton().prefHeightProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().heightProperty());
 
@@ -137,6 +143,24 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
         dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6).multiply(4));
+
+        dailyPaperElement.getLivePaneImageSureHBox().prefWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
+        dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6));
+    }
+
+    @Override
+    public void createDailyPaneStyle() {
+
+    }
+
+    @Override
+    public void createHobbyPaneStyle() {
+
+    }
+
+    @Override
+    public void createSettingPaneStyle() {
+
     }
 
     /**
