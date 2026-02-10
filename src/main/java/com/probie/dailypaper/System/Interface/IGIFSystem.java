@@ -1,5 +1,9 @@
 package com.probie.dailypaper.System.Interface;
 
+import com.probie.dailypaper.DailyPaper.DailyPaper;
+import com.probie.dailypaper.DailyPaper.DailyPaperStyle;
+import javafx.scene.image.Image;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -104,6 +108,34 @@ public interface IGIFSystem {
             throw new RuntimeException(ioException);
         }
         return bufferedImageArrayList.toArray(new BufferedImage[]{});
+    }
+
+    /**
+     * 逐帧切割 GIF 动图
+     * @param fullGIFFilePath GIF 文件对象
+     * @return JavaFX 的 Image 数组
+     * */
+    default Image[] turnGIFToFXImages(String fullGIFFilePath) {
+        BufferedImage[] bufferedImages = turnGIFToBufferedImages(fullGIFFilePath);
+        Image[] images = new Image[bufferedImages.length];
+        for (int i = 0; i < bufferedImages.length; i++) {
+            images[i] = DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
+        }
+        return images;
+    }
+
+    /**
+     * 逐帧切割 GIF 动图
+     * @param gifFile GIF 文件对象
+     * @return JavaFX 的 Image 数组
+     * */
+    default Image[] turnGIFToFXImages(File gifFile) {
+        BufferedImage[] bufferedImages = turnGIFToBufferedImages(gifFile);
+        Image[] images = new Image[bufferedImages.length];
+        for (int i = 0; i < bufferedImages.length; i++) {
+            images[i] = DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
+        }
+        return images;
     }
 
     /**

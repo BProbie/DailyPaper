@@ -1,10 +1,13 @@
 package com.probie.dailypaper.DailyPaper;
 
+import javafx.scene.image.ImageView;
 import lombok.Data;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.ArrayList;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import java.util.function.Supplier;
 import javafx.scene.control.TextArea;
@@ -71,6 +74,13 @@ public class DailyPaperElement implements IDailyPaperElement {
     /**
      * LivePane 控件
      * */
+    private HBox livePaneImageInputHBox = new HBox();
+    private Button livePaneImageChooseButton = new Button();
+    private Label livePaneImageChooseLabel = new Label();
+    private FileChooser livePaneImageFileChooser = new FileChooser();
+    private HBox livePaneImageShowHBox = new HBox();
+    private ImageView livePaneImageShowImageView = new ImageView();
+
 
 
     /**
@@ -92,16 +102,19 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<Integer> chatPaneButtonWidth = () -> 100;
     private Supplier<Integer> chatPaneButtonHeight = () -> 40;
 
+    private Supplier<Integer> livePaneImageInputFontSize = () -> 20;
+    private Supplier<Boolean> livePaneImagesShowing = () -> false;
+
     private Supplier<Integer> offset = () -> 10;
 
     /**
      * 静态变量
      * */
     private final ExecutorService agentConnectPool = Executors.newFixedThreadPool(5);
+    private final ExecutorService imagesShowPool = Executors.newFixedThreadPool(1);
 
     @Override
     public void createElement(Stage stage) {
-
         if (dailyPaper == null) {
             dailyPaper = DailyPaper.getInstance();
         }
@@ -111,6 +124,9 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         /// 创建 ChatPane 分页元素
         createChatPaneElement();
+
+        /// 创建 LivePane 分页元素
+        createLivePaneElement();
 
         /// 创建 RootPane 分页元素
         createRootPaneElement();
@@ -156,7 +172,11 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createLivePaneElement() {
+        livePaneImageInputHBox.getChildren().addAll(livePaneImageChooseButton, livePaneImageChooseLabel);
+        livePane.getChildren().addAll(livePaneImageInputHBox);
 
+        livePaneImageShowHBox.getChildren().addAll(livePaneImageShowImageView);
+        livePane.getChildren().addAll(livePaneImageShowHBox);
     }
 
     /**

@@ -1,10 +1,16 @@
 package com.probie.dailypaper.DailyPaper;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.scene.layout.Region;
 import javafx.application.Platform;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperStyle;
+
+import java.io.File;
 
 public class DailyPaperStyle implements IDailyPaperStyle {
 
@@ -41,6 +47,9 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         /// 创建 ChatPane 分页样式
         createChatPaneStyle();
+
+        /// 创建 LivePane 分页样式
+        createLivePaneStyle();
 
     }
 
@@ -100,7 +109,34 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createLivePaneStyle() {
+        dailyPaperElement.getLivePane().prefWidthProperty().bind(dailyPaperElement.getRootPaneCenterPane().widthProperty());
+        dailyPaperElement.getLivePane().prefHeightProperty().bind(dailyPaperElement.getRootPaneCenterPane().heightProperty());
 
+        dailyPaperElement.getLivePaneImageInputHBox().prefWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
+        dailyPaperElement.getLivePaneImageInputHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6.0));
+
+        dailyPaperElement.getLivePaneImageChooseButton().setText("选择动图");
+        dailyPaperElement.getLivePaneImageChooseButton().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(6.0));
+        dailyPaperElement.getLivePaneImageChooseButton().prefHeightProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().heightProperty());
+
+        dailyPaperElement.getLivePaneImageChooseLabel().setText("");
+        dailyPaperElement.getLivePaneImageChooseLabel().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(6.0).multiply(5.0));
+        dailyPaperElement.getLivePaneImageChooseLabel().prefHeightProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().heightProperty());
+        dailyPaperElement.getLivePaneImageChooseLabel().setFont(new Font(dailyPaperElement.getLivePaneImageInputFontSize().get()));
+        dailyPaperElement.getLivePaneImageChooseLabel().setAlignment(Pos.CENTER);
+        dailyPaperElement.getLivePaneImageChooseLabel().setWrapText(true);
+
+        dailyPaperElement.getLivePaneImageFileChooser().setInitialDirectory(new File(dailyPaper.getComputerSystem().getHere()));
+        dailyPaperElement.getLivePaneImageFileChooser().getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("ALL", "*.*"),
+                new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                new FileChooser.ExtensionFilter("PNG", "*.png"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
+        );
+
+        dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
+        dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6).multiply(4));
     }
 
     /**

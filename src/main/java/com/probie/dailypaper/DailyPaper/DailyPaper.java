@@ -66,6 +66,11 @@ public class DailyPaper implements IDailyPaper {
     public String KeyDailyPaperStageWidth = "DailyPaperStageWidth";
     public String KeyDailyPaperStageHeight = "DailyPaperStageHeight";
 
+    public String KeyImagesShowFilePath = "ImagesShowFilePath";
+    public String KeyImagesShowFileName = "ImagesShowFileName";
+    public String KeyImagesWallpaperFilePath = "ImagesWallpaperFilePath";
+    public String KeyImagesWallpaperFileName = "ImagesWallpaperFileName";
+
     /// 静态
     public String KeyLogConfigFilePath = "LogConfigFilePath";
     public String KeyLogConfigFileName = "LogConfigFileName";
@@ -137,6 +142,15 @@ public class DailyPaper implements IDailyPaper {
             1200);
     public Supplier<Integer> DailyPaperStageHeight = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
             600);
+
+    public Supplier<String> ImagesShowFilePath = () -> getConfigConfig().getLocalDB().get(getKeyImagesShowFilePath(),
+            getRootPath()).toString();
+    public Supplier<String> ImagesShowFileName = () ->  getConfigConfig().getLocalDB().get(getKeyImagesShowFileName(),
+            "ImagesShow").toString();
+    public Supplier<String> ImagesWallpaperFilePath = () -> getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFilePath(),
+            getRootPath()).toString();
+    public Supplier<String> ImagesWallpaperFileName = () ->  getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFileName(),
+            "ImagesWallpaper").toString();
 
     /**
      * 程序默认参数 - 静态存储
