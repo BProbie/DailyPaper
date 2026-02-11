@@ -51,6 +51,11 @@ public interface IDailyPaperEvent {
     void createSettingPaneEvent();
 
     /**
+     * 创建 RenewPane 分页事件
+     * */
+    void createRenewPaneEvent();
+
+    /**
      * 清理 ChatPane 内容
      * */
     void clearChatPane();
@@ -74,6 +79,11 @@ public interface IDailyPaperEvent {
      * 清理 SettingPane 内容
      * */
     void clearSettingPane();
+
+    /**
+     * 清理 RenewPane 内容
+     * */
+    void clearRenewPane();
 
     /**
      * 更改 CenterPane 的 Pane

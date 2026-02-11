@@ -44,6 +44,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     private VBox dailyPane = new VBox();
     private VBox hobbyPane = new VBox();
     private VBox settingPane = new VBox();
+    private VBox renewPane = new VBox();
 
     /**
      * Scene 帷幕
@@ -67,6 +68,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Button rootPaneMenuBarDailyButton = new Button();
     private Button rootPaneMenuBarHobbyButton = new Button();
     private Button rootPaneMenuBarSettingButton = new Button();
+    private Button rootPaneMenuBarRenewButton = new Button();
 
     private StackPane rootPaneCenterPane = new StackPane();
 
@@ -166,7 +168,7 @@ public class DailyPaperElement implements IDailyPaperElement {
         rootPaneTopPane.getChildren().addAll(rootPaneTitleBar);
         rootPane.setTop(rootPaneTopPane);
 
-        rootPaneMenuBar.getChildren().addAll(rootPaneMenuBarChatButton, rootPaneMenuBarLiveButton, rootPaneMenuBarDailyButton, rootPaneMenuBarHobbyButton, rootPaneMenuBarSettingButton);
+        rootPaneMenuBar.getChildren().addAll(rootPaneMenuBarChatButton, rootPaneMenuBarLiveButton, rootPaneMenuBarDailyButton, rootPaneMenuBarHobbyButton, rootPaneMenuBarSettingButton, rootPaneMenuBarRenewButton);
         rootPaneLeftPane.getChildren().addAll(rootPaneMenuBar);
         rootPane.setLeft(rootPaneLeftPane);
 
@@ -203,6 +205,11 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createSettingPaneElement() {
+
+    }
+
+    @Override
+    public void createRenewPaneElement() {
 
     }
 

@@ -91,6 +91,9 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRootPaneMenuBarSettingButton().setText("Setting");
         dailyPaperElement.getRootPaneMenuBarSettingButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
         dailyPaperElement.getRootPaneMenuBarSettingButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
+        dailyPaperElement.getRootPaneMenuBarRenewButton().setText("Renew");
+        dailyPaperElement.getRootPaneMenuBarRenewButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
+        dailyPaperElement.getRootPaneMenuBarRenewButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
     }
 
     @Override
@@ -160,6 +163,11 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createSettingPaneStyle() {
+
+    }
+
+    @Override
+    public void createRenewPaneStyle() {
 
     }
 

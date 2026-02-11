@@ -50,4 +50,9 @@ public interface IDailyPaperElement {
      * */
     void createSettingPaneElement();
 
+    /**
+     * 创建 RenewPane 分页元素
+     * */
+    void createRenewPaneElement();
+
 }

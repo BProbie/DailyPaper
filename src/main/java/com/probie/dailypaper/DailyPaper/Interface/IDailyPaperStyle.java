@@ -47,4 +47,9 @@ public interface IDailyPaperStyle {
      * */
     void createSettingPaneStyle();
 
+    /**
+     * 创建 RenewPane 分页样式
+     * */
+    void createRenewPaneStyle();
+
 }

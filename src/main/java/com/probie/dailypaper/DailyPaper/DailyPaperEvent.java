@@ -150,6 +150,13 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             }
             changeCenterPane(dailyPaperElement.getSettingPane());
         });
+
+        dailyPaperElement.getRootPaneMenuBarRenewButton().setOnAction(actionEvent -> {
+            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getRenewPane()) {
+                clearRenewPane();
+            }
+            changeCenterPane(dailyPaperElement.getRenewPane());
+        });
     }
 
     @Override
@@ -461,6 +468,11 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     }
 
     @Override
+    public void createRenewPaneEvent() {
+
+    }
+
+    @Override
     public void clearChatPane() {
         dailyPaperElement.getChatPaneTextInputArea().clear();
         dailyPaperElement.getChatPaneMessageVBox().getChildren().clear();
@@ -488,6 +500,11 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void clearSettingPane() {
+
+    }
+
+    @Override
+    public void clearRenewPane() {
 
     }
 
