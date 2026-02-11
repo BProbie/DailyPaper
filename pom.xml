@@ -79,7 +79,7 @@
             <version>1.18.30</version>
         </dependency>
 
-        <!-- JavaFX原生框架 -->
+        <!-- JavaFX 原生框架 -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
