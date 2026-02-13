@@ -14,8 +14,9 @@
 
 ## 依赖技术：
 
-* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB）
-* ### Encryption（个人原创：https://github.com/BProbie/Encryption）
+* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB
+* ### Encryption（个人原创：https://github.com/BProbie/Encryption
+* ### Renew（个人原创：https://github.com/BProbie/Renew
 * ### OkHttp
 * ### FastJSON
 * ### Commons Codec
@@ -47,7 +48,7 @@
 
 ## Chat（AI智能聊天）
 
-### 你可以在这里与本软件的Agent小Day畅聊你的想法让它帮忙生成、设置壁纸，或下载图片。
+### 你可以在这里与本软件的Agent小Day畅聊你的想法让它帮忙生成、设置壁纸，或下载图片。按`Ctrl+Enter`组合键发送消息。
 
 ## Live（自定义壁纸）
 
@@ -75,7 +76,7 @@
 
 ## Chat
 
-### 技术点在于这里维护了一个Agent小Day，分三大块。一，Information信息背景，为它提供了软件背景和现实数据。二，Memory记忆，为它编写了一套记忆体系，以便让它可以结合上下文分析数据，给出个性化的回答。三，FunctionCalling（Skills）技能，这里主要维护了两套工具调用分别是文本生成和图片生成。
+### 技术点在于这里维护了一个Agent小Day，分三大块。一，Information信息背景，为它提供了软件背景和现实数据。二，Memory记忆，为它编写了一套记忆体系，以便让它可以结合上下文分析数据，给出个性化的回答。三，FunctionCalling（Skills）技能，这里主要维护了两套工具调用分别是文本生成和图片生成。其余的是，参数的整合，UI的排版等。
 
 ## Live
 
