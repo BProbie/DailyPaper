@@ -14,21 +14,14 @@
 
 ## 依赖技术：
 
-- ### EasyDB（个人原创：https://github.com/BProbie/EasyDB）
-
-- ### Encryption（个人原创：https://github.com/BProbie/Encryption）
-
-- ### OkHttp
-
-- ### FastJSON
-
-- ### Commons Codec
-
-- ### JNA
-
-- ### Lombok
-
-- ### JavaFX
+* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB）
+* ### Encryption（个人原创：https://github.com/BProbie/Encryption）
+* ### OkHttp
+* ### FastJSON
+* ### Commons Codec
+* ### JNA
+* ### Lombok
+* ### JavaFX
 
 
 
@@ -110,4 +103,5 @@
 
 ## 作者：probie
 
-## 贡献：[probie]
+## 贡献：\[probie]
+

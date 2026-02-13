@@ -1,19 +1,17 @@
 package com.probie.dailypaper.System.Interface;
 
-import com.probie.dailypaper.DailyPaper.DailyPaper;
-import com.probie.dailypaper.DailyPaper.DailyPaperStyle;
-import javafx.scene.image.Image;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.metadata.IIOMetadataNode;
+import com.probie.dailypaper.DailyPaper.DailyPaper;
 
 public interface IGIFSystem {
 

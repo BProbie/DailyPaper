@@ -107,10 +107,10 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             }
         });
         dailyPaperElement.getRootPaneTitleBarCloseButton().setOnAction(actionEvent -> {
-            dailyPaperElement.getAgentConnectPool().shutdown();
-            dailyPaperElement.getImagesShowPool().shutdown();
-//            dailyPaperElement.getImagesWallpaperPool().shutdown();
-            dailyPaper.getPool().shutdown();
+            dailyPaperElement.getAgentConnectionPool().shutdown();
+            dailyPaperElement.getLiveImageShowingPool().shutdown();
+//            dailyPaperElement.getLiveImageWallpaperPool().shutdown();
+            dailyPaper.getDailyPaperPool().shutdown();
 
             dailyPaperElement.getStage().close();
         });
@@ -221,7 +221,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     dailyPaperElement.getChatPaneTextInputArea().clear();
 
                     /// 调用 API
-                    dailyPaperElement.getAgentConnectPool().submit(() -> {
+                    dailyPaperElement.getAgentConnectionPool().submit(() -> {
                         /// 收集上下文
                         try {
                             Platform.runLater(() -> chatPaneAgentMessageLabel.setText("收集上下文..."));
@@ -381,7 +381,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     Integer[] gifPlaySpeed = dailyPaper.getGIFSystem().getGIFPlaySpeed(file.getAbsolutePath());
 
                     dailyPaperElement.setLivePaneImagesShowing(() -> true);
-                    dailyPaperElement.getImagesShowPool().submit(() -> {
+                    dailyPaperElement.getLiveImageShowingPool().submit(() -> {
                         do {
                             for (int i = 0; i < images.length; i++) {
                                 dailyPaperElement.getLivePaneImageShowImageView().setImage(images[i]);
@@ -405,7 +405,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         clearLiveImageWallpaper();
 
                         /// 下载切片到本地
-                        File imagesWallpaperFullFilePathFile = new File(dailyPaper.getRootPath().get()+File.separator+dailyPaper.getImagesWallpaperFileName().get());
+                        File imagesWallpaperFullFilePathFile = new File(dailyPaper.getRootPath().get()+File.separator+dailyPaper.getLiveImageWallpaperFileName().get());
                         if (imagesWallpaperFullFilePathFile.exists()) imagesWallpaperFullFilePathFile.delete();
                         imagesWallpaperFullFilePathFile.mkdirs();
                         for (int i = 0; i < bufferedImages.length; i++) {
@@ -425,11 +425,11 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         }
                         String[] imagesWallPaperFullFilePath = new String[imagesWallpaperSpeed.length];
                         for (int i = 0; i < imagesWallpaperSpeed.length; i++) {
-                            imagesWallPaperFullFilePath[i] = new File(dailyPaper.getImagesWallpaperFilePath().get()+File.separator+dailyPaper.getImagesWallpaperFileName().get()+File.separator+i+".png").getAbsolutePath();
+                            imagesWallPaperFullFilePath[i] = new File(dailyPaper.getLiveImageWallpaperFilePath().get()+File.separator+dailyPaper.getLiveImageWallpaperFileName().get()+File.separator+i+".png").getAbsolutePath();
                         }
 
                         /// 循环播放切片
-                        dailyPaperElement.getImagesWallpaperPool().submit(() -> {
+                        dailyPaperElement.getLiveImageWallpaperPool().submit(() -> {
                             dailyPaperElement.setLivePaneImagesWallPerShowing(() -> true);
                             do {
                                 for (int i = 0; i < imagesWallPaperFullFilePath.length; i++) {

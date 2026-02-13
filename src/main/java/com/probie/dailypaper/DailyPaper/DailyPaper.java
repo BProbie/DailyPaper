@@ -68,8 +68,8 @@ public class DailyPaper implements IDailyPaper {
     public String KeyDailyPaperStageWidth = "DailyPaperStageWidth";
     public String KeyDailyPaperStageHeight = "DailyPaperStageHeight";
 
-    public String KeyImagesWallpaperFilePath = "ImagesWallpaperFilePath";
-    public String KeyImagesWallpaperFileName = "ImagesWallpaperFileName";
+    public String KeyLiveImageWallpaperFilePath = "LiveImageWallpaperFilePath";
+    public String KeyLiveImageWallpaperFileName = "LiveImageWallpaperFileName";
 
     public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
     public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
@@ -148,13 +148,13 @@ public class DailyPaper implements IDailyPaper {
     public Supplier<Integer> DailyPaperStageHeight = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
             600);
 
-    public Supplier<String> ImagesWallpaperFilePath = () -> getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFilePath(),
+    public Supplier<String> LiveImageWallpaperFilePath = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageWallpaperFilePath(),
             getRootPath().get()).toString();
-    public Supplier<String> ImagesWallpaperFileName = () ->  getConfigConfig().getLocalDB().get(getKeyImagesWallpaperFileName(),
-            "ImagesWallpaper").toString();
+    public Supplier<String> LiveImageWallpaperFileName = () ->  getConfigConfig().getLocalDB().get(getKeyLiveImageWallpaperFileName(),
+            "LiveImage").toString();
 
     public Supplier<String> LiveImageConfigFilePath = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFilePath(),
-            getImagesWallpaperFilePath().get()+File.separator+getImagesWallpaperFileName().get()).toString();
+            getLiveImageWallpaperFilePath().get()+File.separator+getLiveImageWallpaperFileName().get()).toString();
     public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
           "LiveImage.config").toString();
 
@@ -186,7 +186,7 @@ public class DailyPaper implements IDailyPaper {
     public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
             "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
 
-    public ExecutorService pool = Executors.newFixedThreadPool(5);
+    public ExecutorService dailyPaperPool = Executors.newFixedThreadPool(10);
 
     @Override
     public void launch(String[] args) {

@@ -121,9 +121,9 @@ public class DailyPaperElement implements IDailyPaperElement {
     /**
      * 静态变量
      * */
-    private final ExecutorService agentConnectPool = Executors.newFixedThreadPool(5);
-    private final ExecutorService imagesShowPool = Executors.newFixedThreadPool(1);
-    private final ExecutorService imagesWallpaperPool = Executors.newFixedThreadPool(1);
+    private final ExecutorService agentConnectionPool = Executors.newFixedThreadPool(5);
+    private final ExecutorService liveImageShowingPool = Executors.newFixedThreadPool(1);
+    private final ExecutorService liveImageWallpaperPool = Executors.newFixedThreadPool(1);
 
     @Override
     public void createElement(Stage stage) {
