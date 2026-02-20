@@ -104,7 +104,7 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     private Supplier<Integer> rootPaneTitleBarButtonSize = () -> 30;
     private Supplier<Integer> rootPaneMenuBarButtonWidth = () -> 100;
-    private Supplier<Integer> rootPaneMenuBarButtonHeight = () -> 40;
+    private Supplier<Integer> rootPaneMenuBarButtonHeight = () -> 50;
 
     private Supplier<Integer> chatPaneTextInputAreaFontSize = () -> 20;
     private Supplier<Integer> chatPaneTextShowAreaFontSize = () -> 20;

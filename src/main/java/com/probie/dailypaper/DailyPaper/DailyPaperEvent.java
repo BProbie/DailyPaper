@@ -416,6 +416,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             speed += dailyPaper.getSplitMark().get() + gifPlaySpeed[i];
                         }
                         dailyPaper.getConfig().getLiveImageConfig().getLocalDB().set("Speed", speed);
+                        dailyPaper.getConfig().getLiveImageConfig().getLocalDB().commit();
 
                         /// 获取本地切片数据
                         String[] speeds = dailyPaper.getConfig().getLiveImageConfig().getLocalDB().get("Speed").toString().split(dailyPaper.getSplitMark().get());
@@ -482,7 +483,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void clearLivePane() {
-        dailyPaperElement.getLivePaneImageChooseLabel().setText("");
+        dailyPaperElement.getLivePaneImageChooseLabel().setText(dailyPaper.getComputerSystem().getHere());
         dailyPaperElement.setLivePaneImagesShowing(() -> false);
         dailyPaperElement.getLivePaneImageShowImageView().setImage(null);
         dailyPaperElement.getLivePaneImageSureHBox().getChildren().clear();
@@ -519,14 +520,14 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
         if (verticalScrollBar != null) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(dailyPaperElement.getDelay().get());
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(interruptedException);
             }
             Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
         } else {
             try {
-                Thread.sleep(100);
+                Thread.sleep(dailyPaperElement.getDelay().get());
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(interruptedException);
             }
