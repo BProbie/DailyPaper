@@ -74,6 +74,7 @@ public class DailyPaper implements IDailyPaper {
     public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
     public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
 
+    public String KeyAutoLaunch = "AutoLaunch";
     public String KeySplitMark = "SplitMark";
 
     /// 静态
@@ -158,6 +159,8 @@ public class DailyPaper implements IDailyPaper {
     public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
           "LiveImage.config").toString();
 
+    public Supplier<String> AutoLaunch = () -> getConfigConfig().getLocalDB().get(getKeyAutoLaunch(),
+            "false").toString();
     public Supplier<String> SplitMark = () -> getConfigConfig().getLocalDB().get(getKeySplitMark(),
             " ").toString();
 

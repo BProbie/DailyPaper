@@ -2,6 +2,8 @@ package com.probie.dailypaper.DailyPaper;
 
 import java.io.File;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -47,6 +49,18 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         /// 创建 LivePane 分页样式
         createLivePaneStyle();
+
+        /// 创建 DailyPane 分页样式
+        createDailyPaneStyle();
+
+        /// 创建 HobbyPane 分页样式
+        createHobbyPaneStyle();
+
+        /// 创建 SettingPane 分页样式
+        createSettingPaneStyle();
+
+        /// 创建 RenewPane 分页样式
+        createRenewPaneStyle();
 
     }
 
@@ -153,7 +167,8 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createDailyPaneStyle() {
-
+        dailyPaperElement.getDailyPaneVBox().prefWidthProperty().bind(dailyPaperElement.getDailyPane().widthProperty());
+        dailyPaperElement.getDailyPaneVBox().prefHeightProperty().bind(dailyPaperElement.getDailyPane().heightProperty());
     }
 
     @Override

@@ -68,6 +68,18 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         /// 创建 LivePane 分页事件
         createLivePaneEvent();
 
+        /// 创建 DailyPane 分页事件
+        createDailyPaneEvent();
+
+        /// 创建 HobbyPane 分页事件
+        createHobbyPaneEvent();
+
+        /// 创建 SettingPane 分页事件
+        createSettingPaneEvent();
+
+        /// 创建 RenewPane 分页事件
+        createRenewPaneEvent();
+
     }
 
     @Override
@@ -294,7 +306,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, (int) ((chatPaneAgentMessageLabel.maxWidthProperty().get())), (int) ((double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[1]) * (((chatPaneAgentMessageLabel.maxWidthProperty().get())) / (double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[0]))));
                                     ImageView imageView = new ImageView(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
                                     int index = i;
-                                    BufferedImage finalBufferedImage = bufferedImage;
                                     Platform.runLater(() -> {
                                         chatPaneAgentMessageVBox.getChildren().addAll(imageView);
                                         Button setWallPaperButton = new Button("点击设为壁纸");
@@ -314,7 +325,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                             if (file != null) {
                                                 int count = 0;
                                                 while (new File(file.getAbsolutePath()+File.separator+count+".png").exists()) count++;
-                                                dailyPaper.getImageSystem().turnBufferedImageToLocalFile(finalBufferedImage, file.getAbsolutePath()+File.separator+count+".png");
+                                                dailyPaper.getImageSystem().turnBufferedImageToLocalFile(dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath()+File.separator+count+".png");
                                             }
                                         });
                                         setWallPaperButton.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
@@ -361,6 +372,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 /// 图片
                 if (file.getAbsolutePath().toLowerCase().endsWith(".png") || file.getAbsolutePath().toLowerCase().endsWith(".jpg") || file.getAbsolutePath().toLowerCase().endsWith(".jpeg")) {
                     BufferedImage bufferedImage = dailyPaper.getImageSystem().turnLocalFileToBufferedImage(file.getAbsolutePath());
+                    bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() : bufferedImage.getWidth(), bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() : bufferedImage.getHeight());
                     dailyPaperElement.getLivePaneImageShowImageView().setImage(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
 
                     Button button = new Button("设为壁纸");
@@ -376,6 +388,9 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 /// GIF
                 else if (file.getAbsolutePath().toLowerCase().endsWith(".gif")) {
                     BufferedImage[] bufferedImages = dailyPaper.getGIFSystem().turnGIFToBufferedImages(file.getAbsolutePath());
+                    for (int i = 0; i < bufferedImages.length; i++) {
+                        bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() : bufferedImages[i].getWidth(), bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() : bufferedImages[i].getHeight());
+                    }
                     Image[] images = new Image[bufferedImages.length];
                     for (int i = 0; i < bufferedImages.length; i++) images[i] = dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
                     Integer[] gifPlaySpeed = dailyPaper.getGIFSystem().getGIFPlaySpeed(file.getAbsolutePath());

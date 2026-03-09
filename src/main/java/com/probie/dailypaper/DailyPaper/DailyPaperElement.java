@@ -93,6 +93,11 @@ public class DailyPaperElement implements IDailyPaperElement {
     private HBox livePaneImageSureHBox = new HBox();
 
     /**
+     * DailyPane 控件
+     * */
+    private VBox dailyPaneVBox = new VBox();
+
+    /**
      * 动态变量
      * */
     private Supplier<String> promptInformationPrompt = () -> "你是DailyPaper日常壁纸软件应用的AI小助手小Day"
@@ -139,6 +144,18 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         /// 创建 LivePane 分页元素
         createLivePaneElement();
+
+        /// 创建 DailyPane 分页元素
+        createDailyPaneElement();
+
+        /// 创建 HobbyPane 分页元素
+        createHobbyPaneElement();
+
+        /// 创建 SettingPane 分页元素
+        createSettingPaneElement();
+
+        /// 创建 RenewPane 分页元素
+        createRenewPaneElement();
 
         /// 创建 RootPane 分页元素
         createRootPaneElement();
@@ -195,7 +212,7 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createDailyPaneElement() {
-
+        dailyPane.getChildren().addAll(dailyPaneVBox);
     }
 
     @Override
