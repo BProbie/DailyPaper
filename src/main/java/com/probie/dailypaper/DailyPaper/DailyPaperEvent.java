@@ -372,7 +372,16 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 /// 图片
                 if (file.getAbsolutePath().toLowerCase().endsWith(".png") || file.getAbsolutePath().toLowerCase().endsWith(".jpg") || file.getAbsolutePath().toLowerCase().endsWith(".jpeg")) {
                     BufferedImage bufferedImage = dailyPaper.getImageSystem().turnLocalFileToBufferedImage(file.getAbsolutePath());
-                    bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() : bufferedImage.getWidth(), bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() : bufferedImage.getHeight());
+                    if (bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth()) {
+                        int width = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth();
+                        int height = (int) (bufferedImage.getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() / bufferedImage.getWidth()));
+                        bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
+                    }
+                    if (bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight()) {
+                        int height = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight();
+                        int width = (int) (bufferedImage.getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() / bufferedImage.getHeight()));
+                        bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
+                    }
                     dailyPaperElement.getLivePaneImageShowImageView().setImage(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
 
                     Button button = new Button("设为壁纸");
@@ -389,7 +398,16 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 else if (file.getAbsolutePath().toLowerCase().endsWith(".gif")) {
                     BufferedImage[] bufferedImages = dailyPaper.getGIFSystem().turnGIFToBufferedImages(file.getAbsolutePath());
                     for (int i = 0; i < bufferedImages.length; i++) {
-                        bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() : bufferedImages[i].getWidth(), bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() ? (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() : bufferedImages[i].getHeight());
+                        if (bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth()) {
+                            int width = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth();
+                            int height = (int) (bufferedImages[i].getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() / bufferedImages[i].getWidth()));
+                            bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
+                        }
+                        if (bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight()) {
+                            int height = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight();
+                            int width = (int) (bufferedImages[i].getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() / bufferedImages[i].getHeight()));
+                            bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
+                        }
                     }
                     Image[] images = new Image[bufferedImages.length];
                     for (int i = 0; i < bufferedImages.length; i++) images[i] = dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
