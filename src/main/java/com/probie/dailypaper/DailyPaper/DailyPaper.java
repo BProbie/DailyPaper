@@ -1,8 +1,8 @@
 package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
-
 import java.io.File;
+import java.io.Closeable;
 import java.util.function.Supplier;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Config.*;
@@ -17,7 +17,7 @@ import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 
 @Data
-public class DailyPaper implements IDailyPaper {
+public class DailyPaper implements IDailyPaper, Closeable {
 
     /**
      * DailyPaper 版本参数
@@ -43,8 +43,8 @@ public class DailyPaper implements IDailyPaper {
     private String KeyReadTimeout = "ReadTimeout";
     private String KeyWriteTimeout = "WriteTimeout";
 
-    public String KeyKolorsAPIModelSiliconFlow = "KolorsAPIModelSiliconFlow";
-    public String KeyQwen3_8BAPIModelSiliconFlow = "Qwen3_8BAPIModelSiliconFlow";
+    public String KeyKolorsModelSiliconFlow = "KolorsAPIModelSiliconFlow";
+    public String KeyQwen3_8BModelSiliconFlow = "Qwen3_8BAPIModelSiliconFlow";
 
     public String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
     public String KeyAPIUrlTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
@@ -74,6 +74,8 @@ public class DailyPaper implements IDailyPaper {
     public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
     public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
 
+    public String KeyAutoCheckRenew = "AutoCheckRenew";
+    public String KeyAutoDownloadRenew = "AutoDownloadRenew";
     public String KeyAutoLaunch = "AutoLaunch";
     public String KeySplitMark = "SplitMark";
 
@@ -106,9 +108,9 @@ public class DailyPaper implements IDailyPaper {
     private Supplier<Integer> WriteTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyWriteTimeout(),
             60).toString());
 
-    public Supplier<String> KolorsModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyKolorsAPIModelSiliconFlow(),
+    public Supplier<String> KolorsModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyKolorsModelSiliconFlow(),
             "Kwai-Kolors/Kolors").toString();
-    public Supplier<String> Qwen3_8BModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BAPIModelSiliconFlow(),
+    public Supplier<String> Qwen3_8BModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyQwen3_8BModelSiliconFlow(),
             "Qwen/Qwen3-8B").toString();
 
     public Supplier<String> APIKeySiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyAPIKeySiliconFlow(),
@@ -139,15 +141,15 @@ public class DailyPaper implements IDailyPaper {
             getRootPath().get()).toString();
     public Supplier<String> DailyPaperDownloadFileNameWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileNameWindows(),
             "DailyPaper.exe").toString();
-    public Supplier<Boolean> DailyPaperDownloadFileIsOpen = () -> (Boolean) getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileIsOpen(),
-            true);
+    public Supplier<Boolean> DailyPaperDownloadFileIsOpen = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileIsOpen(),
+            true)));
     public Supplier<String> DailyPaperDownloadUrlWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrlWindows(),
             "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/DailyPaper.exe").toString();
 
-    public Supplier<Integer> DailyPaperStageWidth = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageWidth(),
-            1200);
-    public Supplier<Integer> DailyPaperStageHeight = () -> (Integer) getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
-            600);
+    public Supplier<Integer> DailyPaperStageWidth = () -> Integer.parseInt(String.valueOf(getConfigConfig().getLocalDB().get(getKeyDailyPaperStageWidth(),
+            1200)));
+    public Supplier<Integer> DailyPaperStageHeight = () -> Integer.parseInt(String.valueOf(getConfigConfig().getLocalDB().get(getKeyDailyPaperStageHeight(),
+            600)));
 
     public Supplier<String> LiveImageWallpaperFilePath = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageWallpaperFilePath(),
             getRootPath().get()).toString();
@@ -159,8 +161,12 @@ public class DailyPaper implements IDailyPaper {
     public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
           "LiveImage.config").toString();
 
-    public Supplier<String> AutoLaunch = () -> getConfigConfig().getLocalDB().get(getKeyAutoLaunch(),
-            "false").toString();
+    public Supplier<Boolean> AutoCheckRenew = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoCheckRenew(),
+            false)));
+    public Supplier<Boolean> AutoDownloadRenew = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoDownloadRenew(),
+            false)));
+    public Supplier<Boolean> AutoLaunch = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoLaunch(),
+            false)));
     public Supplier<String> SplitMark = () -> getConfigConfig().getLocalDB().get(getKeySplitMark(),
             " ").toString();
 
@@ -193,6 +199,7 @@ public class DailyPaper implements IDailyPaper {
 
     @Override
     public void launch(String[] args) {
+
         /// 自动检测更新
 //        if (!DailyPaper.getInstance().getConfig().getRenewConfig().getLocalDB().get("VERSION").equals(DailyPaper.getInstance().getVERSION())) {
 //            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
@@ -302,6 +309,67 @@ public class DailyPaper implements IDailyPaper {
             INSTANCE = new DailyPaper();
         }
         return INSTANCE;
+    }
+
+    @Override
+    public void close() {
+        /// Config 动态
+        getConfigConfig().getLocalDB().set(KeyRootPath, RootPath.get());
+        getConfigConfig().getLocalDB().set(KeyCurrentDateFormat, CurrentDateFormat.get());
+
+        getConfigConfig().getLocalDB().set(KeyConnectTimeout, ConnectTimeout.get());
+        getConfigConfig().getLocalDB().set(KeyReadTimeout, ReadTimeout.get());
+        getConfigConfig().getLocalDB().set(KeyWriteTimeout, WriteTimeout.get());
+
+        getConfigConfig().getLocalDB().set(KeyKolorsModelSiliconFlow, KolorsModelSiliconFlow.get());
+        getConfigConfig().getLocalDB().set(KeyQwen3_8BModelSiliconFlow, Qwen3_8BModelSiliconFlow.get());
+
+        getConfigConfig().getLocalDB().set(KeyAPIKeySiliconFlow, APIKeySiliconFlow.get());
+        getConfigConfig().getLocalDB().set(KeyAPIUrlTextToTextSiliconFlow, APIUrlTextToTextSiliconFlow.get());
+        getConfigConfig().getLocalDB().set(KeyAPIUrlTextToImageSiliconFlow, APIUrlTextToImageSiliconFlow.get());
+        getConfigConfig().getLocalDB().set(KeyAPIModelTextToTextSiliconFlow, APIModelTextToTextSiliconFlow.get());
+        getConfigConfig().getLocalDB().set(KeyAPIModelTextToImageSiliconFlow, APIModelTextToImageSiliconFlow.get());
+
+        getConfigConfig().getLocalDB().set(KeyImageSize, ImageSize.get());
+        getConfigConfig().getLocalDB().set(KeyImageCount, ImageCount.get());
+
+        getConfigConfig().getLocalDB().set(KeyImageFileName, ImageFileName.get());
+
+        getConfigConfig().getLocalDB().set(KeyDailyPaperRenewFilePath, DailyPaperRenewFilePath.get());
+        getConfigConfig().getLocalDB().set(KeyDailyPaperRenewFileNameWindows, DailyPaperRenewFileNameWindows.get());
+
+        getConfigConfig().getLocalDB().set(KeyDailyPaperDownloadFilePath, DailyPaperDownloadFilePath.get());
+        getConfigConfig().getLocalDB().set(KeyDailyPaperDownloadFileNameWindows, DailyPaperDownloadFileNameWindows.get());
+        getConfigConfig().getLocalDB().set(KeyDailyPaperDownloadFileIsOpen, DailyPaperDownloadFileIsOpen.get());
+        getConfigConfig().getLocalDB().set(KeyDailyPaperDownloadUrlWindows, DailyPaperDownloadUrlWindows.get());
+
+        getConfigConfig().getLocalDB().set(KeyDailyPaperStageWidth, DailyPaperStageWidth.get());
+        getConfigConfig().getLocalDB().set(KeyDailyPaperStageHeight, DailyPaperStageHeight.get());
+
+        getConfigConfig().getLocalDB().set(KeyLiveImageWallpaperFilePath, LiveImageWallpaperFilePath.get());
+        getConfigConfig().getLocalDB().set(KeyLiveImageWallpaperFileName, LiveImageWallpaperFileName.get());
+
+        getConfigConfig().getLocalDB().set(KeyLiveImageConfigFilePath, LiveImageConfigFilePath.get());
+        getConfigConfig().getLocalDB().set(KeyLiveImageConfigFileName, LiveImageConfigFileName.get());
+
+        getConfigConfig().getLocalDB().set(KeyAutoCheckRenew, AutoCheckRenew.get());
+        getConfigConfig().getLocalDB().set(KeyAutoDownloadRenew, AutoDownloadRenew.get());
+        getConfigConfig().getLocalDB().set(KeyAutoLaunch, AutoLaunch.get());
+        getConfigConfig().getLocalDB().set(KeySplitMark, SplitMark.get());
+
+        /// Config 静态
+        getConfigConfig().getLocalDB().set(KeyLogConfigFilePath, LogConfigFilePath);
+        getConfigConfig().getLocalDB().set(KeyLogConfigFileName, LogConfigFileName);
+
+        getConfigConfig().getLocalDB().set(KeyTempConfigFilePath, TempConfigFilePath);
+        getConfigConfig().getLocalDB().set(KeyTempConfigFileName, TempConfigFileName);
+
+        getConfigConfig().getLocalDB().set(KeyConfigConfigFilePath, ConfigConfigFilePath);
+        getConfigConfig().getLocalDB().set(KeyConfigConfigFileName, ConfigConfigFileName);
+
+        getConfigConfig().getLocalDB().set(KeyRenewConfigFilePath, RenewConfigFilePath);
+        getConfigConfig().getLocalDB().set(KeyRenewConfigFileName, RenewConfigFileName);
+        getConfigConfig().getLocalDB().set(KeyRenewConfigFileUrl, RenewConfigFileUrl);
     }
 
 }

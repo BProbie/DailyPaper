@@ -2,8 +2,6 @@ package com.probie.dailypaper.DailyPaper;
 
 import java.io.File;
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
@@ -90,6 +88,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRootPaneTitleBarCloseButton().setMinHeight(dailyPaperElement.getRootPaneTitleBarButtonSize().get());
 
         /// 创建 RootPane 菜单样式
+        dailyPaperElement.getRootPaneMenuBar().setSpacing(dailyPaperElement.getOffset().get() / 10.0);
         dailyPaperElement.getRootPaneMenuBarChatButton().setText("Chat");
         dailyPaperElement.getRootPaneMenuBarChatButton().setMinWidth(dailyPaperElement.getRootPaneMenuBarButtonWidth().get());
         dailyPaperElement.getRootPaneMenuBarChatButton().setMinHeight(dailyPaperElement.getRootPaneMenuBarButtonHeight().get());
@@ -183,7 +182,65 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createRenewPaneStyle() {
+        dailyPaperElement.getRenewPaneVBox().prefWidthProperty().bind(dailyPaperElement.getRenewPane().widthProperty());
+        dailyPaperElement.getRenewPaneVBox().prefHeightProperty().bind(dailyPaperElement.getRenewPane().heightProperty());
+        dailyPaperElement.getRenewPaneVBox().setAlignment(Pos.CENTER);
+        dailyPaperElement.getRenewPaneVBox().setSpacing(dailyPaperElement.getOffset().get() * 5);
 
+        dailyPaperElement.getRenewPaneManualRenewVBox().prefWidthProperty().bind(dailyPaperElement.getRenewPaneVBox().widthProperty());
+        dailyPaperElement.getRenewPaneManualRenewVBox().setAlignment(Pos.CENTER);
+        dailyPaperElement.getRenewPaneManualRenewVBox().setSpacing(dailyPaperElement.getOffset().get());
+
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().setText("检查更新");
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(3));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setContent(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea());
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(false);
+
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(3));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setWrapText(true);
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().clear();
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(false);
+
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setText("立即更新");
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(false);
+
+        dailyPaperElement.getRenewPaneAutoRenewHBox().prefWidthProperty().bind(dailyPaperElement.getRenewPaneVBox().widthProperty());
+        dailyPaperElement.getRenewPaneAutoRenewHBox().setAlignment(Pos.CENTER);
+        dailyPaperElement.getRenewPaneAutoRenewHBox().setSpacing(dailyPaperElement.getOffset().get() * 2);
+
+        dailyPaperElement.getRenewPaneAutoCheckRenewHBox().setSpacing(dailyPaperElement.getOffset().get());
+        dailyPaperElement.getRenewPaneAutoCheckRenewLabel().setText("自动检测更新");
+        dailyPaperElement.getRenewPaneAutoCheckRenewLabel().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setText("开");
+        dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoCheckRenewGroup());
+        dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setText("关");
+        dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoCheckRenewGroup());
+        if (dailyPaper.getAutoCheckRenew().get()) {
+            dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
+        } else {
+            dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setSelected(true);
+        }
+
+        dailyPaperElement.getRenewPaneAutoDownloadRenewHBox().setSpacing(dailyPaperElement.getOffset().get());
+        dailyPaperElement.getRenewPaneAutoDownloadRenewLabel().setText("自动下载软件");
+        dailyPaperElement.getRenewPaneAutoDownloadRenewLabel().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setText("开");
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoDownloadRenewGroup());
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setText("关");
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
+        dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoDownloadRenewGroup());
+        if (dailyPaper.getAutoDownloadRenew().get()) {
+            dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setSelected(true);
+        } else {
+            dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setSelected(true);
+        }
     }
 
     /**

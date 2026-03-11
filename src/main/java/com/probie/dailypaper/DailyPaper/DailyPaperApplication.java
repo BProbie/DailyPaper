@@ -25,6 +25,21 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         stage.show();
     }
 
+    @Override
+    public void stop() {
+        DailyPaperElement.getInstance().getAgentConnectionPool().shutdown();
+        DailyPaperElement.getInstance().getLiveImageShowingPool().shutdown();
+//            DailyPaperElement.getInstance().getLiveImageWallpaperPool().shutdown();
+        DailyPaper.getInstance().getDailyPaperPool().shutdown();
+        DailyPaperElement.getInstance().getStage().close();
+        DailyPaper.getInstance().close();
+        try {
+            super.stop();
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
     /**
      * 获取懒加载的类单例对象
      * */

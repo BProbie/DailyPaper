@@ -22,6 +22,7 @@ public class ConfigConfig extends Config implements IConfigConfig {
     protected void init() {
         getLocalDB().setFullFilePath(DailyPaper.getInstance().ConfigConfigFilePath+File.separator+DailyPaper.getInstance().getConfigConfigFileName()+"");
         getLocalDB().connect();
+        getLocalDB().setIsAutoCommit(true);
     }
 
     /**

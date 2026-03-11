@@ -30,6 +30,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
      * 懒加载的工具类单例对象
      * */
     private DailyPaper dailyPaper;
+    private DailyPaperApplication dailyPaperApplication;
     private DailyPaperElement dailyPaperElement;
     private DailyPaperStyle dailyPaperStyle;
 
@@ -45,6 +46,9 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         /// 初始化工具类单例对象
         if (dailyPaper == null) {
             dailyPaper = DailyPaper.getInstance();
+        }
+        if (dailyPaperApplication == null) {
+            dailyPaperApplication = DailyPaperApplication.getINSTANCE();
         }
         if (dailyPaperElement == null) {
             dailyPaperElement = DailyPaperElement.getInstance();
@@ -118,14 +122,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 dailyPaperStyle.createChatPaneStyle();
             }
         });
-        dailyPaperElement.getRootPaneTitleBarCloseButton().setOnAction(actionEvent -> {
-            dailyPaperElement.getAgentConnectionPool().shutdown();
-            dailyPaperElement.getLiveImageShowingPool().shutdown();
-//            dailyPaperElement.getLiveImageWallpaperPool().shutdown();
-            dailyPaper.getDailyPaperPool().shutdown();
-
-            dailyPaperElement.getStage().close();
-        });
+        dailyPaperElement.getRootPaneTitleBarCloseButton().setOnAction(actionEvent -> dailyPaperApplication.stop());
 
         /// 菜单选择
         dailyPaperElement.getRootPaneMenuBarChatButton().setOnAction(actionEvent -> {
@@ -372,14 +369,14 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 /// 图片
                 if (file.getAbsolutePath().toLowerCase().endsWith(".png") || file.getAbsolutePath().toLowerCase().endsWith(".jpg") || file.getAbsolutePath().toLowerCase().endsWith(".jpeg")) {
                     BufferedImage bufferedImage = dailyPaper.getImageSystem().turnLocalFileToBufferedImage(file.getAbsolutePath());
-                    if (bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth()) {
-                        int width = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth();
-                        int height = (int) (bufferedImage.getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() / bufferedImage.getWidth()));
+                    if (bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get()) {
+                        int width = (int) dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get();
+                        int height = (int) (bufferedImage.getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get() / bufferedImage.getWidth()));
                         bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
                     }
-                    if (bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight()) {
-                        int height = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight();
-                        int width = (int) (bufferedImage.getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() / bufferedImage.getHeight()));
+                    if (bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get()) {
+                        int height = (int) dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get();
+                        int width = (int) (bufferedImage.getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get() / bufferedImage.getHeight()));
                         bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
                     }
                     dailyPaperElement.getLivePaneImageShowImageView().setImage(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
@@ -398,14 +395,14 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 else if (file.getAbsolutePath().toLowerCase().endsWith(".gif")) {
                     BufferedImage[] bufferedImages = dailyPaper.getGIFSystem().turnGIFToBufferedImages(file.getAbsolutePath());
                     for (int i = 0; i < bufferedImages.length; i++) {
-                        if (bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth()) {
-                            int width = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth();
-                            int height = (int) (bufferedImages[i].getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxWidth() / bufferedImages[i].getWidth()));
+                        if (bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get()) {
+                            int width = (int) dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get();
+                            int height = (int) (bufferedImages[i].getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get() / bufferedImages[i].getWidth()));
                             bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
                         }
-                        if (bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight()) {
-                            int height = (int) dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight();
-                            int width = (int) (bufferedImages[i].getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().getMaxHeight() / bufferedImages[i].getHeight()));
+                        if (bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get()) {
+                            int height = (int) dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get();
+                            int width = (int) (bufferedImages[i].getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get() / bufferedImages[i].getHeight()));
                             bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
                         }
                     }
@@ -503,7 +500,54 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createRenewPaneEvent() {
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().setOnAction(actionEvent -> {
+            dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(true);
+            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(true);
+            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在检测更新...");
+            dailyPaper.getDailyPaperPool().submit(() -> {
+                Object version = dailyPaper.getRenewConfig().getLocalDB().get("VERSION", dailyPaper.getVERSION());
+                if (version.equals(dailyPaper.getVERSION())) {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
+                } else {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("发现新版本!");
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().getText() + "\n" + dailyPaper.getRenewConfig().getLocalDB().get("NEWS", "无"));
+                    dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(true);
+                }
+            });
+        });
 
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setOnAction(actionEvent -> {
+            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在更新软件...");
+            dailyPaper.getDailyPaperPool().submit(() -> {
+                if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
+                    if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
+                        DailyPaper.getInstance().getComputerSystem().runCommand(
+                                DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
+                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
+                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
+                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
+                        System.exit(0);
+                    }
+                } else {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
+                }
+            });
+        });
+
+        dailyPaperElement.getRenewPaneAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == dailyPaperElement.getRenewPaneAutoCheckRenewOnButton()) {
+                dailyPaper.setAutoCheckRenew(() -> true);
+            } else {
+                dailyPaper.setAutoCheckRenew(() -> false);
+            }
+        });
+        dailyPaperElement.getRenewPaneAutoDownloadRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue ==  dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton()) {
+                dailyPaper.setAutoDownloadRenew(() -> true);
+            } else {
+                dailyPaper.setAutoDownloadRenew(() -> false);
+            }
+        });
     }
 
     @Override
@@ -539,7 +583,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void clearRenewPane() {
-
+        dailyPaperStyle.createRenewPaneStyle();
     }
 
     @Override

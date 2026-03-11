@@ -5,15 +5,12 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import java.util.ArrayList;
 import javafx.scene.layout.*;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import java.util.function.Supplier;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextArea;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Enum.Date;
-import javafx.scene.control.ScrollPane;
 import java.util.concurrent.ExecutorService;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperElement;
 
@@ -98,14 +95,45 @@ public class DailyPaperElement implements IDailyPaperElement {
     private VBox dailyPaneVBox = new VBox();
 
     /**
+     * HobbyPane 控件
+     * */
+
+    /**
+     * SettingPane 控件
+     * */
+
+    /**
+     * RenewPane 控件
+     * */
+    private VBox renewPaneVBox = new VBox();
+
+    private VBox renewPaneManualRenewVBox = new VBox();
+    private Button renewPaneManualCheckRenewButton = new Button();
+    private ScrollPane renewPaneManualCheckRenewTextShowScrollPane = new ScrollPane();
+    private TextArea renewPaneManualCheckRenewTextShowArea = new TextArea();
+    private Button renewPaneManualDownloadRenewButton = new Button();
+
+    private HBox renewPaneAutoRenewHBox = new HBox();
+    private HBox renewPaneAutoCheckRenewHBox = new HBox();
+    private ToggleGroup renewPaneAutoCheckRenewGroup = new ToggleGroup();
+    private Label renewPaneAutoCheckRenewLabel = new Label();
+    private RadioButton renewPaneAutoCheckRenewOnButton = new RadioButton();
+    private RadioButton renewPaneAutoCheckRenewOffButton = new RadioButton();
+    private HBox renewPaneAutoDownloadRenewHBox = new HBox();
+    private ToggleGroup renewPaneAutoDownloadRenewGroup = new ToggleGroup();
+    private Label renewPaneAutoDownloadRenewLabel = new Label();
+    private RadioButton renewPaneAutoDownloadRenewOnButton = new RadioButton();
+    private RadioButton renewPaneAutoDownloadRenewOffButton = new RadioButton();
+
+    /**
      * 动态变量
      * */
     private Supplier<String> promptInformationPrompt = () -> "你是DailyPaper日常壁纸软件应用的AI小助手小Day"
-            + "\n" + "你的回复不要使用任何Markdown语法，输出的代码也不要出现代码块格式"
+            + "\n" + "你的任何回复都不要使用Markdown语法，输出的代码也不要使用代码块格式"
             + "\n" + "现在是%d年%d月%d日%d时%d分%d秒".formatted(dailyPaper.getComputerSystem().getDate(Date.YEAR), dailyPaper.getComputerSystem().getDate(Date.MONTH), dailyPaper.getComputerSystem().getDate(Date.DAY), dailyPaper.getComputerSystem().getDate(Date.HOUR), dailyPaper.getComputerSystem().getDate(Date.MINUTE), dailyPaper.getComputerSystem().getDate(Date.SECONDE));
-    private Supplier<String> promptIfImagePrompt = () -> "请你根据用户输入的上下文信息帮我推测判断出用户现在是否需要生成图片，是则回答单个字“是”，否则回答单个字“否”，无法推断或模糊不清则一律回答单个字“否”，以下是用户输入的上下文信息：";
-    private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理用户想生成的图片描述信息，尽量简短，以下是用户输入的上下文信息：";
-    private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户输入的提示词信息，返回该图片生成成功的信，以下是用户输入的提示词信息：";
+    private Supplier<String> promptIfImagePrompt = () -> "请你根据用户输入的上下文信息帮我推测判断出用户当前是否需要生成图片，是则回答单个字“是”，否则回答单个字“否”，无法推断或模糊不清则一律回答单个字“否”，以下是用户输入的上下文信息：";
+    private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理用户想生成图片的描述信息，尽量简短，但要详备，以下是用户输入的上下文信息：";
+    private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户输入的提示词信息，返回该图片生成成功的回复，以下是用户输入的提示词信息：";
 
     private Supplier<Integer> rootPaneTitleBarButtonSize = () -> 30;
     private Supplier<Integer> rootPaneMenuBarButtonWidth = () -> 100;
@@ -119,6 +147,8 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<Integer> livePaneImageInputFontSize = () -> 20;
     private Supplier<Boolean> livePaneImagesShowing = () -> false;
     private Supplier<Boolean> livePaneImagesWallPerShowing = () -> false;
+
+    private Supplier<Integer> renewPaneFontSize = () -> 15;
 
     private Supplier<Integer> offset = () -> 10;
     private Supplier<Integer> delay = () -> 100;
@@ -227,7 +257,12 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createRenewPaneElement() {
-
+        renewPaneManualRenewVBox.getChildren().addAll(renewPaneManualCheckRenewButton, renewPaneManualCheckRenewTextShowArea, renewPaneManualDownloadRenewButton);
+        renewPaneAutoCheckRenewHBox.getChildren().addAll(renewPaneAutoCheckRenewLabel, renewPaneAutoCheckRenewOnButton,renewPaneAutoCheckRenewOffButton);
+        renewPaneAutoDownloadRenewHBox.getChildren().addAll(renewPaneAutoDownloadRenewLabel, renewPaneAutoDownloadRenewOnButton, renewPaneAutoDownloadRenewOffButton);
+        renewPaneAutoRenewHBox.getChildren().addAll(renewPaneAutoCheckRenewHBox, renewPaneAutoDownloadRenewHBox);
+        renewPaneVBox.getChildren().addAll(renewPaneManualRenewVBox, renewPaneAutoRenewHBox);
+        renewPane.getChildren().addAll(renewPaneVBox);
     }
 
     /**
