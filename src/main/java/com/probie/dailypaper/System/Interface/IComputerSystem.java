@@ -150,7 +150,7 @@ public interface IComputerSystem {
      * @return 是否添加成功
      * */
     default boolean addUserAutoLaunch(String fullFilePath) {
-        return addUserAutoLaunch(fullFilePath, new File(fullFilePath).getName().substring(0, fullFilePath.lastIndexOf(".")));
+        return addUserAutoLaunch(fullFilePath, new File(fullFilePath).getName().substring(0, new File(fullFilePath).getName().lastIndexOf(".")));
     }
 
     /**
@@ -178,6 +178,7 @@ public interface IComputerSystem {
      * @return 是否删除成功
      * */
     default boolean deleteUserAutoLaunch(String regName) {
+        if (regName.contains(File.separator)) regName = new File(regName).getName().substring(0, new File(regName).getName().lastIndexOf("."));
         String systemName = getSystemName().toLowerCase();
         if (systemName.contains("windows")) {
             String regPath = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
@@ -196,7 +197,7 @@ public interface IComputerSystem {
      * @return 是否添加成功
      * */
     default boolean addSystemAutoLaunch(String fullFilePath) {
-        return addSystemAutoLaunch(fullFilePath, new File(fullFilePath).getName().substring(0, fullFilePath.lastIndexOf(".")));
+        return addSystemAutoLaunch(fullFilePath, new File(fullFilePath).getName().substring(0, new File(fullFilePath).getName().lastIndexOf(".")));
     }
 
     /**
@@ -223,6 +224,7 @@ public interface IComputerSystem {
      * @return 是否添加成功
      * */
     default boolean deleteSystemAutoLaunch(String regName) {
+        if (regName.contains(File.separator)) regName = new File(regName).getName().substring(0, new File(regName).getName().lastIndexOf("."));
         String systemName = getSystemName().toLowerCase();
         if (systemName.contains("windows")) {
             String command = String.format("schtasks /delete /tn \"%s\" /f", regName);

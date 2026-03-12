@@ -192,6 +192,42 @@ public class DailyPaperStyle implements IDailyPaperStyle {
     public void createDailyPaneStyle() {
         dailyPaperElement.getDailyPaneVBox().prefWidthProperty().bind(dailyPaperElement.getDailyPane().widthProperty());
         dailyPaperElement.getDailyPaneVBox().prefHeightProperty().bind(dailyPaperElement.getDailyPane().heightProperty());
+        dailyPaperElement.getDailyPaneVBox().setSpacing(dailyPaperElement.getOffset().get());
+        dailyPaperElement.getDailyPaneVBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getDailyPaneLaunchHBox().prefWidthProperty().bind(dailyPaperElement.getDailyPaneVBox().widthProperty());
+        dailyPaperElement.getDailyPaneLaunchHBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(7));
+        dailyPaperElement.getDailyPaneLaunchHBox().setSpacing(dailyPaperElement.getOffset().get() * 2);
+        dailyPaperElement.getDailyPaneLaunchHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getDailyPaneAutoSetWallpaperHBox().setSpacing(dailyPaperElement.getOffset().get());
+        dailyPaperElement.getDailyPaneAutoSetWallpaperLabel().setText("推荐壁纸");
+        dailyPaperElement.getDailyPaneAutoSetWallpaperLabel().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        dailyPaperElement.getDailyPaneAutoSetWallpaperOnButton().setText("开");
+        dailyPaperElement.getDailyPaneAutoSetWallpaperOnButton().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        dailyPaperElement.getDailyPaneAutoSetWallpaperOffButton().setText("关");
+        dailyPaperElement.getDailyPaneAutoSetWallpaperOffButton().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        if (dailyPaper.getAutoWallpaper().get()) {
+            dailyPaperElement.getDailyPaneAutoSetWallpaperOnButton().setSelected(true);
+        } else {
+            dailyPaperElement.getDailyPaneAutoSetWallpaperOffButton().setSelected(true);
+        }
+
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperHBox().setSpacing(dailyPaperElement.getOffset().get());
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperLabel().setText("开机自启");
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperLabel().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton().setText("开");
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperOffButton().setText("关");
+        dailyPaperElement.getDailyPaneAutoLaunchWallpaperOffButton().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        if (dailyPaper.getAutoLaunch().get()) {
+            dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton().setSelected(true);
+        } else {
+            dailyPaperElement.getDailyPaneAutoLaunchWallpaperOffButton().setSelected(true);
+        }
+
+        dailyPaperElement.getDailyPaneHobbyVBox().prefWidthProperty().bind(dailyPaperElement.getDailyPaneVBox().widthProperty());
+        dailyPaperElement.getDailyPaneHobbyVBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(7).multiply(6));
     }
 
     @Override
@@ -250,10 +286,8 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRenewPaneAutoCheckRenewLabel().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
         dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setText("开");
         dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
-        dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoCheckRenewGroup());
         dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setText("关");
         dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
-        dailyPaperElement.getRenewPaneAutoCheckRenewOffButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoCheckRenewGroup());
         if (dailyPaper.getAutoCheckRenew().get()) {
             dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
         } else {
@@ -265,10 +299,8 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRenewPaneAutoDownloadRenewLabel().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
         dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setText("开");
         dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
-        dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoDownloadRenewGroup());
         dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setText("关");
         dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
-        dailyPaperElement.getRenewPaneAutoDownloadRenewOffButton().setToggleGroup(dailyPaperElement.getRenewPaneAutoDownloadRenewGroup());
         if (dailyPaper.getAutoDownloadRenew().get()) {
             dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().setSelected(true);
         } else {

@@ -74,8 +74,10 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
     public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
 
+    public String KeyIsLaunchLiveWallpaper = "IsLaunchLiveWallpaper";
     public String KeyAutoCheckRenew = "AutoCheckRenew";
     public String KeyAutoDownloadRenew = "AutoDownloadRenew";
+    public String KeyAutoWallpaper = "AutoWallpaper";
     public String KeyAutoLaunch = "AutoLaunch";
     public String KeySplitMark = "SplitMark";
 
@@ -140,7 +142,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public Supplier<String> DailyPaperDownloadFilePath = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFilePath(),
             getRootPath().get()).toString();
     public Supplier<String> DailyPaperDownloadFileNameWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileNameWindows(),
-            "DailyPaper.exe").toString();
+            NAME + ".exe").toString();
     public Supplier<Boolean> DailyPaperDownloadFileIsOpen = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFileIsOpen(),
             true)));
     public Supplier<String> DailyPaperDownloadUrlWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadUrlWindows(),
@@ -161,9 +163,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
           "LiveImage.config").toString();
 
+    public Supplier<Boolean> IsLaunchLiveWallpaper = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyIsLaunchLiveWallpaper(),
+            false)));
     public Supplier<Boolean> AutoCheckRenew = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoCheckRenew(),
             false)));
     public Supplier<Boolean> AutoDownloadRenew = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoDownloadRenew(),
+            false)));
+    public Supplier<Boolean> AutoWallpaper = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoWallpaper(),
             false)));
     public Supplier<Boolean> AutoLaunch = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoLaunch(),
             false)));
@@ -199,21 +205,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
     @Override
     public void launch(String[] args) {
-
-        /// 自动更新
-        getDailyPaperPool().submit(() -> {
-            if (getAutoCheckRenew().get()) {
-                if (DailyPaperEvent.getInstance().checkRenewDailyPaper()) {
-                    if (getAutoDownloadRenew().get()) {
-                        DailyPaperEvent.getInstance().downloadRenewDailyPaper();
-                    }
-                }
-            }
-        });
-
-        /// 启动程序
         Application.launch(DailyPaperApplication.class, args);
-
     }
 
     @Override
@@ -352,8 +344,10 @@ public class DailyPaper implements IDailyPaper, Closeable {
         getConfigConfig().getLocalDB().set(KeyLiveImageConfigFilePath, LiveImageConfigFilePath.get());
         getConfigConfig().getLocalDB().set(KeyLiveImageConfigFileName, LiveImageConfigFileName.get());
 
+        getConfigConfig().getLocalDB().set(KeyIsLaunchLiveWallpaper, IsLaunchLiveWallpaper.get());
         getConfigConfig().getLocalDB().set(KeyAutoCheckRenew, AutoCheckRenew.get());
         getConfigConfig().getLocalDB().set(KeyAutoDownloadRenew, AutoDownloadRenew.get());
+        getConfigConfig().getLocalDB().set(KeyAutoWallpaper, AutoWallpaper.get());
         getConfigConfig().getLocalDB().set(KeyAutoLaunch, AutoLaunch.get());
         getConfigConfig().getLocalDB().set(KeySplitMark, SplitMark.get());
 

@@ -98,6 +98,11 @@ public interface IDailyPaperEvent {
     void scrollToBottom(ScrollPane scrollPane);
 
     /**
+     * 启动动态壁纸
+     * */
+    void launchLiveImageWallpaper();
+
+    /**
      * 取消动态壁纸
      * */
     void clearLiveImageWallpaper();

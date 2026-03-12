@@ -93,6 +93,18 @@ public class DailyPaperElement implements IDailyPaperElement {
      * DailyPane 控件
      * */
     private VBox dailyPaneVBox = new VBox();
+    private HBox dailyPaneLaunchHBox = new HBox();
+    private HBox dailyPaneAutoSetWallpaperHBox = new HBox();
+    private ToggleGroup dailyPaneAutoSetWallpaperGroup = new ToggleGroup();
+    private Label dailyPaneAutoSetWallpaperLabel = new Label();
+    private RadioButton dailyPaneAutoSetWallpaperOnButton = new RadioButton();
+    private RadioButton dailyPaneAutoSetWallpaperOffButton = new RadioButton();
+    private HBox dailyPaneAutoLaunchWallpaperHBox = new HBox();
+    private ToggleGroup dailyPaneAutoLaunchWallpaperGroup = new ToggleGroup();
+    private Label dailyPaneAutoLaunchWallpaperLabel = new Label();
+    private RadioButton dailyPaneAutoLaunchWallpaperOnButton = new RadioButton();
+    private RadioButton dailyPaneAutoLaunchWallpaperOffButton = new RadioButton();
+    private VBox dailyPaneHobbyVBox = new VBox();
 
     /**
      * HobbyPane 控件
@@ -147,6 +159,8 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<Integer> livePaneImageInputFontSize = () -> 20;
     private Supplier<Boolean> livePaneImagesShowing = () -> false;
     private Supplier<Boolean> livePaneImagesWallPerShowing = () -> false;
+
+    private Supplier<Integer> dailyPaneFontSize = () -> 15;
 
     private Supplier<Integer> renewPaneFontSize = () -> 15;
 
@@ -242,6 +256,14 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createDailyPaneElement() {
+        dailyPaneAutoSetWallpaperOnButton.setToggleGroup(dailyPaneAutoSetWallpaperGroup);
+        dailyPaneAutoSetWallpaperOffButton.setToggleGroup(dailyPaneAutoSetWallpaperGroup);
+        dailyPaneAutoLaunchWallpaperOnButton.setToggleGroup(dailyPaneAutoLaunchWallpaperGroup);
+        dailyPaneAutoLaunchWallpaperOffButton.setToggleGroup(dailyPaneAutoLaunchWallpaperGroup);
+        dailyPaneAutoSetWallpaperHBox.getChildren().addAll(dailyPaneAutoSetWallpaperLabel, dailyPaneAutoSetWallpaperOnButton, dailyPaneAutoSetWallpaperOffButton);
+        dailyPaneAutoLaunchWallpaperHBox.getChildren().addAll(dailyPaneAutoLaunchWallpaperLabel, dailyPaneAutoLaunchWallpaperOnButton, dailyPaneAutoLaunchWallpaperOffButton);
+        dailyPaneLaunchHBox.getChildren().addAll(dailyPaneAutoSetWallpaperHBox, dailyPaneAutoLaunchWallpaperHBox);
+        dailyPaneVBox.getChildren().addAll(dailyPaneLaunchHBox, dailyPaneHobbyVBox);
         dailyPane.getChildren().addAll(dailyPaneVBox);
     }
 
@@ -257,6 +279,10 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createRenewPaneElement() {
+        renewPaneAutoCheckRenewOnButton.setToggleGroup(renewPaneAutoCheckRenewGroup);
+        renewPaneAutoCheckRenewOffButton.setToggleGroup(renewPaneAutoCheckRenewGroup);
+        renewPaneAutoDownloadRenewOnButton.setToggleGroup(renewPaneAutoDownloadRenewGroup);
+        renewPaneAutoDownloadRenewOffButton.setToggleGroup(renewPaneAutoDownloadRenewGroup);
         renewPaneManualRenewVBox.getChildren().addAll(renewPaneManualCheckRenewButton, renewPaneManualCheckRenewTextShowArea, renewPaneManualDownloadRenewButton);
         renewPaneAutoCheckRenewHBox.getChildren().addAll(renewPaneAutoCheckRenewLabel, renewPaneAutoCheckRenewOnButton,renewPaneAutoCheckRenewOffButton);
         renewPaneAutoDownloadRenewHBox.getChildren().addAll(renewPaneAutoDownloadRenewLabel, renewPaneAutoDownloadRenewOnButton, renewPaneAutoDownloadRenewOffButton);
