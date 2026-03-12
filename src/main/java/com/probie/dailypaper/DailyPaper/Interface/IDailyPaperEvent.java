@@ -102,4 +102,16 @@ public interface IDailyPaperEvent {
      * */
     void clearLiveImageWallpaper();
 
+    /**
+     * 检查更新软件
+     * @return 是否有新版本
+     * */
+    boolean checkRenewDailyPaper();
+
+    /**
+     * 下载更新软件
+     * @return 是否下载成功
+     * */
+    boolean downloadRenewDailyPaper();
+
 }

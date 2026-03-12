@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
@@ -500,50 +502,28 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createRenewPaneEvent() {
-        dailyPaperElement.getRenewPaneManualCheckRenewButton().setOnAction(actionEvent -> {
-            dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(true);
-            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(true);
-            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在检测更新...");
-            dailyPaper.getDailyPaperPool().submit(() -> {
-                Object version = dailyPaper.getRenewConfig().getLocalDB().get("VERSION", dailyPaper.getVERSION());
-                if (version.equals(dailyPaper.getVERSION())) {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
-                } else {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("发现新版本!");
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().getText() + "\n" + dailyPaper.getRenewConfig().getLocalDB().get("NEWS", "无"));
-                    dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(true);
-                }
-            });
-        });
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().setOnAction(actionEvent -> checkRenewDailyPaper());
 
-        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setOnAction(actionEvent -> {
-            dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在更新软件...");
-            dailyPaper.getDailyPaperPool().submit(() -> {
-                if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
-                    if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
-                        DailyPaper.getInstance().getComputerSystem().runCommand(
-                                DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
-                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
-                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
-                                        +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
-                        System.exit(0);
-                    }
-                } else {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
-                }
-            });
-        });
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setOnAction(actionEvent -> downloadRenewDailyPaper());
 
         dailyPaperElement.getRenewPaneAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == dailyPaperElement.getRenewPaneAutoCheckRenewOnButton()) {
                 dailyPaper.setAutoCheckRenew(() -> true);
             } else {
-                dailyPaper.setAutoCheckRenew(() -> false);
+                if (dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().isSelected()) {
+                    dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
+                } else {
+                    dailyPaper.setAutoCheckRenew(() -> false);
+                }
             }
         });
         dailyPaperElement.getRenewPaneAutoDownloadRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue ==  dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton()) {
                 dailyPaper.setAutoDownloadRenew(() -> true);
+                if (!dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().isSelected()) {
+                    dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
+                    dailyPaper.setAutoCheckRenew(() -> true);
+                }
             } else {
                 dailyPaper.setAutoDownloadRenew(() -> false);
             }
@@ -622,6 +602,55 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 throw new RuntimeException(interruptedException);
             }
         }
+    }
+
+    @Override
+    public boolean checkRenewDailyPaper() {
+        AtomicBoolean hasNew = new AtomicBoolean(false);
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(true);
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(true);
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在检测更新...");
+        dailyPaper.getDailyPaperPool().submit(() -> {
+            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
+                Object version = dailyPaper.getRenewConfig().getLocalDB().get("VERSION", dailyPaper.getVERSION());
+                if (version.equals(dailyPaper.getVERSION())) {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
+                } else {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("发现新版本!");
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().getText() + "\n" + dailyPaper.getRenewConfig().getLocalDB().get("NEWS", "无"));
+                    dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(true);
+                    hasNew.set(true);
+                }
+            } else {
+                dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
+            }
+        });
+        return hasNew.get();
+    }
+
+    @Override
+    public boolean downloadRenewDailyPaper() {
+        AtomicBoolean hasDownload = new AtomicBoolean(false);
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在更新软件...");
+        dailyPaper.getDailyPaperPool().submit(() -> {
+            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
+                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
+                    int status = DailyPaper.getInstance().getComputerSystem().runCommand(
+                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
+                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("软件更新成功!");
+                    hasDownload.set(status == 0);
+                    if (DailyPaper.getInstance().getAutoLaunch().get()) {
+                        System.exit(0);
+                    }
+                }
+            } else {
+                dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
+            }
+        });
+        return hasDownload.get();
     }
 
     /**

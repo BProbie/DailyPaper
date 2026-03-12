@@ -200,20 +200,20 @@ public class DailyPaper implements IDailyPaper, Closeable {
     @Override
     public void launch(String[] args) {
 
-        /// 自动检测更新
-//        if (!DailyPaper.getInstance().getConfig().getRenewConfig().getLocalDB().get("VERSION").equals(DailyPaper.getInstance().getVERSION())) {
-//            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
-//                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
-//                    System.exit(0);
-//                    DailyPaper.getInstance().getComputerSystem().runCommand(
-//                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
-//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
-//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
-//                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
-//                }
-//            }
-//        }
+        /// 自动更新
+        getDailyPaperPool().submit(() -> {
+            if (getAutoCheckRenew().get()) {
+                if (DailyPaperEvent.getInstance().checkRenewDailyPaper()) {
+                    if (getAutoDownloadRenew().get()) {
+                        DailyPaperEvent.getInstance().downloadRenewDailyPaper();
+                    }
+                }
+            }
+        });
+
+        /// 启动程序
         Application.launch(DailyPaperApplication.class, args);
+
     }
 
     @Override
