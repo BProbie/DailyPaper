@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
-
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
@@ -20,6 +18,7 @@ import javafx.scene.input.Clipboard;
 import java.util.concurrent.TimeUnit;
 import javafx.stage.DirectoryChooser;
 import javafx.scene.input.ClipboardContent;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 
