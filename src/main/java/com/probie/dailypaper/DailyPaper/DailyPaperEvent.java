@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
+
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
@@ -729,15 +731,22 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaper.getDailyPaperPool().submit(() -> {
             if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
                 if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
-                    int status = DailyPaper.getInstance().getComputerSystem().runCommand(
-                            DailyPaper.getInstance().getDailyPaperRenewFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFilePath()+File.separator+DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
-                                    +" "+DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen());
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("软件更新成功!");
-                    hasDownload.set(status == 0);
-                    if (DailyPaper.getInstance().getAutoLaunch().get()) {
-                        System.exit(0);
+                    AtomicInteger status = new AtomicInteger();
+                    DailyPaper.getInstance().getDailyPaperPool().submit(() -> status.set(DailyPaper.getInstance().getComputerSystem().runCommand(
+                            "cmd /c cd /d" + " " + dailyPaper.getDailyPaperRenewFilePath().get()
+                                    + "&" + "jdk-21.0.8" + File.separator + "bin" + File.separator + "java" + "-jar "
+                                    + DailyPaper.getInstance().getDailyPaperRenewFilePath() + File.separator + DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
+                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
+                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadFilePath() + File.separator + DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
+                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen())));
+                    hasDownload.set(status.get() == 0);
+                    if (hasDownload.get()) {
+                        DailyPaperElement.getInstance().getRenewPaneManualCheckRenewTextShowArea().setText("软件更新成功!");
+                        if (DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen().get()) {
+                            System.exit(0);
+                        }
+                    } else {
+                        DailyPaperElement.getInstance().getRenewPaneManualCheckRenewTextShowArea().setText("软件更新失败!");
                     }
                 }
             } else {

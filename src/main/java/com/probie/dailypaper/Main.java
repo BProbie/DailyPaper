@@ -7,10 +7,9 @@
 
 /**
  * TODO
- * 日志
- * 每日
  * 偏好
  * 设置
+ * 日志
  * */
 
 package com.probie.dailypaper;

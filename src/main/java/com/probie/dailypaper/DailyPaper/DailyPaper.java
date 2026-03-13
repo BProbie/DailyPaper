@@ -143,7 +143,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public Supplier<String> DailyPaperRenewFilePath = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperRenewFilePath(),
             getRootPath().get()).toString();
     public Supplier<String> DailyPaperRenewFileNameWindows = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperRenewFileNameWindows(),
-            "Renew.exe").toString();
+            "Renew.jar").toString();
 
     public Supplier<String> DailyPaperDownloadFilePath = () -> getConfigConfig().getLocalDB().get(getKeyDailyPaperDownloadFilePath(),
             getRootPath().get()).toString();
