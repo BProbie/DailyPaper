@@ -49,8 +49,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
     public String KeyAPIUrlTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
     public String KeyAPIUrlTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
-    public String KeyAPIModelTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
-    public String KeyAPIModelTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
+    public String KeyAPIModelTextToTextSiliconFlow = "APIModelTextToTextSiliconFlow";
+    public String KeyAPIModelTextToImageSiliconFlow = "APIModelTextToImageSiliconFlow";
 
     public String KeyImageSize = "ImageSize";
     public String KeyImageCount = "ImageCount";
@@ -74,11 +74,17 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public String KeyLiveImageConfigFilePath = "LiveImageConfigFilePath";
     public String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
 
+    public String KeyLiveImageChosenFilePath = "LiveImageChosenFilePath";
+
+    public String KeyDailyWallpaperHobby = "DailyWallpaperHobby";
+
     public String KeyIsLaunchLiveWallpaper = "IsLaunchLiveWallpaper";
     public String KeyAutoCheckRenew = "AutoCheckRenew";
     public String KeyAutoDownloadRenew = "AutoDownloadRenew";
     public String KeyAutoWallpaper = "AutoWallpaper";
     public String KeyAutoLaunch = "AutoLaunch";
+    public String KeyAutoWallpaperWhenLaunch = "AutoWallpaperWhenLaunch";
+    public String KeyAutoWallpaperWhenTime = "AutoWallpaperWhenTime";
     public String KeySplitMark = "SplitMark";
 
     /// 静态
@@ -163,6 +169,12 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public Supplier<String> LiveImageConfigFileName = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageConfigFileName(),
           "LiveImage.config").toString();
 
+    public Supplier<String> LiveImageChosenFilePath = () -> getConfigConfig().getLocalDB().get(getKeyLiveImageChosenFilePath(),
+            getRootPath().get()).toString();
+
+    public Supplier<String> DailyWallpaperHobby = () -> getConfigConfig().getLocalDB().get(getKeyDailyWallpaperHobby(),
+            "古风唯美").toString();
+
     public Supplier<Boolean> IsLaunchLiveWallpaper = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyIsLaunchLiveWallpaper(),
             false)));
     public Supplier<Boolean> AutoCheckRenew = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoCheckRenew(),
@@ -173,6 +185,10 @@ public class DailyPaper implements IDailyPaper, Closeable {
             false)));
     public Supplier<Boolean> AutoLaunch = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoLaunch(),
             false)));
+    public Supplier<Boolean> AutoWallpaperWhenLaunch = () -> Boolean.parseBoolean(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoWallpaperWhenLaunch(),
+            false)));
+    public Supplier<Integer> AutoWallpaperWhenTime = () -> Integer.parseInt(String.valueOf(getConfigConfig().getLocalDB().get(getKeyAutoWallpaperWhenTime(),
+            0)));
     public Supplier<String> SplitMark = () -> getConfigConfig().getLocalDB().get(getKeySplitMark(),
             " ").toString();
 
@@ -344,11 +360,17 @@ public class DailyPaper implements IDailyPaper, Closeable {
         getConfigConfig().getLocalDB().set(KeyLiveImageConfigFilePath, LiveImageConfigFilePath.get());
         getConfigConfig().getLocalDB().set(KeyLiveImageConfigFileName, LiveImageConfigFileName.get());
 
+        getConfigConfig().getLocalDB().set(KeyLiveImageChosenFilePath, LiveImageChosenFilePath.get());
+
+        getConfigConfig().getLocalDB().set(KeyDailyWallpaperHobby, DailyWallpaperHobby.get());
+
         getConfigConfig().getLocalDB().set(KeyIsLaunchLiveWallpaper, IsLaunchLiveWallpaper.get());
         getConfigConfig().getLocalDB().set(KeyAutoCheckRenew, AutoCheckRenew.get());
         getConfigConfig().getLocalDB().set(KeyAutoDownloadRenew, AutoDownloadRenew.get());
         getConfigConfig().getLocalDB().set(KeyAutoWallpaper, AutoWallpaper.get());
         getConfigConfig().getLocalDB().set(KeyAutoLaunch, AutoLaunch.get());
+        getConfigConfig().getLocalDB().set(KeyAutoWallpaperWhenLaunch, AutoWallpaperWhenLaunch.get());
+        getConfigConfig().getLocalDB().set(KeyAutoWallpaperWhenTime, AutoWallpaperWhenTime.get());
         getConfigConfig().getLocalDB().set(KeySplitMark, SplitMark.get());
 
         /// Config 静态

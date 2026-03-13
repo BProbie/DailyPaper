@@ -12,7 +12,9 @@ public enum Date {
     DAY(2,"日"),
     HOUR(3, "时"),
     MINUTE(4, "分"),
-    SECONDE(5, "秒");
+    SECONDE(5, "秒"),
+
+    SUNDAY(6, "星期");
 
     @Getter
     private final int index;

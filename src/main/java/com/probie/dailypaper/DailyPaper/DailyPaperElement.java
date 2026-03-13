@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Enum.Date;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperElement;
 
 @Data
@@ -104,15 +105,32 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Label dailyPaneAutoLaunchWallpaperLabel = new Label();
     private RadioButton dailyPaneAutoLaunchWallpaperOnButton = new RadioButton();
     private RadioButton dailyPaneAutoLaunchWallpaperOffButton = new RadioButton();
+    private HBox dailyPaneAutoSetWallpaperSettingHBox = new HBox();
+    private HBox dailyPaneAutoSetWallpaperSettingLaunchHBox = new HBox();
+    private ToggleGroup dailyPaneAutoSetWallpaperSettingLaunchGroup = new ToggleGroup();
+    private Label dailyPaneAutoSetWallpaperSettingLaunchLabel = new Label();
+    private RadioButton dailyPaneAutoSetWallpaperSettingLaunchOnButton = new RadioButton();
+    private RadioButton dailyPaneAutoSetWallpaperSettingLaunchOffButton = new RadioButton();
+    private HBox dailyPaneAutoSetWallpaperSettingDelayHBox = new HBox();
+    private Label dailyPaneAutoSetWallpaperSettingDelayLabel = new Label();
+    private TextField dailyPaneAutoSetWallpaperSettingDelyTextField = new TextField();
     private VBox dailyPaneHobbyVBox = new VBox();
+    private VBox dailyPaneHobbyHobbyVBox = new VBox();
+    private Label dailyPaneHobbyHobbyLabel = new Label();
+    private ScrollPane dailyPaneHobbyHobbyScrollPane = new ScrollPane();
+    private TextArea dailyPaneHobbyHobbyTextArea = new TextArea();
 
     /**
      * HobbyPane 控件
      * */
+    private VBox hobbyPaneVBox = new VBox();
+    private Label hobbyPaneInformationLabel = new Label();
 
     /**
      * SettingPane 控件
      * */
+    private VBox settingPaneVBox = new VBox();
+    private Label settingPaneInformationLabel = new Label();
 
     /**
      * RenewPane 控件
@@ -142,10 +160,11 @@ public class DailyPaperElement implements IDailyPaperElement {
      * */
     private Supplier<String> promptInformationPrompt = () -> "你是DailyPaper日常壁纸软件应用的AI小助手小Day"
             + "\n" + "你的任何回复都不要使用Markdown语法，输出的代码也不要使用代码块格式"
-            + "\n" + "现在是%d年%d月%d日%d时%d分%d秒".formatted(dailyPaper.getComputerSystem().getDate(Date.YEAR), dailyPaper.getComputerSystem().getDate(Date.MONTH), dailyPaper.getComputerSystem().getDate(Date.DAY), dailyPaper.getComputerSystem().getDate(Date.HOUR), dailyPaper.getComputerSystem().getDate(Date.MINUTE), dailyPaper.getComputerSystem().getDate(Date.SECONDE));
+            + "\n" + "现在是%d年%d月%d日%d时%d分%d秒，星期%d".formatted(dailyPaper.getComputerSystem().getDate(Date.YEAR), dailyPaper.getComputerSystem().getDate(Date.MONTH), dailyPaper.getComputerSystem().getDate(Date.DAY), dailyPaper.getComputerSystem().getDate(Date.HOUR), dailyPaper.getComputerSystem().getDate(Date.MINUTE), dailyPaper.getComputerSystem().getDate(Date.SECONDE), dailyPaper.getComputerSystem().getDate(Date.SUNDAY));
     private Supplier<String> promptIfImagePrompt = () -> "请你根据用户输入的上下文信息帮我推测判断出用户当前是否需要生成图片，是则回答单个字“是”，否则回答单个字“否”，无法推断或模糊不清则一律回答单个字“否”，以下是用户输入的上下文信息：";
-    private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理用户想生成图片的描述信息，尽量简短，但要详备，以下是用户输入的上下文信息：";
+    private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理回复用户想生成图片的描述信息，稍微简短，尽量详备，并只需要回复要生成的图片的描述信息即可，以下是用户输入的上下文信息：";
     private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户输入的提示词信息，返回该图片生成成功的回复，以下是用户输入的提示词信息：";
+    private Supplier<String> promptSpawnDailyWallpaperPrompt = () -> "现在是%d年%d月%d日%d时%d分%d秒，星期%d。\n如果有请你根据今天的节日、节气、时节、时令、习俗、风俗、历史、文化、气氛、氛围等因素结合用户的喜爱偏好：%s。\n生成一张电脑桌面高清壁纸。".formatted(dailyPaper.getComputerSystem().getDate(Date.YEAR), dailyPaper.getComputerSystem().getDate(Date.MONTH), dailyPaper.getComputerSystem().getDate(Date.DAY), dailyPaper.getComputerSystem().getDate(Date.HOUR), dailyPaper.getComputerSystem().getDate(Date.MINUTE), dailyPaper.getComputerSystem().getDate(Date.SECONDE), dailyPaper.getComputerSystem().getDate(Date.SUNDAY), DailyPaper.getInstance().getDailyWallpaperHobby().get());
 
     private Supplier<Integer> rootPaneTitleBarButtonSize = () -> 30;
     private Supplier<Integer> rootPaneMenuBarButtonWidth = () -> 100;
@@ -167,12 +186,25 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<Integer> offset = () -> 10;
     private Supplier<Integer> delay = () -> 100;
 
+    private volatile long autoDailyWallpaperStartTime = System.currentTimeMillis();
+    private Supplier<Boolean> isAutoDailyWallpaperRunning = () -> false;
+
     /**
      * 静态变量
      * */
     private final ExecutorService agentConnectionPool = Executors.newFixedThreadPool(5);
     private final ExecutorService liveImageShowingPool = Executors.newFixedThreadPool(1);
     private final ExecutorService liveImageWallpaperPool = Executors.newFixedThreadPool(1);
+
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final Runnable autoDailyWallpaper = () -> {
+        if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenTime.get() >= 1) {
+            if (System.currentTimeMillis() - autoDailyWallpaperStartTime > (long) DailyPaper.getInstance().AutoWallpaperWhenTime.get() * 60 * 1000 - 1000) {
+                DailyPaperEvent.getInstance().dailyWallpaper();
+                setAutoDailyWallpaperStartTime(System.currentTimeMillis());
+            }
+        }
+    };
 
     @Override
     public void createElement(Stage stage) {
@@ -260,21 +292,39 @@ public class DailyPaperElement implements IDailyPaperElement {
         dailyPaneAutoSetWallpaperOffButton.setToggleGroup(dailyPaneAutoSetWallpaperGroup);
         dailyPaneAutoLaunchWallpaperOnButton.setToggleGroup(dailyPaneAutoLaunchWallpaperGroup);
         dailyPaneAutoLaunchWallpaperOffButton.setToggleGroup(dailyPaneAutoLaunchWallpaperGroup);
+        dailyPaneAutoSetWallpaperSettingLaunchOnButton.setToggleGroup(dailyPaneAutoSetWallpaperSettingLaunchGroup);
+        dailyPaneAutoSetWallpaperSettingLaunchOffButton.setToggleGroup(dailyPaneAutoSetWallpaperSettingLaunchGroup);
+
         dailyPaneAutoSetWallpaperHBox.getChildren().addAll(dailyPaneAutoSetWallpaperLabel, dailyPaneAutoSetWallpaperOnButton, dailyPaneAutoSetWallpaperOffButton);
         dailyPaneAutoLaunchWallpaperHBox.getChildren().addAll(dailyPaneAutoLaunchWallpaperLabel, dailyPaneAutoLaunchWallpaperOnButton, dailyPaneAutoLaunchWallpaperOffButton);
+
+        dailyPaneAutoSetWallpaperSettingLaunchHBox.getChildren().addAll(dailyPaneAutoSetWallpaperSettingLaunchLabel, dailyPaneAutoSetWallpaperSettingLaunchOnButton, dailyPaneAutoSetWallpaperSettingLaunchOffButton);
+        dailyPaneAutoSetWallpaperSettingDelayHBox.getChildren().addAll(dailyPaneAutoSetWallpaperSettingDelayLabel, dailyPaneAutoSetWallpaperSettingDelyTextField);
+
+        dailyPaneAutoSetWallpaperSettingHBox.getChildren().addAll(dailyPaneAutoSetWallpaperSettingLaunchHBox, dailyPaneAutoSetWallpaperSettingDelayHBox);
+
         dailyPaneLaunchHBox.getChildren().addAll(dailyPaneAutoSetWallpaperHBox, dailyPaneAutoLaunchWallpaperHBox);
-        dailyPaneVBox.getChildren().addAll(dailyPaneLaunchHBox, dailyPaneHobbyVBox);
+
+        dailyPaneHobbyHobbyScrollPane.setContent(dailyPaneHobbyHobbyTextArea);
+        dailyPaneHobbyHobbyVBox.getChildren().addAll(dailyPaneHobbyHobbyLabel, dailyPaneHobbyHobbyTextArea);
+
+        dailyPaneHobbyVBox.getChildren().addAll(dailyPaneHobbyHobbyVBox);
+
+        dailyPaneVBox.getChildren().addAll(dailyPaneLaunchHBox, dailyPaneAutoSetWallpaperSettingHBox, dailyPaneHobbyVBox);
+
         dailyPane.getChildren().addAll(dailyPaneVBox);
     }
 
     @Override
     public void createHobbyPaneElement() {
-
+        hobbyPaneVBox.getChildren().addAll(hobbyPaneInformationLabel);
+        hobbyPane.getChildren().addAll(hobbyPaneVBox);
     }
 
     @Override
     public void createSettingPaneElement() {
-
+        settingPaneVBox.getChildren().addAll(settingPaneInformationLabel);
+        settingPane.getChildren().addAll(settingPaneVBox);
     }
 
     @Override
@@ -283,6 +333,7 @@ public class DailyPaperElement implements IDailyPaperElement {
         renewPaneAutoCheckRenewOffButton.setToggleGroup(renewPaneAutoCheckRenewGroup);
         renewPaneAutoDownloadRenewOnButton.setToggleGroup(renewPaneAutoDownloadRenewGroup);
         renewPaneAutoDownloadRenewOffButton.setToggleGroup(renewPaneAutoDownloadRenewGroup);
+        renewPaneManualCheckRenewTextShowScrollPane.setContent(renewPaneManualCheckRenewTextShowArea);
         renewPaneManualRenewVBox.getChildren().addAll(renewPaneManualCheckRenewButton, renewPaneManualCheckRenewTextShowArea, renewPaneManualDownloadRenewButton);
         renewPaneAutoCheckRenewHBox.getChildren().addAll(renewPaneAutoCheckRenewLabel, renewPaneAutoCheckRenewOnButton,renewPaneAutoCheckRenewOffButton);
         renewPaneAutoDownloadRenewHBox.getChildren().addAll(renewPaneAutoDownloadRenewLabel, renewPaneAutoDownloadRenewOnButton, renewPaneAutoDownloadRenewOffButton);

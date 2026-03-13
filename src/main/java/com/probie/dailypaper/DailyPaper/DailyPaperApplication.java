@@ -4,6 +4,7 @@ import java.awt.*;
 import lombok.Data;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperApplication;
 
@@ -25,6 +26,20 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         DailyPaperStyle.getInstance().createStyle();
         DailyPaperEvent.getInstance().createEvent();
         stage.show();
+
+        /// 推荐壁纸
+        if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenLaunch.get()) {
+            DailyPaperEvent.getInstance().dailyWallpaper();
+        }
+
+        /// 自动推荐壁纸
+        if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenTime.get() >= 1) {
+            if (!DailyPaperElement.getInstance().getIsAutoDailyWallpaperRunning().get()) {
+                DailyPaperElement.getInstance().setAutoDailyWallpaperStartTime(System.currentTimeMillis());
+                DailyPaperElement.getInstance().getScheduledExecutorService().scheduleAtFixedRate(DailyPaperElement.getInstance().getAutoDailyWallpaper(), 1 , 1, TimeUnit.MINUTES);
+                DailyPaperElement.getInstance().setIsAutoDailyWallpaperRunning(() -> true);
+            }
+        }
 
         /// 播放动图
         if (DailyPaper.getInstance().IsLaunchLiveWallpaper.get()) {
@@ -48,6 +63,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         DailyPaperElement.getInstance().getAgentConnectionPool().shutdownNow();
         DailyPaperElement.getInstance().getLiveImageShowingPool().shutdownNow();
         DailyPaperElement.getInstance().getLiveImageWallpaperPool().shutdownNow();
+        DailyPaperElement.getInstance().getScheduledExecutorService().shutdownNow();
         DailyPaper.getInstance().getDailyPaperPool().shutdownNow();
         DailyPaperElement.getInstance().getStage().close();
         DailyPaper.getInstance().close();

@@ -2,6 +2,7 @@ package com.probie.dailypaper.System.Interface;
 
 import java.awt.*;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Calendar;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public interface IComputerSystem {
             case HOUR -> Calendar.getInstance().get(Calendar.HOUR);
             case MINUTE -> Calendar.getInstance().get(Calendar.MINUTE);
             case SECONDE -> Calendar.getInstance().get(Calendar.SECOND);
+            case SUNDAY -> LocalDate.now().getDayOfWeek().getValue();
         };
     }
 

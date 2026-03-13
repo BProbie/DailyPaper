@@ -108,6 +108,11 @@ public interface IDailyPaperEvent {
     void clearLiveImageWallpaper();
 
     /**
+     * 每日壁纸推荐
+     * */
+    void dailyWallpaper();
+
+    /**
      * 检查更新软件
      * @return 是否有新版本
      * */
