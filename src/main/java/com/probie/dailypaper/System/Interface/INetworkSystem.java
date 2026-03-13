@@ -1,13 +1,9 @@
 package com.probie.dailypaper.System.Interface;
 
-import com.alibaba.fastjson2.JSONObject;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
 
 public interface INetworkSystem {
 
