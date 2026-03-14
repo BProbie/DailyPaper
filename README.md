@@ -10,6 +10,8 @@
 
 ## 开源地址：https://github.com/BProbie/DailyPaper/
 
+## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.0
+
 ## 依赖工具：Maven
 
 ## 依赖技术：
@@ -32,7 +34,9 @@
 
 * ### Commons Codec
 
-## AI集成API管理平台：SiliconCloud（硅基流动）
+## 依赖AI集成API管理平台：
+
+- ### SiliconCloud（硅基流动）
 
 
 
