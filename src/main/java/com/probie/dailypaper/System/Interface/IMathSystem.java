@@ -12,7 +12,7 @@ public interface IMathSystem {
     default Dimension getFitDimension(Dimension dimension) {
         double height = dimension.getHeight();
         double width = dimension.getWidth();
-        dimension.setSize(1024, ((int) Math.floor(1024*(height/width))));
+        dimension.setSize(1024, ((int) Math.floor(1024 * (height / width))));
         return dimension;
     }
 

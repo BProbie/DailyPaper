@@ -8,48 +8,28 @@ public interface IDailyPaperStyle {
     void createStyle();
 
     /**
-     * 创建 Stage 舞台样式
+     * 创建 stage 样式
      * */
     void createStageStyle();
 
     /**
-     * 创建 Scene 帷幕样式
+     * 创建 scene 样式
      * */
     void createSceneStyle();
 
     /**
-     * 创建 RootPane 分页样式
+     * 创建 root 样式
      * */
-    void createRootPaneStyle();
+    void createRootStyle();
 
     /**
-     * 创建 ChatPane 分页样式
+     * 创建 功能模块 样式
      * */
-    void createChatPaneStyle();
-
-    /**
-     * 创建 LivePane 分页样式
-     * */
-    void createLivePaneStyle();
-
-    /**
-     * 创建 DailyPane 分页样式
-     * */
-    void createDailyPaneStyle();
-
-    /**
-     * 创建 HobbyPane 分页样式
-     * */
-    void createHobbyPaneStyle();
-
-    /**
-     * 创建 SettingPane 分页样式
-     * */
-    void createSettingPaneStyle();
-
-    /**
-     * 创建 RenewPane 分页样式
-     * */
-    void createRenewPaneStyle();
+    void createChatStyle();
+    void createLiveStyle();
+    void createDailyStyle();
+    void createParamStyle();
+    void createSettingStyle();
+    void createRenewStyle();
 
 }

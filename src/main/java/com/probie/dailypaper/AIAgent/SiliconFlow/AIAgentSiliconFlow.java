@@ -3,6 +3,7 @@ package com.probie.dailypaper.AIAgent.SiliconFlow;
 import java.io.File;
 import java.util.function.Supplier;
 import com.probie.dailypaper.AIAgent.AIAgent;
+import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.encryption.Encryption.Encryption;
 import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.IAIAgentSiliconFlow;
 
@@ -25,14 +26,19 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
      * */
     private volatile static AIAgentSiliconFlow INSTANCE;
 
-    @Override
-    public TextToTextAIAgentSiliconFlow getTextToTextAIAgentSiliconFlow() {
-        return TextToTextAIAgentSiliconFlow.getInstance();
-    }
-
-    @Override
-    public TextToImageAIAgentSiliconFlow getTextToImageAIAgentSiliconFlow() {
-        return TextToImageAIAgentSiliconFlow.getInstance();
+    /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static AIAgentSiliconFlow getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AIAgentSiliconFlow() {
+                @Override
+                protected void init() {
+                    setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
+                }
+            };
+        }
+        return INSTANCE;
     }
 
     @Override
@@ -45,21 +51,6 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
         }
         System.exit(0);
         return null;
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static AIAgentSiliconFlow getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new AIAgentSiliconFlow() {
-                @Override
-                protected void init() {
-                    /// 空实现
-                }
-            };
-        }
-        return INSTANCE;
     }
 
 }

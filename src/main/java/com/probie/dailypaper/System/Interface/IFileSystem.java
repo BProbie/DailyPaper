@@ -9,12 +9,12 @@ public interface IFileSystem {
 
     /**
      * 读取本地文件内容
-     * @param path 本地文件路径
+     * @param fullFilePath 完整本地文件路径
      * @return 本地文件内容
      * */
-    default String readLocalFile(String path) {
+    default String readLocalFile(String fullFilePath) {
         try {
-            return Files.readString(Path.of(path));
+            return Files.readString(Path.of(fullFilePath));
         } catch (IOException ioException) {
             throw new RuntimeException(ioException);
         }
@@ -22,12 +22,12 @@ public interface IFileSystem {
 
     /**
      * 读取远程文件内容
-     * @param path 远程文件路径
+     * @param fullRemoteUriPath 完整远程文件网址
      * @return 远程文件内容
      * */
-    default String readRemoteFile(String path) throws URISyntaxException, IOException {
+    default String readRemoteFile(String fullRemoteUriPath) throws URISyntaxException, IOException {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URI(path).toURL().openConnection().getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URI(fullRemoteUriPath).toURL().openConnection().getInputStream()));
             String value = "";
             String temp;
             while ((temp = bufferedReader.readLine())!=null) value += temp + "\n";
@@ -39,14 +39,14 @@ public interface IFileSystem {
 
     /**
      * 下载网络文件到本地
-     * @param urlPath 网络文件网址
+     * @param fullRemoteUriPath 完整远程文件网址
      * @param localFilePath 本地文件路径
      * @param localFileName 本地文件名称
      * @return 是否下载成功
      * */
-    default boolean download(String urlPath, String localFilePath, String localFileName) {
+    default boolean download(String fullRemoteUriPath, String localFilePath, String localFileName) {
         try {
-            return download(urlPath, localFilePath+File.separator+localFileName);
+            return download(fullRemoteUriPath, localFilePath+File.separator+localFileName);
         } catch (URISyntaxException | IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -54,12 +54,12 @@ public interface IFileSystem {
 
     /**
      * 下载网络文件到本地
-     * @param urlPath 网络文件网址
+     * @param fullRemoteUriPath 网络文件网址
      * @param fullLocalFilePath 完整本地路径
      * @return 是否下载成功
      * */
-    default boolean download(String urlPath, String fullLocalFilePath) throws URISyntaxException, IOException {
-        URL url = new URI(urlPath).toURL();
+    default boolean download(String fullRemoteUriPath, String fullLocalFilePath) throws URISyntaxException, IOException {
+        URL url = new URI(fullRemoteUriPath).toURL();
         URLConnection connection = url.openConnection();
         connection.setConnectTimeout(1000*30);
         connection.setReadTimeout(1000*60);

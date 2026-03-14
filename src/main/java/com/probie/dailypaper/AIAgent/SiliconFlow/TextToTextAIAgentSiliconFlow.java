@@ -27,6 +27,16 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
      * */
     private volatile static TextToTextAIAgentSiliconFlow INSTANCE;
 
+    /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static TextToTextAIAgentSiliconFlow getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TextToTextAIAgentSiliconFlow();
+        }
+        return INSTANCE;
+    }
+
     @Override
     protected void init() {
         setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
@@ -87,16 +97,6 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
             throw new RuntimeException(ioException);
         }
         return null;
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static TextToTextAIAgentSiliconFlow getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TextToTextAIAgentSiliconFlow();
-        }
-        return INSTANCE;
     }
 
 }

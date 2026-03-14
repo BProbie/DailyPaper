@@ -29,10 +29,20 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
     private volatile static TextToImageAIAgentSiliconFlow INSTANCE;
 
     /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static TextToImageAIAgentSiliconFlow getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TextToImageAIAgentSiliconFlow();
+        }
+        return INSTANCE;
+    }
+
+    /**
      * 图片生成参数
      * */
-    private Supplier<String> imageSize = DailyPaper.getInstance().getImageSize();
-    private Supplier<Integer> imageCount = DailyPaper.getInstance().getImageCount();
+    private Supplier<String> imageSize = DailyPaper.getInstance().getSpawnImageSize();
+    private Supplier<Integer> imageCount = DailyPaper.getInstance().getSpawnImageCount();
 
     @Override
     protected void init() {
@@ -91,16 +101,6 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
             throw new RuntimeException(ioException);
         }
         return null;
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static TextToImageAIAgentSiliconFlow getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TextToImageAIAgentSiliconFlow();
-        }
-        return INSTANCE;
     }
 
 }

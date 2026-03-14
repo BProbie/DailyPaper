@@ -1,8 +1,6 @@
 module com.probie.dailypaper {
 
-    requires javafx.web;
     requires javafx.fxml;
-    requires javafx.swing;
     requires javafx.controls;
     requires javafx.graphics;
 
@@ -13,16 +11,11 @@ module com.probie.dailypaper {
     requires com.sun.jna;
     requires java.desktop;
     requires java.instrument;
-    requires com.dlsc.formsfx;
-    requires eu.hansolo.tilesfx;
     requires com.sun.jna.platform;
     requires com.alibaba.fastjson2;
-    requires org.controlsfx.controls;
-    requires net.synedra.validatorfx;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
 
     requires static lombok;
+    requires javafx.swing;
 
     exports com.probie.dailypaper;
     exports com.probie.dailypaper.DailyPaper;

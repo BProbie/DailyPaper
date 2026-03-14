@@ -11,48 +11,28 @@ public interface IDailyPaperElement {
     void createElement(Stage stage);
 
     /**
-     * 创建 Stage 舞台元素
+     * 创建 stage 元素
      * */
     void createStageElement();
 
     /**
-     * 创建 Scene 帷幕元素
+     * 创建 scene 元素
      * */
     void createSceneElement();
 
     /**
-     * 创建 RootPane 分页元素
+     * 创建 root 元素
      * */
-    void createRootPaneElement();
+    void createRootElement();
 
     /**
-     * 创建 ChatPane 分页元素
+     * 创建 功能模块 元素
      * */
-    void createChatPaneElement();
-
-    /**
-     * 创建 LivePane 分页元素
-     * */
-    void createLivePaneElement();
-
-    /**
-     * 创建 DailyPane 分页元素
-     * */
-    void createDailyPaneElement();
-
-    /**
-     * 创建 HobbyPane 分页元素
-     * */
-    void createHobbyPaneElement();
-
-    /**
-     * 创建 SettingPane 分页元素
-     * */
-    void createSettingPaneElement();
-
-    /**
-     * 创建 RenewPane 分页元素
-     * */
-    void createRenewPaneElement();
+    void createChatElement();
+    void createLiveElement();
+    void createDailyElement();
+    void createParamElement();
+    void createSettingElement();
+    void createRenewElement();
 
 }

@@ -2,12 +2,10 @@ package com.probie.dailypaper.System.Interface;
 
 import java.awt.*;
 import java.io.File;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Calendar;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import com.probie.dailypaper.DailyPaper.DailyPaper;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import com.probie.dailypaper.System.Interface.Native.User32;
 
 public interface IComputerSystem {
@@ -40,7 +38,7 @@ public interface IComputerSystem {
      * @return 当前格式化时间
      * */
     default String getCurrentFormatDate() {
-        return new SimpleDateFormat(DailyPaper.getInstance().getCurrentDateFormat().get()).format(new Date());
+        return LocalDateTime.now().toString();
     }
 
     /**

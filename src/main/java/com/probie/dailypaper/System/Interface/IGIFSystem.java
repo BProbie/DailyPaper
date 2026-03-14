@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+
+import com.probie.dailypaper.System.ImageSystem;
 import javafx.scene.image.Image;
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
@@ -117,7 +119,7 @@ public interface IGIFSystem {
         BufferedImage[] bufferedImages = turnGIFToBufferedImages(fullGIFFilePath);
         Image[] images = new Image[bufferedImages.length];
         for (int i = 0; i < bufferedImages.length; i++) {
-            images[i] = DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
+            images[i] = ImageSystem.getInstance().turnBufferedImageToFXImage(bufferedImages[i]);
         }
         return images;
     }
@@ -131,7 +133,7 @@ public interface IGIFSystem {
         BufferedImage[] bufferedImages = turnGIFToBufferedImages(gifFile);
         Image[] images = new Image[bufferedImages.length];
         for (int i = 0; i < bufferedImages.length; i++) {
-            images[i] = DailyPaper.getInstance().getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
+            images[i] = ImageSystem.getInstance().turnBufferedImageToFXImage(bufferedImages[i]);
         }
         return images;
     }

@@ -15,6 +15,16 @@ public class NetworkSystem implements INetworkSystem, X509TrustManager {
      * */
     private volatile static NetworkSystem INSTANCE;
 
+    /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static NetworkSystem getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new NetworkSystem();
+        }
+        return INSTANCE;
+    }
+
     @Override
     public void trustConnect() {
         trustSSL();
@@ -46,16 +56,6 @@ public class NetworkSystem implements INetworkSystem, X509TrustManager {
     @Override
     public X509Certificate[] getAcceptedIssuers() {
         return new X509Certificate[0];
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static NetworkSystem getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new NetworkSystem();
-        }
-        return INSTANCE;
     }
 
 }

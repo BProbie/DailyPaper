@@ -10,7 +10,7 @@ public class ImageSystem extends FileSystem implements IImageSystem {
     private volatile static ImageSystem INSTANCE;
 
     /**
-     * 获取懒加载的类单例对象
+     * 获取一个懒加载的类单例对象
      * */
     public synchronized static ImageSystem getInstance() {
         if (INSTANCE == null) {

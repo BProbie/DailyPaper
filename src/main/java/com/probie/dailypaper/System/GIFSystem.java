@@ -10,7 +10,7 @@ public class GIFSystem extends PictureSystem implements IGIFSystem {
     private volatile static GIFSystem INSTANCE;
 
     /**
-     * 获取懒加载的类单例对象
+     * 获取一个懒加载的类单例对象
      * */
     public synchronized static GIFSystem getInstance() {
         if (INSTANCE == null) {

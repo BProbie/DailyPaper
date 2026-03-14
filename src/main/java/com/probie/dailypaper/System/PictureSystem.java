@@ -10,7 +10,7 @@ public class PictureSystem extends ImageSystem implements IPictureSystem {
     private volatile static PictureSystem INSTANCE;
 
     /**
-     * 获取懒加载的类单例对象
+     * 获取一个懒加载的类单例对象
      * */
     public synchronized static PictureSystem getInstance() {
         if (INSTANCE == null) {

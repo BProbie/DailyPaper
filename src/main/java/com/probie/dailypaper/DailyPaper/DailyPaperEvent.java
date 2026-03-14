@@ -1,5 +1,14 @@
 package com.probie.dailypaper.DailyPaper;
 
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.Config.LiveImageConfig;
+import com.probie.dailypaper.Config.SettingConfig;
+import com.probie.dailypaper.System.ComputerSystem;
+import com.probie.dailypaper.System.GIFSystem;
+import com.probie.dailypaper.System.ImageSystem;
+import javafx.stage.FileChooser;
+import lombok.Data;
 import java.io.File;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
@@ -18,10 +27,9 @@ import javafx.scene.input.Clipboard;
 import java.util.concurrent.TimeUnit;
 import javafx.stage.DirectoryChooser;
 import javafx.scene.input.ClipboardContent;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicBoolean;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 
+@Data
 public class DailyPaperEvent implements IDailyPaperEvent {
 
     /**
@@ -30,12 +38,25 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     private volatile static DailyPaperEvent INSTANCE;
 
     /**
-     * 懒加载的工具类单例对象
+     * 获取一个懒加载的类单例对象
      * */
-    private DailyPaper dailyPaper;
-    private DailyPaperApplication dailyPaperApplication;
-    private DailyPaperElement dailyPaperElement;
-    private DailyPaperStyle dailyPaperStyle;
+    public synchronized static DailyPaperEvent getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new DailyPaperEvent();
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * 工具类单例对象
+     * */
+    private volatile static DailyPaper dailyPaper = DailyPaper.getInstance();
+    private volatile static DailyPaperApplication dailyPaperApplication = DailyPaperApplication.getINSTANCE();
+    private volatile static DailyPaperElement dailyPaperElement = DailyPaperElement.getInstance();
+    private volatile static DailyPaperStyle dailyPaperStyle = DailyPaperStyle.getInstance();
+    private volatile static DailyPaperEvent dailyPaperEvent = DailyPaperEvent.getInstance();
+    private volatile static DailyPaperData dailyPaperData = DailyPaperData.getInstance();
+    private volatile static DailyPaperFunction dailyPaperFunction = DailyPaperFunction.getInstance();
 
     /**
      * 动态变量
@@ -46,46 +67,15 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     @Override
     public void createEvent() {
 
-        /// 初始化工具类单例对象
-        if (dailyPaper == null) {
-            dailyPaper = DailyPaper.getInstance();
-        }
-        if (dailyPaperApplication == null) {
-            dailyPaperApplication = DailyPaperApplication.getINSTANCE();
-        }
-        if (dailyPaperElement == null) {
-            dailyPaperElement = DailyPaperElement.getInstance();
-        }
-        if (dailyPaperStyle == null) {
-            dailyPaperStyle = DailyPaperStyle.getInstance();
-        }
-
-        /// 创建 Stage 舞台事件
         createStageEvent();
-
-        /// 创建 Scene 帷幕事件
         createSceneEvent();
-
-        /// 创建 RootPane 分页事件
-        createRootPaneEvent();
-
-        /// 创建 ChatPane 分页事件
-        createChatPaneEvent();
-
-        /// 创建 LivePane 分页事件
-        createLivePaneEvent();
-
-        /// 创建 DailyPane 分页事件
-        createDailyPaneEvent();
-
-        /// 创建 HobbyPane 分页事件
-        createHobbyPaneEvent();
-
-        /// 创建 SettingPane 分页事件
-        createSettingPaneEvent();
-
-        /// 创建 RenewPane 分页事件
-        createRenewPaneEvent();
+        createRootEvent();
+        createChatEvent();
+        createLiveEvent();
+        createDailyEvent();
+        createHobbyEvent();
+        createSettingEvent();
+        createRenewEvent();
 
     }
 
@@ -100,14 +90,14 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     }
 
     @Override
-    public void createRootPaneEvent() {
+    public void createRootEvent() {
         /// 拖拽窗口
-        dailyPaperElement.getRootPaneTitleBar().setOnMousePressed(mouseEvent -> {
+        dailyPaperElement.getRootPaneTopTitleBarHBox().setOnMousePressed(mouseEvent -> {
             mouseStartX = mouseEvent::getScreenX;
             mouseStartY = mouseEvent::getScreenY;
             mouseEvent.consume();
         });
-        dailyPaperElement.getRootPaneTitleBar().setOnMouseDragged(mouseEvent -> {
+        dailyPaperElement.getRootPaneTopTitleBarHBox().setOnMouseDragged(mouseEvent -> {
             dailyPaperElement.getStage().setX(dailyPaperElement.getStage().getX() + (mouseEvent.getScreenX() - mouseStartX.get()));
             dailyPaperElement.getStage().setY(dailyPaperElement.getStage().getY() + (mouseEvent.getScreenY() - mouseStartY.get()));
             mouseStartX = mouseEvent::getScreenX;
@@ -116,650 +106,434 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         });
 
         /// 最小化 最大化 关闭
-        dailyPaperElement.getRootPaneTileBarMinButton().setOnAction(actionEvent -> dailyPaperElement.getStage().setIconified(true));
-        dailyPaperElement.getRootPaneTitleBarMaxButton().setOnAction(actionEvent -> {
+        dailyPaperElement.getRootPaneTopTitleBarMinButton().setOnAction(actionEvent -> dailyPaperElement.getStage().setIconified(true));
+        dailyPaperElement.getRootPaneTopTitleBarMaxButton().setOnAction(actionEvent -> {
             dailyPaperElement.getStage().setMaximized(!dailyPaperElement.getStage().isMaximized());
-            dailyPaperElement.getRootPaneTitleBarMaxButton().setText(dailyPaperElement.getStage().isMaximized() ? "⊟" : "□");
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getChatPane()) {
-                dailyPaperStyle.createChatPaneStyle();
-            }
+            dailyPaperElement.getRootPaneTopTitleBarMaxButton().setText(dailyPaperElement.getStage().isMaximized() ? "⊟" : "□");
         });
-        dailyPaperElement.getRootPaneTitleBarCloseButton().setOnAction(actionEvent -> dailyPaperApplication.stop());
+        dailyPaperElement.getRootPaneTopTitleBarCloseButton().setOnAction(actionEvent -> dailyPaperApplication.stop());
 
         /// 菜单选择
-        dailyPaperElement.getRootPaneMenuBarChatButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getChatPane()) {
-                clearChatPane();
-            }
-            changeCenterPane(dailyPaperElement.getChatPane());
-        });
-
-        dailyPaperElement.getRootPaneMenuBarLiveButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getLivePane()) {
-                clearLivePane();
-            }
-            changeCenterPane(dailyPaperElement.getLivePane());
-        });
-
-        dailyPaperElement.getRootPaneMenuBarDailyButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getDailyPane()) {
-                clearDailyPane();
-            }
-            changeCenterPane(dailyPaperElement.getDailyPane());
-        });
-
-        dailyPaperElement.getRootPaneMenuBarHobbyButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getHobbyPane()) {
-                clearHobbyPane();
-            }
-            changeCenterPane(dailyPaperElement.getHobbyPane());
-        });
-
-        dailyPaperElement.getRootPaneMenuBarSettingButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getSettingPane()) {
-                clearSettingPane();
-            }
-            changeCenterPane(dailyPaperElement.getSettingPane());
-        });
-
-        dailyPaperElement.getRootPaneMenuBarRenewButton().setOnAction(actionEvent -> {
-            if (dailyPaperElement.getRootPaneCenterPane().getChildren().getFirst() == dailyPaperElement.getRenewPane()) {
-                clearRenewPane();
-            }
-            changeCenterPane(dailyPaperElement.getRenewPane());
-        });
+        dailyPaperElement.getRootPaneLeftMenuBarChatButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getChatVBox()));
+        dailyPaperElement.getRootPaneLeftMenuBarLiveButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getLiveVBox()));
+        dailyPaperElement.getRootPaneLeftMenuBarDailyButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getDailyVBox()));
+        dailyPaperElement.getRootPaneLeftMenuBarParamButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getParamVBox()));
+        dailyPaperElement.getRootPaneLeftMenuBarSettingButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getSettingVBox()));
+        dailyPaperElement.getRootPaneLeftMenuBarRenewButton().setOnAction(actionEvent -> dailyPaperFunction.chooseMenu(dailyPaperElement.getRenewVBox()));
     }
 
     @Override
-    public void createChatPaneEvent() {
-        dailyPaperElement.getChatPaneTextInputArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+    public void createChatEvent() {
+        dailyPaperElement.getChatTextInputTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 if (keyEvent.isShiftDown() || keyEvent.isControlDown() || keyEvent.isAltDown()) {
-                    /// 用户
-                    VBox chatPaneUserMessageVBox = new VBox();
-                    Label chatPaneUserMessageLabel = new Label();
+                    if (!dailyPaperElement.getChatTextInputTextArea().getText().isEmpty()) {
+                        /// User
+                        VBox chatUserMessageBar = new VBox();
+                        VBox chatUserMessageContent = new VBox();
+                        Label chatUserMessageLabel = new Label();
 
-                    chatPaneUserMessageVBox.setMinHeight(Region.USE_COMPUTED_SIZE);
-                    chatPaneUserMessageVBox.setAlignment(Pos.CENTER_RIGHT);
-                    chatPaneUserMessageVBox.setFillWidth(true);
+                        chatUserMessageBar.prefWidthProperty().bind(dailyPaperElement.getChatTextShowMessageVBox().widthProperty());
+                        chatUserMessageBar.setFillWidth(true);
+                        chatUserMessageBar.setAlignment(Pos.CENTER_RIGHT);
 
-                    chatPaneUserMessageLabel.maxWidthProperty().bind(chatPaneUserMessageVBox.widthProperty().divide(2.0).subtract(dailyPaperElement.getOffset().get() * 2.0));
-                    chatPaneUserMessageLabel.setFont(new Font(dailyPaperElement.getChatPaneTextShowAreaFontSize().get()));
-                    chatPaneUserMessageLabel.setText(dailyPaperElement.getChatPaneTextInputArea().getText());
-                    chatPaneUserMessageLabel.setPadding(new Insets(10));
-                    chatPaneUserMessageLabel.setBorder(new Border(new BorderStroke(
-                            Color.PURPLE,
-                            BorderStrokeStyle.SOLID,
-                            new CornerRadii(10),
-                            new BorderWidths(2)
-                    )));
-                    chatPaneUserMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
-                    chatPaneUserMessageLabel.setAlignment(Pos.CENTER_RIGHT);
-                    chatPaneUserMessageLabel.setWrapText(true);
+                        chatUserMessageContent.maxWidthProperty().bind(chatUserMessageBar.widthProperty().divide(9.0).multiply(4.0));
+                        chatUserMessageContent.setFillWidth(true);
+                        chatUserMessageContent.setAlignment(Pos.CENTER_RIGHT);
 
-                    chatPaneUserMessageVBox.getChildren().addAll(chatPaneUserMessageLabel);
-                    dailyPaperElement.getChatPaneMessageVBox().getChildren().addAll(chatPaneUserMessageVBox);
-                    dailyPaperElement.getChatPaneUserMessageArrayList().add(chatPaneUserMessageLabel.getText());
-                    scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
+                        chatUserMessageLabel.setText(dailyPaperElement.getChatTextInputTextArea().getText());
+                        chatUserMessageLabel.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                        chatUserMessageLabel.setAlignment(Pos.CENTER_RIGHT);
+                        chatUserMessageLabel.setWrapText(true);
 
-                    /// AI
-                    VBox chatPaneAgentMessageVBox = new VBox();
-                    Label chatPaneAgentMessageLabel = new Label();
+                        chatUserMessageLabel.setPadding(new Insets(dailyPaperData.getSpacingSizeSmall().get()));
+                        chatUserMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
+                        chatUserMessageLabel.setBorder(new Border(new BorderStroke(
+                                Color.PURPLE,
+                                BorderStrokeStyle.SOLID,
+                                new CornerRadii(dailyPaperData.getSpacingSizeSmall().get()),
+                                new BorderWidths(dailyPaperData.getSpacingSizeSmallSmall().get())
+                        )));
 
-                    chatPaneAgentMessageVBox.setMinHeight(Region.USE_COMPUTED_SIZE);
-                    chatPaneAgentMessageVBox.setAlignment(Pos.CENTER_LEFT);
-                    chatPaneAgentMessageVBox.setFillWidth(true);
+                        chatUserMessageContent.getChildren().addAll(chatUserMessageLabel);
+                        chatUserMessageBar.getChildren().addAll(chatUserMessageContent);
+                        dailyPaperElement.getChatTextShowMessageVBox().getChildren().addAll(chatUserMessageBar);
+                        dailyPaperData.getChatUserMessageArrayList().add(chatUserMessageLabel.getText());
 
-                    chatPaneAgentMessageLabel.maxWidthProperty().bind(chatPaneAgentMessageVBox.widthProperty().divide(2.0).subtract(dailyPaperElement.getOffset().get() * 2.0));
-                    chatPaneAgentMessageLabel.setFont(new Font(dailyPaperElement.getChatPaneTextShowAreaFontSize().get()));
-                    chatPaneAgentMessageLabel.setPadding(new Insets(10));
-                    chatPaneAgentMessageLabel.setBorder(new Border(new BorderStroke(
-                            Color.GOLD,
-                            BorderStrokeStyle.SOLID,
-                            new CornerRadii(10),
-                            new BorderWidths(2)
-                    )));
-                    chatPaneAgentMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
-                    chatPaneAgentMessageLabel.setText("...");
-                    chatPaneAgentMessageLabel.setAlignment(Pos.CENTER_LEFT);
-                    chatPaneAgentMessageLabel.setWrapText(true);
-                    chatPaneAgentMessageLabel.setContentDisplay(ContentDisplay.TOP);
+                        dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
 
-                    chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageLabel);
-                    dailyPaperElement.getChatPaneMessageVBox().getChildren().addAll(chatPaneAgentMessageVBox);
-                    scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
-                    dailyPaperElement.getChatPaneTextInputArea().clear();
+                        /// AI
+                        VBox chatAgentMessageBar = new VBox();
+                        VBox chatAgentMessageContent = new VBox();
+                        Label chatAgentMessageLabel = new Label();
 
-                    /// 调用 API
-                    dailyPaperElement.getAgentConnectionPool().submit(() -> {
-                        /// 收集上下文
-                        try {
-                            Platform.runLater(() -> chatPaneAgentMessageLabel.setText("收集上下文..."));
-                            String prompt = "";
-                            if (dailyPaperElement.getChatPaneUserMessageArrayList().size() > 1) {
-                                for (int i = dailyPaperElement.getChatPaneUserMessageArrayList().size() - 1 - 1; i >= 0 && prompt.length() <= 10000; i--) {
-                                    if (dailyPaperElement.getChatPaneAgentMessageArrayList().size() >= i + 1) {
-                                        prompt = "\nAI：%s".formatted(dailyPaperElement.getChatPaneAgentMessageArrayList().get(i)) + prompt;
+                        chatAgentMessageBar.prefWidthProperty().bind(dailyPaperElement.getChatTextShowMessageVBox().widthProperty());
+                        chatAgentMessageBar.setAlignment(Pos.CENTER_LEFT);
+
+                        chatAgentMessageContent.maxWidthProperty().bind(chatAgentMessageBar.widthProperty().divide(9.0).multiply(4.0));
+                        chatAgentMessageContent.setAlignment(Pos.CENTER_LEFT);
+
+                        chatAgentMessageLabel.setText("等待响应中...");
+                        chatAgentMessageLabel.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                        chatAgentMessageLabel.setAlignment(Pos.CENTER_LEFT);
+                        chatAgentMessageLabel.setWrapText(true);
+
+                        chatAgentMessageLabel.setPadding(new Insets(dailyPaperData.getSpacingSizeSmall().get()));
+                        chatAgentMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
+                        chatAgentMessageLabel.setBorder(new Border(new BorderStroke(
+                                Color.GOLD,
+                                BorderStrokeStyle.SOLID,
+                                new CornerRadii(dailyPaperData.getSpacingSizeSmall().get()),
+                                new BorderWidths(dailyPaperData.getSpacingSizeSmallSmall().get())
+                        )));
+
+                        chatAgentMessageContent.getChildren().addAll(chatAgentMessageLabel);
+                        chatAgentMessageBar.getChildren().addAll(chatAgentMessageContent);
+                        dailyPaperElement.getChatTextShowMessageVBox().getChildren().addAll(chatAgentMessageBar);
+
+                        dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextInputScrollPane());
+                        dailyPaperElement.getChatTextInputTextArea().clear();
+
+                        /// AI 回复
+                        dailyPaper.getDailyPaperPool().submit(() -> {
+                            /// 收集上下文
+                            try {
+                                Platform.runLater(() -> chatAgentMessageLabel.setText("收集上下文..."));
+                                StringBuilder content = new StringBuilder();
+                                if (dailyPaperData.getChatUserMessageArrayList().size() > 1) {
+                                    for (int i = dailyPaperData.getChatUserMessageArrayList().size() - 1 - 1; i >= 0 && content.length() <= 10000; i--) {
+                                        if (dailyPaperData.getChatAgentMessageArrayList().size() >= i + 1) {
+                                            content = new StringBuilder("\nAI：%s".formatted(dailyPaperData.getChatAgentMessageArrayList().get(i)) + content);
+                                        }
+                                        content = new StringBuilder("\n用户：%s".formatted(dailyPaperData.getChatUserMessageArrayList().get(i)) + content);
                                     }
-                                    prompt = "\n用户：%s".formatted(dailyPaperElement.getChatPaneUserMessageArrayList().get(i)) + prompt;
+                                    content = new StringBuilder("\n*历史对话记录：%s".formatted(content));
                                 }
-                                prompt = "\n*历史对话记录：%s".formatted(prompt);
-                            }
-                            prompt = "*信息背景：\n%s".formatted(dailyPaperElement.getPromptInformationPrompt().get() + prompt);
-                            prompt += "\n*用户现在需求：\n%s".formatted(dailyPaperElement.getChatPaneUserMessageArrayList().getLast());
+                                content = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + content));
+                                content.append("\n*用户现在需求：\n%s".formatted(dailyPaperData.getChatUserMessageArrayList().getLast()));
 
-                            Platform.runLater(() -> chatPaneAgentMessageLabel.setText("需求分析中..."));
-                            String[] ifImage = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptIfImagePrompt().get() + prompt);
+                                Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
+                                String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get() + content);
 
-                            /// 文本
-                            if (!ifImage[0].contains("是")) {
-                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText("文本生成中..."));
-                                String[] result = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(prompt);
-                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText(result[0]));
+                                /// 生成文本
+                                if (!ifImage[0].contains("是")) {
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("文本生成中..."));
+                                    String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(content.toString());
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
 
-                                Platform.runLater(() -> {
-                                    HBox chatPaneAgentMessageCopyTextButtonBar = new HBox();
-                                    Button button = new Button("点击复制文本");
-
-                                    chatPaneAgentMessageCopyTextButtonBar.setMaxWidth(chatPaneAgentMessageLabel.widthProperty().get());
-
-                                    button.setOnAction(actionEvent -> {
-                                        Clipboard clipboard = Clipboard.getSystemClipboard();
-                                        ClipboardContent clipboardContent = new ClipboardContent();
-                                        clipboardContent.putString(chatPaneAgentMessageLabel.getText());
-                                        clipboard.setContent(clipboardContent);
-                                    });
-                                    button.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
-                                    if (dailyPaperElement.getChatPaneButtonWidth().get() > chatPaneAgentMessageLabel.widthProperty().get()) {
-                                        button.setMinWidth(chatPaneAgentMessageLabel.widthProperty().get());
-                                    }
-                                    button.setMinHeight(dailyPaperElement.getChatPaneButtonHeight().get());
-
-                                    chatPaneAgentMessageCopyTextButtonBar.getChildren().addAll(button);
-                                    chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageCopyTextButtonBar);
-                                });
-
-                                scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
-                                dailyPaperElement.getChatPaneAgentMessageArrayList().add(result[0]);
-                            }
-
-                            /// 图片
-                            else {
-                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText("图片生成中..."));
-
-                                String result = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptSpawnImageResultPrompt().get() + prompt)[0];
-
-                                HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
-                                HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
-                                DirectoryChooser directoryChooser = new DirectoryChooser();
-                                directoryChooser.setInitialDirectory(new File(dailyPaper.getRootPath().get()));
-
-                                chatPaneAgentMessageSetWallpaperButtonBar.setMaxWidth(chatPaneAgentMessageLabel.maxWidthProperty().get());
-                                chatPaneAgentMessageDownloadImageButtonBar.setMaxWidth(chatPaneAgentMessageLabel.maxWidthProperty().get());
-
-                                prompt = dailyPaper.getTextToTextAIAgentSiliconFlow().turnTextToText(dailyPaperElement.getPromptSpawnImagePrompt().get() + prompt)[0];
-                                String[] imageURIs = dailyPaper.getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt);
-                                for (int i = 0; i < imageURIs.length; i++) {
-                                    BufferedImage bufferedImage = dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[i]);
-                                    bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, (int) ((chatPaneAgentMessageLabel.maxWidthProperty().get())), (int) ((double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[1]) * (((chatPaneAgentMessageLabel.maxWidthProperty().get())) / (double) Integer.parseInt(dailyPaper.getImageSize().get().split("x")[0]))));
-                                    ImageView imageView = new ImageView(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
-                                    int index = i;
                                     Platform.runLater(() -> {
-                                        chatPaneAgentMessageVBox.getChildren().addAll(imageView);
-                                        Button setWallPaperButton = new Button("点击设为壁纸");
-                                        Button downLoadImageButton = new Button("点击下载图片");
-                                        if (imageURIs.length > 1) {
-                                            setWallPaperButton.setText("点击设置图片%d为壁纸".formatted(index + 1));
-                                            downLoadImageButton.setText("点击下图片%d到本地".formatted(index + 1));
-                                        }
-                                        setWallPaperButton.setOnAction(actionEvent -> {
-                                            clearLiveImageWallpaper();
-                                            dailyPaper.getImageSystem().turnBufferedImageToLocalFile(dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[index]), dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
-                                            dailyPaper.getImageSystem().setWallPaper(dailyPaper.getRootPath().get(), dailyPaper.getImageFileName().get());
+                                        HBox chatPaneAgentMessageCopyTextButtonBar = new HBox();
+                                        Button chatPaneAgentMessageCopyTextButton = new Button("点击复制文本");
+
+                                        chatPaneAgentMessageCopyTextButtonBar.setMaxWidth(chatAgentMessageLabel.widthProperty().get());
+
+                                        chatPaneAgentMessageCopyTextButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+
+                                        chatPaneAgentMessageCopyTextButton.setOnAction(actionEvent -> {
+                                            ClipboardContent clipboardContent = new ClipboardContent();
+                                            clipboardContent.putString(chatAgentMessageLabel.getText());
+                                            Clipboard.getSystemClipboard().setContent(clipboardContent);
                                         });
 
-                                        downLoadImageButton.setOnAction(actionEvent -> {
-                                            File file = directoryChooser.showDialog(dailyPaperElement.getStage());
-                                            if (file != null) {
-                                                int count = 0;
-                                                while (new File(file.getAbsolutePath()+File.separator+count+".png").exists()) count++;
-                                                dailyPaper.getImageSystem().turnBufferedImageToLocalFile(dailyPaper.getImageSystem().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath()+File.separator+count+".png");
-                                            }
-                                        });
-                                        setWallPaperButton.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
-                                        downLoadImageButton.setMinWidth(dailyPaperElement.getChatPaneButtonWidth().get());
-                                        if (imageURIs.length * dailyPaperElement.getChatPaneButtonWidth().get() > chatPaneAgentMessageLabel.maxWidthProperty().get()) {
-                                            setWallPaperButton.setMinWidth(chatPaneAgentMessageLabel.widthProperty().get() / imageURIs.length);
-                                            downLoadImageButton.setMinWidth(chatPaneAgentMessageLabel.widthProperty().get() / imageURIs.length);
-                                        }
-                                        setWallPaperButton.setMinHeight(dailyPaperElement.getChatPaneButtonHeight().get());
-                                        downLoadImageButton.setMinHeight(dailyPaperElement.getChatPaneButtonHeight().get());
-                                        chatPaneAgentMessageSetWallpaperButtonBar.getChildren().addAll(setWallPaperButton);
-                                        chatPaneAgentMessageDownloadImageButtonBar.getChildren().addAll(downLoadImageButton);
+                                        chatPaneAgentMessageCopyTextButtonBar.getChildren().addAll(chatPaneAgentMessageCopyTextButton);
+                                        chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageCopyTextButtonBar);
+
                                     });
+                                    dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
+                                    dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
                                 }
 
-                                Platform.runLater(() -> chatPaneAgentMessageLabel.setText(result));
-                                Platform.runLater(() -> chatPaneAgentMessageVBox.getChildren().addAll(chatPaneAgentMessageSetWallpaperButtonBar, chatPaneAgentMessageDownloadImageButtonBar));
-                                scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
-                                dailyPaperElement.getChatPaneAgentMessageArrayList().add(result);
+                                /// 生成图片
+                                else {
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
+
+                                    String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImageResultPrompt().get() + content);
+
+                                    HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
+                                    HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
+                                    FileChooser fileChooser = new FileChooser();
+
+                                    chatPaneAgentMessageSetWallpaperButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
+                                    chatPaneAgentMessageDownloadImageButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
+                                    fileChooser.getExtensionFilters().addAll(
+                                            new FileChooser.ExtensionFilter("ALL", "*.*"),
+                                            new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                                            new FileChooser.ExtensionFilter("PNG", "*.png"),
+                                            new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                                            new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
+                                    );
+
+                                    String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + content)[0];
+                                    String[] imageURIs = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
+                                    for (int i = 0; i < imageURIs.length; i++) {
+                                        BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[i]);
+                                        bufferedImage = ImageSystem.getInstance().setBufferedImageSize(bufferedImage, (int) ((chatAgentMessageContent.widthProperty().get())), (int) ((double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[1]) * (((chatAgentMessageContent.widthProperty().get())) / (double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[0]))));
+                                        ImageView imageView = new ImageView(ImageSystem.getInstance().turnBufferedImageToFXImage(bufferedImage));
+                                        int index = i;
+                                        Platform.runLater(() -> {
+                                            chatAgentMessageBar.getChildren().addAll(imageView);
+                                            Button chatPaneAgentMessagesetWallPaperButton = new Button("点击设为壁纸");
+                                            Button chatPaneAgentMessagedownLoadImageButton = new Button("点击下载图片");
+                                            chatPaneAgentMessagesetWallPaperButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                            chatPaneAgentMessagedownLoadImageButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                            if (imageURIs.length > 1) {
+                                                chatPaneAgentMessagesetWallPaperButton.setText("点击设置图片%d为壁纸".formatted(index + 1));
+                                                chatPaneAgentMessagedownLoadImageButton.setText("点击下载图片%d到本地".formatted(index + 1));
+                                            }
+                                            chatPaneAgentMessagesetWallPaperButton.setOnAction(actionEvent -> {
+                                                dailyPaperFunction.clearLiveImageWallpaper();
+                                                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
+                                                    dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置壁纸成功");
+                                                    ImageSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
+                                                } else {
+                                                    dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置壁纸失败");
+                                                }
+                                            });
+
+                                            chatPaneAgentMessagedownLoadImageButton.setOnAction(actionEvent -> {
+                                                fileChooser.setInitialDirectory(new File(dailyPaper.getChatImageDownloadFilePath().get()));
+                                                fileChooser.setInitialFileName(dailyPaper.getChatImageDownloadFileName().get());
+                                                File file = fileChooser.showSaveDialog(dailyPaperElement.getStage());
+                                                if (file != null) {
+                                                    dailyPaper.setChatImageDownloadFilePath(file::getParent);
+                                                    ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath());
+                                                }
+                                            });
+                                            
+                                            chatPaneAgentMessageSetWallpaperButtonBar.getChildren().addAll(chatPaneAgentMessagesetWallPaperButton);
+                                            chatPaneAgentMessageDownloadImageButtonBar.getChildren().addAll(chatPaneAgentMessagedownLoadImageButton);
+                                        });
+                                    }
+
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
+                                    Platform.runLater(() -> chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageSetWallpaperButtonBar, chatPaneAgentMessageDownloadImageButtonBar));
+
+                                    dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
+                                    dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
+                                }
                             }
-                        } catch (Exception exception) {
-                            Platform.runLater(() -> chatPaneAgentMessageLabel.setText("不小心出错了:\n" + exception));
-                            scrollToBottom(dailyPaperElement.getChatPaneTextShowArea());
-                        }
-                    });
+
+                            /// 异常处理
+                            catch (Exception exception) {
+                                Platform.runLater(() -> chatAgentMessageLabel.setText("不小心出错了:\n" + exception));
+                                dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
+                            }
+                        });
+                    }
                 }
             }
         });
     }
 
     @Override
-    public void createLivePaneEvent() {
-        dailyPaperElement.getLivePaneImageChooseButton().setOnAction(actionEvent -> {
-            File file = dailyPaperElement.getLivePaneImageFileChooser().showOpenDialog(dailyPaperElement.getStage());
-            clearLivePane();
+    public void createLiveEvent() {
+        dailyPaperElement.getLiveImageChooseButton().setOnAction(actionEvent -> {
+            dailyPaperElement.getLiveImageChooseFileChooser().setInitialDirectory(new File(dailyPaper.getLiveImageChosenFilePath().get()));
+            File file = dailyPaperElement.getLiveImageChooseFileChooser().showOpenDialog(dailyPaperElement.getStage());
+            dailyPaperFunction.clearLive();
             if (file != null) {
-                dailyPaperElement.getLivePaneImageChooseLabel().setText(file.getAbsolutePath());
+                dailyPaperElement.getLiveImageChooseLabel().setText(file.getAbsolutePath());
                 dailyPaper.setLiveImageChosenFilePath(file::getParent);
-                dailyPaperElement.getLivePaneImageFileChooser().setInitialDirectory(new File(dailyPaper.LiveImageChosenFilePath.get()));
-                try {
-                    Thread.sleep(dailyPaperElement.getDelay().get());
-                } catch (InterruptedException interruptedException) {
-                    throw new RuntimeException(interruptedException);
-                }
+                dailyPaperFunction.waitADelay(10);
 
-                /// 图片
+                /// 图片壁纸
                 if (file.getAbsolutePath().toLowerCase().endsWith(".png") || file.getAbsolutePath().toLowerCase().endsWith(".jpg") || file.getAbsolutePath().toLowerCase().endsWith(".jpeg")) {
-                    BufferedImage bufferedImage = dailyPaper.getImageSystem().turnLocalFileToBufferedImage(file.getAbsolutePath());
-                    if (bufferedImage.getWidth() > dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get()) {
-                        int width = (int) dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get();
-                        int height = (int) (bufferedImage.getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get() / bufferedImage.getWidth()));
-                        bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
+                    BufferedImage bufferedImage = ImageSystem.getInstance().turnLocalFileToBufferedImage(file.getAbsolutePath());
+                    BufferedImage fitBufferedImage = bufferedImage;
+                    if (fitBufferedImage.getWidth() > dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get()) {
+                        int width = (int) dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get();
+                        int height = (int) (fitBufferedImage.getHeight() * (dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get() / fitBufferedImage.getWidth()));
+                        fitBufferedImage = ImageSystem.getInstance().setBufferedImageSize(fitBufferedImage, width, height);
                     }
-                    if (bufferedImage.getHeight() > dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get()) {
-                        int height = (int) dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get();
-                        int width = (int) (bufferedImage.getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get() / bufferedImage.getHeight()));
-                        bufferedImage = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImage, width, height);
+                    if (fitBufferedImage.getHeight() > dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get()) {
+                        int height = (int) dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get();
+                        int width = (int) (fitBufferedImage.getWidth() * (dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get() / fitBufferedImage.getHeight()));
+                        fitBufferedImage =  ImageSystem.getInstance().setBufferedImageSize(fitBufferedImage, width, height);
                     }
-                    dailyPaperElement.getLivePaneImageShowImageView().setImage(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
+                    dailyPaperElement.getLiveImageShowImageView().setImage(ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImage));
 
-                    Button button = new Button("点击设为壁纸");
-                    button.setFont(new Font(dailyPaperElement.getLivePaneButtonFontSize().get()));
-                    button.setMinWidth(bufferedImage.getWidth());
-                    button.setMinHeight(dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().get());
-                    button.setOnAction(event -> {
-                        clearLiveImageWallpaper();
-                        dailyPaper.getImageSystem().setWallPaper(file.getAbsolutePath());
+                    Button livePaneImageSureButton = new Button("点击设为壁纸");
+                    livePaneImageSureButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                    livePaneImageSureButton.setPrefWidth(fitBufferedImage.getWidth());
+                    livePaneImageSureButton.setPrefHeight(dailyPaperElement.getLiveImageSureHBox().prefHeightProperty().get());
+                    livePaneImageSureButton.setOnAction(actionEvent1 -> {
+                        if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
+                            dailyPaperFunction.showButtonInformation(livePaneImageSureButton, "壁纸设置成功");
+                            dailyPaperFunction.clearLiveImageWallpaper();
+                            ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
+                        } else {
+                            dailyPaperFunction.showButtonInformation(livePaneImageSureButton, "壁纸设置失败");
+                        }
                     });
-                    dailyPaperElement.getLivePaneImageSureHBox().getChildren().addAll(button);
+                    dailyPaperElement.getLiveImageSureHBox().getChildren().addAll(livePaneImageSureButton);
                 }
 
-                /// GIF
+                /// 动图壁纸
                 else if (file.getAbsolutePath().toLowerCase().endsWith(".gif")) {
-                    BufferedImage[] bufferedImages = dailyPaper.getGIFSystem().turnGIFToBufferedImages(file.getAbsolutePath());
-                    for (int i = 0; i < bufferedImages.length; i++) {
-                        if (bufferedImages[i].getWidth() > dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get()) {
-                            int width = (int) dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get();
-                            int height = (int) (bufferedImages[i].getHeight() * (dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().get() / bufferedImages[i].getWidth()));
-                            bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
+                    BufferedImage[] bufferedImages  = GIFSystem.getInstance().turnGIFToBufferedImages(file.getAbsolutePath());
+                    BufferedImage[] fitBufferedImages = bufferedImages.clone();
+                    for (int i = 0; i < fitBufferedImages.length; i++) {
+                        if (fitBufferedImages[i].getWidth() > dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get()) {
+                            int width = (int) dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get();
+                            int height = (int) (fitBufferedImages[i].getHeight() * (dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get() / fitBufferedImages[i].getWidth()));
+                            fitBufferedImages[i] = ImageSystem.getInstance().setBufferedImageSize(fitBufferedImages[i], width, height);
                         }
-                        if (bufferedImages[i].getHeight() > dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get()) {
-                            int height = (int) dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get();
-                            int width = (int) (bufferedImages[i].getWidth() * (dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().get() / bufferedImages[i].getHeight()));
-                            bufferedImages[i] = dailyPaper.getImageSystem().setBufferedImageSize(bufferedImages[i], width, height);
+                        if (fitBufferedImages[i].getHeight() > dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get()) {
+                            int height = (int) dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get();
+                            int width = (int) (fitBufferedImages[i].getWidth() * (dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get() / fitBufferedImages[i].getHeight()));
+                            fitBufferedImages[i] = ImageSystem.getInstance().setBufferedImageSize(fitBufferedImages[i], width, height);
                         }
                     }
-                    Image[] images = new Image[bufferedImages.length];
-                    for (int i = 0; i < bufferedImages.length; i++) images[i] = dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImages[i]);
-                    Integer[] gifPlaySpeed = dailyPaper.getGIFSystem().getGIFPlaySpeed(file.getAbsolutePath());
+                    Image[] images = new Image[fitBufferedImages.length];
+                    for (int i = 0; i < fitBufferedImages.length; i++) images[i] = ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImages[i]);
+                    Integer[] gifPlaySpeed = GIFSystem.getInstance().getGIFPlaySpeed(file.getAbsolutePath());
 
-                    dailyPaperElement.setLivePaneImagesShowing(() -> true);
-                    dailyPaperElement.getLiveImageShowingPool().submit(() -> {
+                    dailyPaperData.setIsLiveImageShowing(() -> true);
+                    dailyPaper.getDailyPaperPool().submit(() -> {
                         do {
                             for (int i = 0; i < images.length; i++) {
-                                dailyPaperElement.getLivePaneImageShowImageView().setImage(images[i]);
+                                dailyPaperElement.getLiveImageShowImageView().setImage(images[i]);
                                 try {
                                     Thread.sleep(gifPlaySpeed[i]);
                                 } catch (InterruptedException interruptedException) {
                                     throw new RuntimeException(interruptedException);
                                 }
-                                if (!dailyPaperElement.getLivePaneImagesShowing().get()) {
-                                    dailyPaperElement.getLivePaneImageShowImageView().setImage(null);
+                                if (!dailyPaperData.getIsLiveImageShowing().get()) {
+                                    dailyPaperElement.getLiveImageShowImageView().setImage(null);
                                     break;
                                 }
                             }
-                        } while (dailyPaperElement.getLivePaneImagesShowing().get());
+                        } while (dailyPaperData.getIsLiveImageShowing().get());
                     });
 
-                    Button button = new Button("设为壁纸");
-                    button.setMinWidth(bufferedImages[0].getWidth());
-                    button.setMinHeight(dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().get());
-                    button.setOnAction(event -> {
-                        clearLiveImageWallpaper();
+                    Button livePaneImageSureButton = new Button("点击设为壁纸");
+                    livePaneImageSureButton.setPrefWidth(fitBufferedImages[0].getWidth());
+                    livePaneImageSureButton.setPrefHeight(dailyPaperElement.getLiveImageSureHBox().prefHeightProperty().get());
+                    livePaneImageSureButton.setOnAction(event -> {
+                        dailyPaperFunction.clearLiveImageWallpaper();
 
                         /// 下载切片到本地
-                        File imagesWallpaperFullFilePathFile = new File(dailyPaper.getRootPath().get()+File.separator+dailyPaper.getLiveImageWallpaperFileName().get());
-                        if (imagesWallpaperFullFilePathFile.exists()) imagesWallpaperFullFilePathFile.delete();
-                        imagesWallpaperFullFilePathFile.mkdirs();
+                        File imagesWallpaperFullFilePathFile = new File(dailyPaper.getLiveImageFilePath().get());
                         for (int i = 0; i < bufferedImages.length; i++) {
-                            dailyPaper.getImageSystem().turnBufferedImageToLocalFile(bufferedImages[i], imagesWallpaperFullFilePathFile.getAbsolutePath()+File.separator+i+".png");
+                            ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImages[i], imagesWallpaperFullFilePathFile.getAbsolutePath() + File.separator + i + ".png");
                         }
-                        String speed = String.valueOf(gifPlaySpeed[0]);
+                        StringBuilder speed = new StringBuilder(String.valueOf(gifPlaySpeed[0]));
                         for (int i = 1; i < gifPlaySpeed.length; i++) {
-                            speed += dailyPaper.getSplitMark().get() + gifPlaySpeed[i];
+                            speed.append(dailyPaper.getSplitMark().get()).append(gifPlaySpeed[i] / dailyPaper.getLiveImagePlaySpeed().get());
                         }
-                        dailyPaper.getConfig().getLiveImageConfig().getLocalDB().set("Speed", speed);
-                        dailyPaper.getConfig().getLiveImageConfig().getLocalDB().commit();
+                        LiveImageConfig.getInstance().getLocalDB().set("Speed", speed.toString());
+                        LiveImageConfig.getInstance().getLocalDB().commit();
 
-                        launchLiveImageWallpaper();
+                        dailyPaperFunction.showButtonInformation(livePaneImageSureButton, "壁纸设置成功");
+                        dailyPaperFunction.launchLiveImageWallpaper();
                     });
-                    dailyPaperElement.getLivePaneImageSureHBox().getChildren().addAll(button);
+                    dailyPaperElement.getLiveImageSureHBox().getChildren().addAll(livePaneImageSureButton);
                 }
             }
         });
     }
 
     @Override
-    public void createDailyPaneEvent() {
-        dailyPaperElement.getDailyPaneAutoSetWallpaperGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == dailyPaperElement.getDailyPaneAutoSetWallpaperOnButton()) {
-                dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().setVisible(true);
-                dailyPaperElement.getDailyPaneHobbyVBox().setVisible(true);
-                dailyPaper.setAutoWallpaper(() -> true);
+    public void createDailyEvent() {
+        dailyPaperElement.getDailyWallpaperGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == dailyPaperElement.getDailyWallpaperOnButton()) {
+                dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(true);
+                dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(true);
+                dailyPaper.setDailyAutoWallpaper(() -> true);
             } else {
-                dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().setVisible(false);
-                dailyPaperElement.getDailyPaneHobbyVBox().setVisible(false);
-                dailyPaper.setAutoWallpaper(() -> false);
+                dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(false);
+                dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(false);
+                dailyPaper.setDailyAutoWallpaper(() -> false);
             }
         });
 
-        dailyPaperElement.getDailyPaneAutoLaunchWallpaperGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton()) {
-                boolean isSystem = dailyPaper.getComputerSystem().addSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
-                boolean isUser = dailyPaper.getComputerSystem().addUserAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+        dailyPaperElement.getDailyLaunchGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == dailyPaperElement.getDailyLaunchOnButton()) {
+                boolean isSystem = ComputerSystem.getInstance().addSystemAutoLaunch(dailyPaper.getCurrentFilePath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isUser = ComputerSystem.getInstance().addUserAutoLaunch(dailyPaper.getCurrentFilePath().get() + File.separator + dailyPaper.getNAME() + ".exe");
                 boolean isSuccess = isSystem || isUser;
                 if (isSuccess) {
-                    dailyPaper.setAutoLaunch(() -> true);
+                    dailyPaper.setDailyPaperAutoLaunch(() -> true);
                 } else {
-                    dailyPaperElement.getDailyPaneAutoSetWallpaperOffButton().setSelected(true);
+                    dailyPaperElement.getDailyLaunchOffButton().setSelected(true);
                 }
             } else {
-                boolean isSystem = dailyPaper.getComputerSystem().deleteSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
-                boolean isUser = dailyPaper.getComputerSystem().deleteUserAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isSystem = ComputerSystem.getInstance().deleteSystemAutoLaunch(dailyPaper.getCurrentFilePath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isUser = ComputerSystem.getInstance().deleteUserAutoLaunch(dailyPaper.getCurrentFilePath().get() + File.separator + dailyPaper.getNAME() + ".exe");
                 boolean isSuccess = isSystem || isUser;
                 if (isSuccess) {
-                    dailyPaper.setAutoLaunch(() -> false);
+                    dailyPaper.setDailyPaperAutoLaunch(() -> false);
                 } else {
-                    dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton().setSelected(true);
+                    dailyPaperElement.getDailyLaunchOnButton().setSelected(true);
                 }
             }
         });
 
-        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingLaunchGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> dailyPaper.setAutoWallpaperWhenLaunch(() -> dailyPaperElement.getDailyPaneAutoSetWallpaperSettingLaunchOnButton().isSelected()));
+        dailyPaperElement.getDailyLaunchWallpaperGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> dailyPaper.setDailyAutoWallpaperWhenLaunch(() -> dailyPaperElement.getDailyLaunchWallpaperOnButton().isSelected()));
 
-        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
-            try {
-                Thread.sleep(dailyPaperElement.getDelay().get());
-            } catch (InterruptedException interruptedException) {
-                throw new RuntimeException(interruptedException);
-            }
+        dailyPaperElement.getDailyTimeWallpaperTextField().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
+            dailyPaperFunction.waitADelay(10);
             int delay = 0;
             try {
-                delay = Integer.parseInt(dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().getText());
+                delay = Integer.parseInt(dailyPaperElement.getDailyTimeWallpaperTextField().getText());
                 delay = Math.max(delay, 0);
             } catch (NumberFormatException ignored) {}
             int finalDelay = delay;
-            dailyPaper.setAutoWallpaperWhenTime(() -> finalDelay);
+            dailyPaper.setDailyAutoWallpaperWhenTime(() -> finalDelay);
 
-            if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenTime.get() >= 1) {
-                if (!DailyPaperElement.getInstance().getIsAutoDailyWallpaperRunning().get()) {
-                    DailyPaperElement.getInstance().setAutoDailyWallpaperStartTime(System.currentTimeMillis());
-                    DailyPaperElement.getInstance().getScheduledExecutorService().scheduleAtFixedRate(DailyPaperElement.getInstance().getAutoDailyWallpaper(), 1, 1, TimeUnit.MINUTES);
-                    DailyPaperElement.getInstance().setIsAutoDailyWallpaperRunning(() -> true);
+            if (DailyPaper.getInstance().getDailyAutoWallpaper().get() && DailyPaper.getInstance().getDailyAutoWallpaperWhenTime().get() >= 1) {
+                if (!dailyPaperData.getIsAutoDailyWallpaperRunning().get()) {
+                    dailyPaperData.setAutoDailyWallpaperStartTime(System.currentTimeMillis());
+                    dailyPaper.getScheduledExecutorService().scheduleAtFixedRate(dailyPaperData.getAutoDailyWallpaper(), 1, 1, TimeUnit.MINUTES);
+                    dailyPaperData.setIsAutoDailyWallpaperRunning(() -> true);
                 }
             }
         }));
 
-        dailyPaperElement.getDailyPaneHobbyHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-           dailyPaper.getDailyPaperPool().submit(() -> {
-               try {
-                   Thread.sleep(dailyPaperElement.getDelay().get());
-               } catch (InterruptedException interruptedException) {
-                   throw new RuntimeException(interruptedException);
-               }
-               dailyPaper.setDailyWallpaperHobby(() -> dailyPaperElement.getDailyPaneHobbyHobbyTextArea().getText());
-           });
-        });
+        dailyPaperElement.getDailyHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
+            dailyPaperFunction.waitADelay(10);
+            dailyPaper.setDailyImageHobby(() -> dailyPaperElement.getDailyHobbyTextArea().getText());
+        }));
     }
 
     @Override
-    public void createHobbyPaneEvent() {
+    public void createHobbyEvent() {
 
     }
 
     @Override
-    public void createSettingPaneEvent() {
+    public void createSettingEvent() {
 
     }
 
     @Override
-    public void createRenewPaneEvent() {
-        dailyPaperElement.getRenewPaneManualCheckRenewButton().setOnAction(actionEvent -> checkRenewDailyPaper());
+    public void createRenewEvent() {
+        dailyPaperElement.getRenewManualCheckRenewButton().setOnAction(actionEvent -> dailyPaperFunction.checkRenewDailyPaper());
 
-        dailyPaperElement.getRenewPaneManualDownloadRenewButton().setOnAction(actionEvent -> downloadRenewDailyPaper());
+        dailyPaperElement.getRenewManualDownloadRenewButton().setOnAction(actionEvent -> dailyPaperFunction.downloadRenewDailyPaper());
 
-        dailyPaperElement.getRenewPaneAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == dailyPaperElement.getRenewPaneAutoCheckRenewOnButton()) {
-                dailyPaper.setAutoCheckRenew(() -> true);
+        dailyPaperElement.getRenewAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == dailyPaperElement.getRenewAutoCheckRenewOnButton()) {
+                dailyPaper.setRenewAutoCheckRenew(() -> true);
             } else {
-                if (dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton().isSelected()) {
-                    dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
+                if (dailyPaperElement.getRenewAutoDownloadRenewOnButton().isSelected()) {
+                    dailyPaperElement.getRenewAutoCheckRenewOnButton().setSelected(true);
                 } else {
-                    dailyPaper.setAutoCheckRenew(() -> false);
+                    dailyPaper.setRenewAutoCheckRenew(() -> false);
                 }
             }
         });
-        dailyPaperElement.getRenewPaneAutoDownloadRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue ==  dailyPaperElement.getRenewPaneAutoDownloadRenewOnButton()) {
-                dailyPaper.setAutoDownloadRenew(() -> true);
-                if (!dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().isSelected()) {
-                    dailyPaperElement.getRenewPaneAutoCheckRenewOnButton().setSelected(true);
-                    dailyPaper.setAutoCheckRenew(() -> true);
-                }
-            } else {
-                dailyPaper.setAutoDownloadRenew(() -> false);
-            }
-        });
-    }
-
-    @Override
-    public void clearChatPane() {
-        dailyPaperElement.getChatPaneTextInputArea().clear();
-        dailyPaperElement.getChatPaneMessageVBox().getChildren().clear();
-        dailyPaperElement.getChatPaneUserMessageArrayList().clear();
-        dailyPaperElement.getChatPaneAgentMessageArrayList().clear();
-    }
-
-    @Override
-    public void clearLivePane() {
-        dailyPaperElement.getLivePaneImageChooseLabel().setText(dailyPaper.LiveImageChosenFilePath.get());
-        dailyPaperElement.setLivePaneImagesShowing(() -> false);
-        dailyPaperElement.getLivePaneImageShowImageView().setImage(null);
-        dailyPaperElement.getLivePaneImageSureHBox().getChildren().clear();
-    }
-
-    @Override
-    public void clearDailyPane() {
-        dailyPaperStyle.createDailyPaneStyle();
-    }
-
-    @Override
-    public void clearHobbyPane() {
-        dailyPaperStyle.createHobbyPaneStyle();
-    }
-
-    @Override
-    public void clearSettingPane() {
-        dailyPaperStyle.createSettingPaneStyle();
-    }
-
-    @Override
-    public void clearRenewPane() {
-        dailyPaperStyle.createRenewPaneStyle();
-    }
-
-    @Override
-    public void changeCenterPane(Pane pane) {
-        dailyPaperElement.getRootPaneCenterPane().getChildren().clear();
-        dailyPaperElement.getRootPaneCenterPane().getChildren().addAll(pane);
-    }
-
-    @Override
-    public void scrollToBottom(ScrollPane scrollPane) {
-        dailyPaper.getDailyPaperPool().submit(() -> {
-            ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
-            try {
-                Thread.sleep(dailyPaperElement.getDelay().get());
-            } catch (InterruptedException interruptedException) {
-                throw new RuntimeException(interruptedException);
-            }
-            if (verticalScrollBar != null) {
-                Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
-            } else {
-                Platform.runLater(() -> scrollPane.setVvalue(1.0));
-            }
-        });
-    }
-
-    @Override
-    public void launchLiveImageWallpaper() {
-        DailyPaper.getInstance().setIsLaunchLiveWallpaper(() -> true);
-
-        /// 获取本地切片数据
-        String[] speeds = DailyPaper.getInstance().getConfig().getLiveImageConfig().getLocalDB().get("Speed").toString().split(DailyPaper.getInstance().getSplitMark().get());
-        int[] imagesWallpaperSpeed = new int[speeds.length];
-        for (int i = 0; i < speeds.length; i++) {
-            imagesWallpaperSpeed[i] = Integer.parseInt(speeds[i]);
-        }
-        String[] imagesWallPaperFullFilePath = new String[imagesWallpaperSpeed.length];
-        for (int i = 0; i < imagesWallpaperSpeed.length; i++) {
-            imagesWallPaperFullFilePath[i] = new File(DailyPaper.getInstance().getLiveImageWallpaperFilePath().get()+File.separator+DailyPaper.getInstance().getLiveImageWallpaperFileName().get()+File.separator+i+".png").getAbsolutePath();
-        }
-
-        /// 循环播放切片
-        DailyPaperElement.getInstance().getLiveImageWallpaperPool().submit(() -> {
-            DailyPaperElement.getInstance().setLivePaneImagesWallPerShowing(() -> true);
-            do {
-                for (int i = 0; i < imagesWallPaperFullFilePath.length; i++) {
-                    DailyPaper.getInstance().getImageSystem().setWallPaper(imagesWallPaperFullFilePath[i]);
-                    try {
-                        Thread.sleep(imagesWallpaperSpeed[i]);
-                    } catch (InterruptedException interruptedException) {
-                        throw new RuntimeException(interruptedException);
-                    }
-                    if (!DailyPaperElement.getInstance().getLivePaneImagesWallPerShowing().get()) {
-                        break;
-                    }
-                }
-            } while (DailyPaperElement.getInstance().getLivePaneImagesWallPerShowing().get());
-        });
-    }
-
-    @Override
-    public void clearLiveImageWallpaper() {
-        DailyPaper.getInstance().setIsLaunchLiveWallpaper(() -> false);
-
-        if (DailyPaperElement.getInstance().getLivePaneImagesWallPerShowing().get()) {
-            DailyPaperElement.getInstance().setLivePaneImagesWallPerShowing(() -> false);
-            try {
-                Thread.sleep(DailyPaperElement.getInstance().getDelay().get());
-            } catch (InterruptedException interruptedException) {
-                throw new RuntimeException(interruptedException);
-            }
-        }
-    }
-
-    @Override
-    public void dailyWallpaper() {
-        if (DailyPaper.getInstance().IsLaunchLiveWallpaper.get()) DailyPaperEvent.getInstance().clearLiveImageWallpaper();
-        try {
-            DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
-                String prompt = DailyPaper.getInstance().getTextToTextAIAgentSiliconFlow().turnTextToText(DailyPaperElement.getInstance().getPromptSpawnImagePrompt().get() + DailyPaperElement.getInstance().getPromptSpawnDailyWallpaperPrompt().get())[0];
-                String[] urls = DailyPaper.getInstance().getTextToImageAIAgentSiliconFlow().turnTextToImage(prompt);
-                BufferedImage bufferedImage = DailyPaper.getInstance().getImageSystem().turnUrlToBufferedImage(urls[0]);
-                if (DailyPaper.getInstance().getImageSystem().turnBufferedImageToLocalFile(bufferedImage, DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get())) {
-                    DailyPaper.getInstance().getComputerSystem().setWallPaper(DailyPaper.getInstance().getRootPath().get(), DailyPaper.getInstance().getImageFileName().get());
-                }
-            });
-        } catch (Exception ignored) {}
-    }
-
-    @Override
-    public boolean checkRenewDailyPaper() {
-        AtomicBoolean hasNew = new AtomicBoolean(false);
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(true);
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(true);
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在检测更新...");
-        dailyPaper.getDailyPaperPool().submit(() -> {
-            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
-                Object version = dailyPaper.getRenewConfig().getLocalDB().get("VERSION", dailyPaper.getVERSION());
-                if (Double.parseDouble(dailyPaper.getVERSION()) < Double.parseDouble(String.valueOf(version))) {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("发现新版本!");
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().getText() + "\n" + dailyPaper.getRenewConfig().getLocalDB().get("NEWS", "无"));
-                    dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(true);
-                    hasNew.set(true);
-                } else {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
+        dailyPaperElement.getRenewAutoDownloadRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue ==  dailyPaperElement.getRenewAutoDownloadRenewOnButton()) {
+                dailyPaper.setRenewAutoDownloadRenew(() -> true);
+                if (!dailyPaperElement.getRenewAutoCheckRenewOnButton().isSelected()) {
+                    dailyPaperElement.getRenewAutoCheckRenewOnButton().setSelected(true);
+                    dailyPaper.setRenewAutoCheckRenew(() -> true);
                 }
             } else {
-                dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
+                dailyPaper.setRenewAutoDownloadRenew(() -> false);
             }
         });
-        return hasNew.get();
-    }
-
-    @Override
-    public boolean downloadRenewDailyPaper() {
-        AtomicBoolean hasDownload = new AtomicBoolean(false);
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("正在更新软件...");
-        dailyPaper.getDailyPaperPool().submit(() -> {
-            if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
-                if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
-                    AtomicInteger status = new AtomicInteger();
-                    String command = "cmd /c cd /d" + " " + dailyPaper.getDailyPaperRenewFilePath().get()
-                            + "&" + "jdk-21.0.8" + File.separator + "bin" + File.separator + "java" + " " + "-jar "
-                            + DailyPaper.getInstance().getDailyPaperRenewFilePath().get() + File.separator + DailyPaper.getInstance().getDailyPaperRenewFileNameWindows().get()
-                            + " " + DailyPaper.getInstance().getDailyPaperDownloadUrlWindows().get()
-                            + " " + DailyPaper.getInstance().getDailyPaperDownloadFilePath().get() + File.separator + DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows().get()
-                            + " " + DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen().get();
-                    System.out.println(command);
-                    DailyPaper.getInstance().getDailyPaperPool().submit(() -> status.set(DailyPaper.getInstance().getComputerSystem().runCommand(command)));
-                    hasDownload.set(status.get() == 0);
-                    if (hasDownload.get()) {
-                        DailyPaperElement.getInstance().getRenewPaneManualCheckRenewTextShowArea().setText("软件更新成功!");
-                        if (DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen().get()) {
-                            System.exit(0);
-                        }
-                    } else {
-                        DailyPaperElement.getInstance().getRenewPaneManualCheckRenewTextShowArea().setText("软件更新失败!");
-                    }
-                }
-            } else {
-                dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
-            }
-        });
-        return hasDownload.get();
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static DailyPaperEvent getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new DailyPaperEvent();
-        }
-        return INSTANCE;
     }
 
 }

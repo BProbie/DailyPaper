@@ -10,7 +10,7 @@ public class MathSystem extends ComputerSystem implements IMathSystem {
     private volatile static MathSystem INSTANCE;
 
     /**
-     * 获取懒加载的类单例对象
+     * 获取一个懒加载的类单例对象
      * */
     public synchronized static MathSystem getInstance() {
         if (INSTANCE == null) {

@@ -12,16 +12,28 @@ public class FileSystem extends ComputerSystem implements IFileSystem {
     private volatile static FileSystem INSTANCE;
 
     /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static FileSystem getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new FileSystem();
+        }
+        return INSTANCE;
+    }
+
+    /**
      * 重写读取远程文件内容的方法使适配加速器等网络代理模式
+     * @param fullRemoteUriPath 完整远程文件网址
+     * @return 文件内容
      * */
     @Override
-    public String readRemoteFile(String path) {
+    public String readRemoteFile(String fullRemoteUriPath) {
         try {
-            return IFileSystem.super.readRemoteFile(path);
+            return IFileSystem.super.readRemoteFile(fullRemoteUriPath);
         } catch (URISyntaxException | IOException ignored) {
             trustConnect();
             try {
-                return IFileSystem.super.readRemoteFile(path);
+                return IFileSystem.super.readRemoteFile(fullRemoteUriPath);
             } catch (URISyntaxException | IOException exception) {
                 throw new RuntimeException(exception);
             }
@@ -30,29 +42,22 @@ public class FileSystem extends ComputerSystem implements IFileSystem {
 
     /**
      * 重写下载方法使适配加速器等网络代理模式
+     * @param fullRemoteUriPath 完整远程文件网址
+     * @param fullFilePath 完整本地文件路径
+     * @return 是否下载成功
      * */
     @Override
-    public boolean download(String urlPath, String fullFilePath) {
+    public boolean download(String fullRemoteUriPath, String fullFilePath) {
         try {
-            return IFileSystem.super.download(urlPath, fullFilePath);
+            return IFileSystem.super.download(fullRemoteUriPath, fullFilePath);
         } catch (URISyntaxException | IOException ignored) {
             trustConnect();
             try {
-                return IFileSystem.super.download(urlPath, fullFilePath);
+                return IFileSystem.super.download(fullRemoteUriPath, fullFilePath);
             } catch (URISyntaxException | IOException exception) {
                 throw new RuntimeException(exception);
             }
         }
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static FileSystem getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new FileSystem();
-        }
-        return INSTANCE;
     }
 
 }

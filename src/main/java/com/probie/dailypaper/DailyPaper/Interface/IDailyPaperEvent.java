@@ -1,8 +1,5 @@
 package com.probie.dailypaper.DailyPaper.Interface;
 
-import javafx.scene.layout.Pane;
-import javafx.scene.control.ScrollPane;
-
 public interface IDailyPaperEvent {
 
     /**
@@ -11,117 +8,28 @@ public interface IDailyPaperEvent {
     void createEvent();
 
     /**
-     * 创建 Stage 舞台事件
+     * 创建 stage 事件
      * */
     void createStageEvent();
 
     /**
-     * 创建 Scene 帷幕事件
+     * 创建 scene 事件
      * */
     void createSceneEvent();
 
     /**
-     * 创建 RootPane 分页事件
+     * 创建 root 事件
      * */
-    void createRootPaneEvent();
+    void createRootEvent();
 
     /**
-     * 创建 ChatPane 分页事件
+     * 创建 功能模块 分页事件
      * */
-    void createChatPaneEvent();
-
-    /**
-     * 创建 LivePane 分页事件
-     * */
-    void createLivePaneEvent();
-
-    /**
-     * 创建 DailyPane 分页事件
-     * */
-    void createDailyPaneEvent();
-
-    /**
-     * 创建 HobbyPane 分页事件
-     * */
-    void createHobbyPaneEvent();
-
-    /**
-     * 创建 SettingPane 分页事件
-     * */
-    void createSettingPaneEvent();
-
-    /**
-     * 创建 RenewPane 分页事件
-     * */
-    void createRenewPaneEvent();
-
-    /**
-     * 清理 ChatPane 内容
-     * */
-    void clearChatPane();
-
-    /**
-     * 清理 LivePane 内容
-     * */
-    void clearLivePane();
-
-    /**
-     * 清理 DailyPane 内容
-     * */
-    void clearDailyPane();
-
-    /**
-     * 清理 HobbyPane 内容
-     * */
-    void clearHobbyPane();
-
-    /**
-     * 清理 SettingPane 内容
-     * */
-    void clearSettingPane();
-
-    /**
-     * 清理 RenewPane 内容
-     * */
-    void clearRenewPane();
-
-    /**
-     * 更改 CenterPane 的 Pane
-     * @param pane 替换成的 Pane
-     * */
-    void changeCenterPane(Pane pane);
-
-    /**
-     * 将 ScrollPane 的滚轮滚到最下面
-     * @param scrollPane ScrollPane 实例化对象
-     * */
-    void scrollToBottom(ScrollPane scrollPane);
-
-    /**
-     * 启动动态壁纸
-     * */
-    void launchLiveImageWallpaper();
-
-    /**
-     * 取消动态壁纸
-     * */
-    void clearLiveImageWallpaper();
-
-    /**
-     * 每日壁纸推荐
-     * */
-    void dailyWallpaper();
-
-    /**
-     * 检查更新软件
-     * @return 是否有新版本
-     * */
-    boolean checkRenewDailyPaper();
-
-    /**
-     * 下载更新软件
-     * @return 是否下载成功
-     * */
-    boolean downloadRenewDailyPaper();
+    void createChatEvent();
+    void createLiveEvent();
+    void createDailyEvent();
+    void createHobbyEvent();
+    void createSettingEvent();
+    void createRenewEvent();
 
 }

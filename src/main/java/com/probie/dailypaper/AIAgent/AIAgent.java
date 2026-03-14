@@ -26,6 +26,7 @@ public abstract class AIAgent implements IAIAgent {
     /**
      * 承的子类必须重写获取真正 APIKey 的方法
      * @param APIKey 被加密过的 APIKey
+     * @return 解密后的 APIKey
      * */
     protected abstract Supplier<String> getAPIKey(Supplier<String> APIKey);
 
@@ -33,6 +34,27 @@ public abstract class AIAgent implements IAIAgent {
      * 维护一个懒加载的类单例对象
      * */
     private volatile static AIAgent INSTANCE;
+
+    /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static AIAgent getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AIAgent() {
+                @Override
+                protected void init() {
+                    /// 空实现
+                }
+
+                @Override
+                protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
+                    /// 空实现
+                    return null;
+                }
+            };
+        }
+        return INSTANCE;
+    }
 
     /**
      * 进程读锁和写锁
@@ -58,27 +80,6 @@ public abstract class AIAgent implements IAIAgent {
     @Override
     public AIAgentSiliconFlow getAIAgentSiliconFlow() {
         return AIAgentSiliconFlow.getInstance();
-    }
-
-    /**
-     * 获取懒加载的类单例对象
-     * */
-    public synchronized static AIAgent getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new AIAgent() {
-                @Override
-                protected void init() {
-                    /// 空实现
-                }
-
-                @Override
-                protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
-                    /// 空实现
-                    return null;
-                }
-            };
-        }
-        return INSTANCE;
     }
 
     /**
