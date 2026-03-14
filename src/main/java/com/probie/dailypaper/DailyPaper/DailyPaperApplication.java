@@ -27,6 +27,29 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         DailyPaperEvent.getInstance().createEvent();
         stage.show();
 
+        afterStart();
+    }
+
+    @Override
+    public void stop() {
+        DailyPaperElement.getInstance().getAgentConnectionPool().shutdownNow();
+        DailyPaperElement.getInstance().getLiveImageShowingPool().shutdownNow();
+        DailyPaperElement.getInstance().getLiveImageWallpaperPool().shutdownNow();
+        DailyPaperElement.getInstance().getScheduledExecutorService().shutdownNow();
+        DailyPaper.getInstance().getDailyPaperPool().shutdownNow();
+        DailyPaperElement.getInstance().getStage().close();
+        DailyPaper.getInstance().close();
+        Platform.exit();
+        System.gc();
+        try {
+            super.stop();
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    @Override
+    public void afterStart() {
         /// 推荐壁纸
         if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenLaunch.get()) {
             DailyPaperEvent.getInstance().dailyWallpaper();
@@ -56,24 +79,6 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                 }
             }
         });
-    }
-
-    @Override
-    public void stop() {
-        DailyPaperElement.getInstance().getAgentConnectionPool().shutdownNow();
-        DailyPaperElement.getInstance().getLiveImageShowingPool().shutdownNow();
-        DailyPaperElement.getInstance().getLiveImageWallpaperPool().shutdownNow();
-        DailyPaperElement.getInstance().getScheduledExecutorService().shutdownNow();
-        DailyPaper.getInstance().getDailyPaperPool().shutdownNow();
-        DailyPaperElement.getInstance().getStage().close();
-        DailyPaper.getInstance().close();
-        Platform.exit();
-        System.gc();
-        try {
-            super.stop();
-        } catch (Exception exception) {
-            throw new RuntimeException(exception);
-        }
     }
 
     /**

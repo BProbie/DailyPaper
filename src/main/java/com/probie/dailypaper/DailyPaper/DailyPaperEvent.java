@@ -384,7 +384,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     }
                     dailyPaperElement.getLivePaneImageShowImageView().setImage(dailyPaper.getImageSystem().turnBufferedImageToFXImage(bufferedImage));
 
-                    Button button = new Button("设为壁纸");
+                    Button button = new Button("点击设为壁纸");
+                    button.setFont(new Font(dailyPaperElement.getLivePaneButtonFontSize().get()));
                     button.setMinWidth(bufferedImage.getWidth());
                     button.setMinHeight(dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().get());
                     button.setOnAction(event -> {
@@ -475,16 +476,18 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
         dailyPaperElement.getDailyPaneAutoLaunchWallpaperGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == dailyPaperElement.getDailyPaneAutoLaunchWallpaperOnButton()) {
-                boolean isSuccess = dailyPaper.getComputerSystem().addSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
-                if (!isSuccess) isSuccess = dailyPaper.getComputerSystem().addSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isSystem = dailyPaper.getComputerSystem().addSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isUser = dailyPaper.getComputerSystem().addUserAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isSuccess = isSystem || isUser;
                 if (isSuccess) {
                     dailyPaper.setAutoLaunch(() -> true);
                 } else {
                     dailyPaperElement.getDailyPaneAutoSetWallpaperOffButton().setSelected(true);
                 }
             } else {
-                boolean isSuccess = dailyPaper.getComputerSystem().deleteSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
-                if (!isSuccess) isSuccess = dailyPaper.getComputerSystem().deleteSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isSystem = dailyPaper.getComputerSystem().deleteSystemAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isUser = dailyPaper.getComputerSystem().deleteUserAutoLaunch(dailyPaper.getRootPath().get() + File.separator + dailyPaper.getNAME() + ".exe");
+                boolean isSuccess = isSystem || isUser;
                 if (isSuccess) {
                     dailyPaper.setAutoLaunch(() -> false);
                 } else {
@@ -495,30 +498,28 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingLaunchGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> dailyPaper.setAutoWallpaperWhenLaunch(() -> dailyPaperElement.getDailyPaneAutoSetWallpaperSettingLaunchOnButton().isSelected()));
 
-        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
-            dailyPaper.getDailyPaperPool().submit(() -> {
-                try {
-                    Thread.sleep(dailyPaperElement.getDelay().get());
-                } catch (InterruptedException interruptedException) {
-                    throw new RuntimeException(interruptedException);
-                }
-                int delay = 0;
-                try {
-                    delay = Integer.parseInt(dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().getText());
-                    delay = Math.max(delay, 0);
-                } catch (NumberFormatException ignored) {}
-                int finalDelay = delay;
-                dailyPaper.setAutoWallpaperWhenTime(() -> finalDelay);
+        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
+            try {
+                Thread.sleep(dailyPaperElement.getDelay().get());
+            } catch (InterruptedException interruptedException) {
+                throw new RuntimeException(interruptedException);
+            }
+            int delay = 0;
+            try {
+                delay = Integer.parseInt(dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().getText());
+                delay = Math.max(delay, 0);
+            } catch (NumberFormatException ignored) {}
+            int finalDelay = delay;
+            dailyPaper.setAutoWallpaperWhenTime(() -> finalDelay);
 
-                if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenTime.get() >= 1) {
-                    if (!DailyPaperElement.getInstance().getIsAutoDailyWallpaperRunning().get()) {
-                        DailyPaperElement.getInstance().setAutoDailyWallpaperStartTime(System.currentTimeMillis());
-                        DailyPaperElement.getInstance().getScheduledExecutorService().scheduleAtFixedRate(DailyPaperElement.getInstance().getAutoDailyWallpaper(), 1, 1, TimeUnit.MINUTES);
-                        DailyPaperElement.getInstance().setIsAutoDailyWallpaperRunning(() -> true);
-                    }
+            if (DailyPaper.getInstance().AutoWallpaper.get() && DailyPaper.getInstance().AutoWallpaperWhenTime.get() >= 1) {
+                if (!DailyPaperElement.getInstance().getIsAutoDailyWallpaperRunning().get()) {
+                    DailyPaperElement.getInstance().setAutoDailyWallpaperStartTime(System.currentTimeMillis());
+                    DailyPaperElement.getInstance().getScheduledExecutorService().scheduleAtFixedRate(DailyPaperElement.getInstance().getAutoDailyWallpaper(), 1, 1, TimeUnit.MINUTES);
+                    DailyPaperElement.getInstance().setIsAutoDailyWallpaperRunning(() -> true);
                 }
-            });
-        });
+            }
+        }));
 
         dailyPaperElement.getDailyPaneHobbyHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
            dailyPaper.getDailyPaperPool().submit(() -> {

@@ -110,11 +110,11 @@ public class DailyPaper implements IDailyPaper, Closeable {
             "[yyyy.MM.dd-HH:mm:ss]").toString();
 
     private Supplier<Integer> ConnectTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyConnectTimeout(),
-            60).toString());
+            180).toString());
     private Supplier<Integer> ReadTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyReadTimeout(),
             180).toString());
     private Supplier<Integer> WriteTimeout = () -> Integer.valueOf(getConfigConfig().getLocalDB().get(getKeyWriteTimeout(),
-            60).toString());
+            180).toString());
 
     public Supplier<String> KolorsModelSiliconFlow = () -> getConfigConfig().getLocalDB().get(getKeyKolorsModelSiliconFlow(),
             "Kwai-Kolors/Kolors").toString();

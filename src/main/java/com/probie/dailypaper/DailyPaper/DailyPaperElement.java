@@ -178,6 +178,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Supplier<Integer> livePaneImageInputFontSize = () -> 20;
     private Supplier<Boolean> livePaneImagesShowing = () -> false;
     private Supplier<Boolean> livePaneImagesWallPerShowing = () -> false;
+    private Supplier<Integer> livePaneButtonFontSize = () -> 15;
 
     private Supplier<Integer> dailyPaneFontSize = () -> 15;
 

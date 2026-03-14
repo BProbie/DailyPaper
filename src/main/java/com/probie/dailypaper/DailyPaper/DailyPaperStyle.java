@@ -79,10 +79,10 @@ public class DailyPaperStyle implements IDailyPaperStyle {
     @Override
     public void createRootPaneStyle() {
         /// 创建 RootPane 标题样式
-        dailyPaperElement.getRootPaneTitleBar().setBackground(Background.fill(Color.WHITESMOKE));
-        dailyPaperElement.getRootPaneTileBarMinButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneTitleBarMaxButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneTitleBarCloseButton().setBackground(Background.fill(Color.LIGHTGRAY));
+        dailyPaperElement.getRootPaneTitleBar().setBackground(Background.fill(Color.FLORALWHITE));
+        dailyPaperElement.getRootPaneTileBarMinButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneTitleBarMaxButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneTitleBarCloseButton().setBackground(Background.fill(Color.NAVAJOWHITE));
 
         dailyPaperElement.getRootPaneTitleBar().setSpacing(dailyPaperElement.getOffset().get() / 10.0);
 
@@ -98,13 +98,13 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRootPaneTitleBarCloseButton().setMinHeight(dailyPaperElement.getRootPaneTitleBarButtonSize().get());
 
         /// 创建 RootPane 菜单样式
-        dailyPaperElement.getRootPaneMenuBar().setBackground(Background.fill(Color.WHITESMOKE));
-        dailyPaperElement.getRootPaneMenuBarChatButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneMenuBarLiveButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneMenuBarDailyButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneMenuBarHobbyButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneMenuBarSettingButton().setBackground(Background.fill(Color.LIGHTGRAY));
-        dailyPaperElement.getRootPaneMenuBarRenewButton().setBackground(Background.fill(Color.LIGHTGRAY));
+        dailyPaperElement.getRootPaneMenuBar().setBackground(Background.fill(Color.FLORALWHITE));
+        dailyPaperElement.getRootPaneMenuBarChatButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneMenuBarLiveButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneMenuBarDailyButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneMenuBarHobbyButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneMenuBarSettingButton().setBackground(Background.fill(Color.NAVAJOWHITE));
+        dailyPaperElement.getRootPaneMenuBarRenewButton().setBackground(Background.fill(Color.NAVAJOWHITE));
 
         dailyPaperElement.getRootPaneMenuBar().setSpacing(dailyPaperElement.getOffset().get() / 10.0);
 
@@ -159,14 +159,15 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getLivePane().prefHeightProperty().bind(dailyPaperElement.getRootPaneCenterPane().heightProperty());
 
         dailyPaperElement.getLivePaneImageInputHBox().prefWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
-        dailyPaperElement.getLivePaneImageInputHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6.0));
+        dailyPaperElement.getLivePaneImageInputHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(8.0));
 
         dailyPaperElement.getLivePaneImageChooseButton().setText("选择动态在内的任意壁纸");
-        dailyPaperElement.getLivePaneImageChooseButton().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(6.0));
+        dailyPaperElement.getLivePaneImageChooseButton().setFont(new Font(dailyPaperElement.getLivePaneButtonFontSize().get()));
+        dailyPaperElement.getLivePaneImageChooseButton().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(5.0));
         dailyPaperElement.getLivePaneImageChooseButton().prefHeightProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().heightProperty());
 
         dailyPaperElement.getLivePaneImageChooseLabel().setText(dailyPaper.LiveImageChosenFilePath.get());
-        dailyPaperElement.getLivePaneImageChooseLabel().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(6.0).multiply(5.0));
+        dailyPaperElement.getLivePaneImageChooseLabel().prefWidthProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().widthProperty().divide(5.0).multiply(4.0));
         dailyPaperElement.getLivePaneImageChooseLabel().prefHeightProperty().bind(dailyPaperElement.getLivePaneImageInputHBox().heightProperty());
         dailyPaperElement.getLivePaneImageChooseLabel().setFont(new Font(dailyPaperElement.getLivePaneImageInputFontSize().get()));
         dailyPaperElement.getLivePaneImageChooseLabel().setAlignment(Pos.CENTER);
@@ -182,10 +183,13 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         );
 
         dailyPaperElement.getLivePaneImageShowHBox().maxWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
-        dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6).multiply(4));
+        dailyPaperElement.getLivePaneImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(8.0).multiply(6.0));
+        dailyPaperElement.getLivePaneImageShowHBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getLivePaneImageSureHBox().prefWidthProperty().bind(dailyPaperElement.getLivePane().widthProperty());
-        dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(6));
+        dailyPaperElement.getLivePaneImageSureHBox().prefHeightProperty().bind(dailyPaperElement.getLivePane().heightProperty().divide(8.0));
+        dailyPaperElement.getLivePaneImageSureHBox().setAlignment(Pos.CENTER);
+
     }
 
     @Override
@@ -196,7 +200,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyPaneVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getDailyPaneLaunchHBox().prefWidthProperty().bind(dailyPaperElement.getDailyPaneVBox().widthProperty());
-        dailyPaperElement.getDailyPaneLaunchHBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10));
+        dailyPaperElement.getDailyPaneLaunchHBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10.0));
         dailyPaperElement.getDailyPaneLaunchHBox().setSpacing(dailyPaperElement.getOffset().get() * 2);
         dailyPaperElement.getDailyPaneLaunchHBox().setAlignment(Pos.CENTER);
 
@@ -229,7 +233,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         }
 
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().prefWidthProperty().bind(dailyPaperElement.getDailyPaneVBox().widthProperty());
-        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10));
+        dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10.0));
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().setSpacing(dailyPaperElement.getOffset().get() * 2);
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().setAlignment(Pos.CENTER);
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingHBox().setVisible(dailyPaper.getAutoWallpaper().get());
@@ -256,7 +260,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyPaneAutoSetWallpaperSettingDelyTextField().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
 
         dailyPaperElement.getDailyPaneHobbyVBox().prefWidthProperty().bind(dailyPaperElement.getDailyPaneVBox().widthProperty());
-        dailyPaperElement.getDailyPaneHobbyVBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10).multiply(8));
+        dailyPaperElement.getDailyPaneHobbyVBox().prefHeightProperty().bind(dailyPaperElement.getDailyPaneVBox().heightProperty().divide(10.0).multiply(8.0));
         dailyPaperElement.getDailyPaneHobbyVBox().setSpacing(dailyPaperElement.getOffset().get());
         dailyPaperElement.getDailyPaneHobbyVBox().setAlignment(Pos.CENTER);
 
@@ -266,21 +270,20 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyPaneHobbyHobbyLabel().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getDailyPaneHobbyHobbyLabel().prefWidthProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().widthProperty());
-        dailyPaperElement.getDailyPaneHobbyHobbyLabel().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().widthProperty().divide(10));
+        dailyPaperElement.getDailyPaneHobbyHobbyLabel().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().widthProperty().divide(10.0));
         dailyPaperElement.getDailyPaneHobbyHobbyLabel().setText("推荐壁纸喜好描述");
         dailyPaperElement.getDailyPaneHobbyHobbyLabel().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
 
         dailyPaperElement.getDailyPaneHobbyHobbyScrollPane().prefWidthProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().widthProperty());
-        dailyPaperElement.getDailyPaneHobbyHobbyScrollPane().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().heightProperty().divide(10).multiply(9));
+        dailyPaperElement.getDailyPaneHobbyHobbyScrollPane().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().heightProperty().divide(10.0).multiply(9.0));
 
         dailyPaperElement.getDailyPaneHobbyHobbyTextArea().prefWidthProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().widthProperty());
-        dailyPaperElement.getDailyPaneHobbyHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().heightProperty().divide(10).multiply(9));
+        dailyPaperElement.getDailyPaneHobbyHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyPaneHobbyHobbyVBox().heightProperty().divide(10.0).multiply(9.0));
         dailyPaperElement.getDailyPaneHobbyHobbyTextArea().setText(dailyPaper.getDailyWallpaperHobby().get());
-        dailyPaperElement.getDailyPaneHobbyHobbyTextArea().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get()));
+        dailyPaperElement.getDailyPaneHobbyHobbyTextArea().setFont(new Font(dailyPaperElement.getDailyPaneFontSize().get() * 1.5));
         dailyPaperElement.getDailyPaneHobbyHobbyTextArea().setWrapText(true);
 
         dailyPaperElement.getDailyPaneHobbyVBox().setVisible(dailyPaper.getAutoWallpaper().get());
-
 
     }
 
@@ -289,7 +292,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getHobbyPaneVBox().prefWidthProperty().bind(dailyPaperElement.getHobbyPane().widthProperty());
         dailyPaperElement.getHobbyPaneVBox().prefHeightProperty().bind(dailyPaperElement.getHobbyPane().heightProperty());
 
-        dailyPaperElement.getHobbyPaneInformationLabel().setText("作者项目有点多，缓慢更新中，请见谅！另外你可以在更新模块中实时查看新版本的更新情况。");
+        dailyPaperElement.getHobbyPaneInformationLabel().setText("> 作者项目有点多，缓慢更新中，请见谅！另外你可以在更新模块中实时查看新版本的更新情况。");
     }
 
     @Override
@@ -297,7 +300,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getSettingPaneVBox().prefWidthProperty().bind(dailyPaperElement.getSettingPaneVBox().widthProperty());
         dailyPaperElement.getSettingPaneVBox().prefHeightProperty().bind(dailyPaperElement.getSettingPaneVBox().heightProperty());
 
-        dailyPaperElement.getSettingPaneInformationLabel().setText("请参考：" + dailyPaper.getConfigConfig().getLocalDB().getFullFilePath());
+        dailyPaperElement.getSettingPaneInformationLabel().setText("> 请参考配置文件：" + dailyPaper.getConfigConfig().getLocalDB().getFullFilePath());
     }
 
     @Override
@@ -308,35 +311,35 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRenewPaneVBox().setSpacing(dailyPaperElement.getOffset().get() * 5);
 
         dailyPaperElement.getRenewPaneManualRenewVBox().prefWidthProperty().bind(dailyPaperElement.getRenewPaneVBox().widthProperty());
-        dailyPaperElement.getRenewPaneManualRenewVBox().prefHeightProperty().bind(dailyPaperElement.getRenewPaneVBox().heightProperty().divide(6).multiply(3));
+        dailyPaperElement.getRenewPaneManualRenewVBox().prefHeightProperty().bind(dailyPaperElement.getRenewPaneVBox().heightProperty().divide(6.0).multiply(3.0));
         dailyPaperElement.getRenewPaneManualRenewVBox().setAlignment(Pos.CENTER);
         dailyPaperElement.getRenewPaneManualRenewVBox().setSpacing(dailyPaperElement.getOffset().get());
 
-        dailyPaperElement.getRenewPaneManualCheckRenewButton().prefWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6));
-        dailyPaperElement.getRenewPaneManualCheckRenewButton().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6));
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().prefWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0));
+        dailyPaperElement.getRenewPaneManualCheckRenewButton().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0));
         dailyPaperElement.getRenewPaneManualCheckRenewButton().setText("检查更新");
         dailyPaperElement.getRenewPaneManualCheckRenewButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
 
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6).multiply(4));
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6).multiply(4));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0).multiply(4.0));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0).multiply(4.0));
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowScrollPane().setVisible(false);
 
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6).multiply(4));
-        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6).multiply(4));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().maxWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0).multiply(4.0));
+        dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0).multiply(4.0));
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setWrapText(true);
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().clear();
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setEditable(false);
         dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setVisible(false);
 
-        dailyPaperElement.getRenewPaneManualDownloadRenewButton().prefWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6));
-        dailyPaperElement.getRenewPaneManualDownloadRenewButton().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6));
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().prefWidthProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0));
+        dailyPaperElement.getRenewPaneManualDownloadRenewButton().prefHeightProperty().bind(dailyPaperElement.getRenewPaneManualRenewVBox().widthProperty().divide(6.0));
         dailyPaperElement.getRenewPaneManualDownloadRenewButton().setText("立即更新");
         dailyPaperElement.getRenewPaneManualDownloadRenewButton().setFont(new Font(dailyPaperElement.getRenewPaneFontSize().get()));
         dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(false);
 
         dailyPaperElement.getRenewPaneAutoRenewHBox().prefWidthProperty().bind(dailyPaperElement.getRenewPaneVBox().widthProperty());
-        dailyPaperElement.getRenewPaneAutoRenewHBox().prefHeightProperty().bind(dailyPaperElement.getRenewPaneVBox().heightProperty().divide(6));
+        dailyPaperElement.getRenewPaneAutoRenewHBox().prefHeightProperty().bind(dailyPaperElement.getRenewPaneVBox().heightProperty().divide(6.0));
         dailyPaperElement.getRenewPaneAutoRenewHBox().setAlignment(Pos.CENTER);
         dailyPaperElement.getRenewPaneAutoRenewHBox().setSpacing(dailyPaperElement.getOffset().get() * 2);
 
