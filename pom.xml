@@ -14,7 +14,7 @@
         <junit.version>5.12.1</junit.version>
     </properties>
 
-    <!-- 引入jitpack对 github 依赖进行管理 -->
+    <!-- 引入 jitpack 对 github 依赖进行管理 -->
     <repositories>
         <repository>
             <id>jitpack.io</id>
@@ -23,6 +23,7 @@
     </repositories>
 
     <dependencies>
+
         <!-- 原创数据库框架 EasyDB -->
         <dependency>
             <groupId>com.github.BProbie</groupId>
@@ -65,7 +66,7 @@
             <version>5.17.0</version>
         </dependency>
 
-        <!-- JNA:调用操作系统 -->
+        <!-- JNI:调用操作系统 -->
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna-platform</artifactId>
@@ -160,6 +161,7 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

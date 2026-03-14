@@ -101,7 +101,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createRootPaneEvent() {
-        /// 创建 RootPane 控件事件
         /// 拖拽窗口
         dailyPaperElement.getRootPaneTitleBar().setOnMousePressed(mouseEvent -> {
             mouseStartX = mouseEvent::getScreenX;
@@ -173,7 +172,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createChatPaneEvent() {
-        /// 创建 ChatPane 控件事件
         dailyPaperElement.getChatPaneTextInputArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 if (keyEvent.isShiftDown() || keyEvent.isControlDown() || keyEvent.isAltDown()) {
@@ -597,12 +595,12 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void clearHobbyPane() {
-
+        dailyPaperStyle.createHobbyPaneStyle();
     }
 
     @Override
     public void clearSettingPane() {
-
+        dailyPaperStyle.createSettingPaneStyle();
     }
 
     @Override
@@ -618,22 +616,19 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void scrollToBottom(ScrollPane scrollPane) {
-        ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
-        if (verticalScrollBar != null) {
+        dailyPaper.getDailyPaperPool().submit(() -> {
+            ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
             try {
                 Thread.sleep(dailyPaperElement.getDelay().get());
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(interruptedException);
             }
-            Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
-        } else {
-            try {
-                Thread.sleep(dailyPaperElement.getDelay().get());
-            } catch (InterruptedException interruptedException) {
-                throw new RuntimeException(interruptedException);
+            if (verticalScrollBar != null) {
+                Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
+            } else {
+                Platform.runLater(() -> scrollPane.setVvalue(1.0));
             }
-            Platform.runLater(() -> scrollPane.setVvalue(1.0));
-        }
+        });
     }
 
     @Override
@@ -708,13 +703,13 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaper.getDailyPaperPool().submit(() -> {
             if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
                 Object version = dailyPaper.getRenewConfig().getLocalDB().get("VERSION", dailyPaper.getVERSION());
-                if (version.equals(dailyPaper.getVERSION())) {
-                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
-                } else {
+                if (Double.parseDouble(dailyPaper.getVERSION()) < Double.parseDouble(String.valueOf(version))) {
                     dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("发现新版本!");
                     dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText(dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().getText() + "\n" + dailyPaper.getRenewConfig().getLocalDB().get("NEWS", "无"));
                     dailyPaperElement.getRenewPaneManualDownloadRenewButton().setVisible(true);
                     hasNew.set(true);
+                } else {
+                    dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("已经是最新版本!");
                 }
             } else {
                 dailyPaperElement.getRenewPaneManualCheckRenewTextShowArea().setText("网络暂不可用");
@@ -731,13 +726,14 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             if (DailyPaper.getInstance().getComputerSystem().getHasNetwork()) {
                 if (DailyPaper.getInstance().getComputerSystem().getSystemName().toLowerCase().contains("windows")) {
                     AtomicInteger status = new AtomicInteger();
-                    DailyPaper.getInstance().getDailyPaperPool().submit(() -> status.set(DailyPaper.getInstance().getComputerSystem().runCommand(
-                            "cmd /c cd /d" + " " + dailyPaper.getDailyPaperRenewFilePath().get()
-                                    + "&" + "jdk-21.0.8" + File.separator + "bin" + File.separator + "java" + "-jar "
-                                    + DailyPaper.getInstance().getDailyPaperRenewFilePath() + File.separator + DailyPaper.getInstance().getDailyPaperRenewFileNameWindows()
-                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadUrlWindows()
-                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadFilePath() + File.separator + DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows()
-                                    + " " + DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen())));
+                    String command = "cmd /c cd /d" + " " + dailyPaper.getDailyPaperRenewFilePath().get()
+                            + "&" + "jdk-21.0.8" + File.separator + "bin" + File.separator + "java" + " " + "-jar "
+                            + DailyPaper.getInstance().getDailyPaperRenewFilePath().get() + File.separator + DailyPaper.getInstance().getDailyPaperRenewFileNameWindows().get()
+                            + " " + DailyPaper.getInstance().getDailyPaperDownloadUrlWindows().get()
+                            + " " + DailyPaper.getInstance().getDailyPaperDownloadFilePath().get() + File.separator + DailyPaper.getInstance().getDailyPaperDownloadFileNameWindows().get()
+                            + " " + DailyPaper.getInstance().getDailyPaperDownloadFileIsOpen().get();
+                    System.out.println(command);
+                    DailyPaper.getInstance().getDailyPaperPool().submit(() -> status.set(DailyPaper.getInstance().getComputerSystem().runCommand(command)));
                     hasDownload.set(status.get() == 0);
                     if (hasDownload.get()) {
                         DailyPaperElement.getInstance().getRenewPaneManualCheckRenewTextShowArea().setText("软件更新成功!");

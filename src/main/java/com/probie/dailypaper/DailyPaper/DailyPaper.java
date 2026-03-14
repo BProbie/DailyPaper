@@ -23,7 +23,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.0.0";
+    private final String VERSION = "1.0";
     private final String AUTHOR = "probie";
     private final String URL = "https://github.com/BProbie/DailyPaper";
 
@@ -217,7 +217,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     public String RenewConfigFileUrl = getConfigConfig().getLocalDB().get(getKeyRenewConfigFileUrl(),
             "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/"+getRenewConfigFileName()).toString();
 
-    public ExecutorService dailyPaperPool = Executors.newFixedThreadPool(10);
+    public ExecutorService dailyPaperPool = Executors.newFixedThreadPool(32);
 
     @Override
     public void launch(String[] args) {

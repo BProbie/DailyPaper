@@ -1,4 +1,5 @@
 module com.probie.dailypaper {
+
     requires javafx.web;
     requires javafx.fxml;
     requires javafx.swing;
@@ -11,7 +12,6 @@ module com.probie.dailypaper {
     requires Encryption;
     requires com.sun.jna;
     requires java.desktop;
-    requires static lombok;
     requires java.instrument;
     requires com.dlsc.formsfx;
     requires eu.hansolo.tilesfx;
@@ -22,8 +22,12 @@ module com.probie.dailypaper {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
+    requires static lombok;
+
     exports com.probie.dailypaper;
     exports com.probie.dailypaper.DailyPaper;
+
     opens com.probie.dailypaper to javafx.fxml;
     opens com.probie.dailypaper.DailyPaper to javafx.fxml;
+
 }

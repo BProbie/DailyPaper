@@ -183,11 +183,17 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     private Supplier<Integer> renewPaneFontSize = () -> 15;
 
-    private Supplier<Integer> offset = () -> 10;
-    private Supplier<Integer> delay = () -> 100;
-
     private volatile long autoDailyWallpaperStartTime = System.currentTimeMillis();
     private Supplier<Boolean> isAutoDailyWallpaperRunning = () -> false;
+
+    private Supplier<Integer> fontSizeLargeLarge = () -> 25;
+    private Supplier<Integer> fontSizeLarge = () -> 20;
+    private Supplier<Integer> fontSizeMedium = () -> 15;
+    private Supplier<Integer> fontSizeSmall = () -> 15;
+    private Supplier<Integer> fontSizeSmallSmall = () -> 10;
+
+    private Supplier<Integer> delay = () -> 100;
+    private Supplier<Integer> offset = () -> 10;
 
     /**
      * 静态变量

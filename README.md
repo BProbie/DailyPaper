@@ -1,28 +1,38 @@
 # 原创开源软件应用开发信息
 
-## 软件名称：DailyPaper
+## 软件名称：DailyPaper（日常壁纸）
 
-## 软件版本：1.0.0
+## 软件版本：1.0（基础功能基本完工）
 
 ## 开发语言：Java（JDK-21.0.8）
 
-## 开发时间：2025年11月1日 ~ 至今持续更新
+## 开发时间：2025年11月1日 ~ 至今持续更新！
 
-## 开源地址：https://github.com/BProbie/DailyPaper
+## 开源地址：https://github.com/BProbie/DailyPaper/
 
 ## 依赖工具：Maven
 
 ## 依赖技术：
 
-* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB
-* ### Encryption（个人原创：https://github.com/BProbie/Encryption
-* ### Renew（个人原创：https://github.com/BProbie/Renew
-* ### OkHttp
-* ### FastJSON
-* ### Commons Codec
-* ### JNA
-* ### Lombok
+* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB/
+
+* ### Encryption（个人原创：https://github.com/BProbie/Encryption/
+
+* ### Renew（个人原创：https://github.com/BProbie/Renew/
+
 * ### JavaFX
+
+* ### Lombok
+
+* ### JNI（JNA）
+
+* ### OkHttp
+
+* ### FastJSON
+
+* ### Commons Codec
+
+## AI集成API管理平台：SiliconCloud（硅基流动）
 
 
 
@@ -115,3 +125,9 @@
 ## 作者：probie
 
 ## 贡献：\[probie]
+
+
+
+# 疑问交流联系
+
+## 如有疑问请通过提交Issue阐述，作者能看到且会经常查看！
