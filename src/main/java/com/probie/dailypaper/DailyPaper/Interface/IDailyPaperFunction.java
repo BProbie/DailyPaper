@@ -19,7 +19,7 @@ public interface IDailyPaperFunction {
     /**
      * 每日壁纸推荐
      * */
-    void launchDailyWallpaper();
+    void dailyWallpaper();
 
     /**
      * 检查更新软件

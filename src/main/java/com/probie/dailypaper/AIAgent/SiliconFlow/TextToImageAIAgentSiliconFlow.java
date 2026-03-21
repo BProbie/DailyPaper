@@ -85,7 +85,6 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (response.body() != null) {
                 String responseBody = response.body().string();
-                System.out.println(responseBody);
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);

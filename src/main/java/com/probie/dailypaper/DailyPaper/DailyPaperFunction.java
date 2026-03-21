@@ -1,13 +1,11 @@
 package com.probie.dailypaper.DailyPaper;
 
-import javafx.scene.control.Button;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.application.Platform;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import com.probie.dailypaper.System.ImageSystem;
@@ -91,14 +89,14 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     }
 
     @Override
-    public void launchDailyWallpaper() {
-        if (dailyPaperData.getIsLiveWallpaperShowing().get()) dailyPaperFunction.clearLiveImageWallpaper();
+    public void dailyWallpaper() {
         try {
             DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
                 String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get())[0];
                 String[] urls = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                 BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(urls[0]);
                 if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
+                    if (dailyPaperData.getIsLiveWallpaperShowing().get()) dailyPaperFunction.clearLiveImageWallpaper();
                     ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
                 }
             });

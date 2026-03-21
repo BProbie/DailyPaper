@@ -202,7 +202,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<String> ChatImageDownloadFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFilePath(), getCurrentFilePath().get()).toString();
     private Supplier<String> ChatImageDownloadFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFileName(), "image.png").toString();
 
-    private Supplier<String> LiveImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageFilePath(), getCurrentFilePath().get()).toString();
+    private Supplier<String> LiveImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFilePath(), getCurrentFilePath().get()).toString();
     private Supplier<String> LiveImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFileName(), "image.png").toString();
     private Supplier<Boolean> LiveImageAutoLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageAutoLaunch(), false)));
 

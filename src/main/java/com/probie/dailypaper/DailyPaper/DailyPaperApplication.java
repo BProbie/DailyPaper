@@ -78,9 +78,15 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
 
     @Override
     public void afterStart() {
+
+        /// 播放动图
+        if (dailyPaper.getLiveImageAutoLaunch().get()) {
+            dailyPaperFunction.launchLiveImageWallpaper();
+        }
+
         /// 启动自动推荐壁纸
         if (dailyPaper.getDailyAutoWallpaper().get() && dailyPaper.getDailyAutoWallpaperWhenLaunch().get()) {
-            dailyPaperFunction.launchDailyWallpaper();
+            dailyPaperFunction.dailyWallpaper();
         }
 
         /// 时间自动推荐壁纸
@@ -90,11 +96,6 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                 dailyPaper.getScheduledExecutorService().scheduleAtFixedRate(dailyPaperData.getAutoDailyWallpaper(), 1 , 1, TimeUnit.MINUTES);
                 dailyPaperData.setIsAutoDailyWallpaperRunning(() -> true);
             }
-        }
-
-        /// 播放动图
-        if (dailyPaper.getLiveImageAutoLaunch().get()) {
-            dailyPaperFunction.launchLiveImageWallpaper();
         }
 
         /// 自动更新
@@ -107,21 +108,22 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                 }
             }
         });
+
     }
 
     @Override
     public void beforeStop() {
-
-    }
-
-    @Override
-    public void afterStop() {
         dailyPaper.getScheduledExecutorService().shutdownNow();
         dailyPaper.getDailyPaperPool().shutdownNow();
         dailyPaperElement.getStage().close();
         dailyPaper.close();
         Platform.exit();
+    }
+
+    @Override
+    public void afterStop() {
         System.gc();
+        System.exit(0);
     }
 
 }

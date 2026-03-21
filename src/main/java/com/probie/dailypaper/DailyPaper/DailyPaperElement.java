@@ -193,6 +193,7 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createElement(Stage stage) {
+
         setStage(stage);
         createChatElement();
         createLiveElement();
@@ -203,6 +204,7 @@ public class DailyPaperElement implements IDailyPaperElement {
         createRootElement();
         createSceneElement();
         createStageElement();
+
     }
 
     @Override
@@ -311,9 +313,11 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         renewAutoDownloadRenewHBox.getChildren().addAll(renewAutoDownloadRenewLabel, renewAutoDownloadRenewOnButton, renewAutoDownloadRenewOffButton);
 
+        renewManualRenewVBox.getChildren().addAll(renewManualCheckRenewHBox, renewManualShowRenewHBox, renewManualDownloadRenewHBox);
+
         renewAutoRenewHBox.getChildren().addAll(renewAutoCheckRenewHBox, renewAutoDownloadRenewHBox);
 
-        renewVBox.getChildren().addAll(renewManualCheckRenewHBox,renewManualShowRenewHBox, renewManualDownloadRenewHBox, renewAutoRenewHBox);
+        renewVBox.getChildren().addAll(renewManualRenewVBox, renewAutoRenewHBox);
     }
 
 }

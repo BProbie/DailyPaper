@@ -1,13 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
-import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
-import com.probie.dailypaper.Config.LiveImageConfig;
-import com.probie.dailypaper.Config.SettingConfig;
-import com.probie.dailypaper.System.ComputerSystem;
-import com.probie.dailypaper.System.GIFSystem;
-import com.probie.dailypaper.System.ImageSystem;
-import javafx.stage.FileChooser;
 import lombok.Data;
 import java.io.File;
 import javafx.geometry.Pos;
@@ -15,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
@@ -25,9 +18,16 @@ import javafx.scene.image.ImageView;
 import java.awt.image.BufferedImage;
 import javafx.scene.input.Clipboard;
 import java.util.concurrent.TimeUnit;
-import javafx.stage.DirectoryChooser;
 import javafx.scene.input.ClipboardContent;
+import com.probie.dailypaper.System.GIFSystem;
+import com.probie.dailypaper.Config.RenewConfig;
+import com.probie.dailypaper.System.ImageSystem;
+import com.probie.dailypaper.System.NetworkSystem;
+import com.probie.dailypaper.System.ComputerSystem;
+import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
 
 @Data
 public class DailyPaperEvent implements IDailyPaperEvent {
@@ -296,6 +296,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                                 File file = fileChooser.showSaveDialog(dailyPaperElement.getStage());
                                                 if (file != null) {
                                                     dailyPaper.setChatImageDownloadFilePath(file::getParent);
+                                                    dailyPaper.setChatImageDownloadFileName(file::getName);
                                                     ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath());
                                                 }
                                             });
@@ -508,9 +509,71 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createRenewEvent() {
-        dailyPaperElement.getRenewManualCheckRenewButton().setOnAction(actionEvent -> dailyPaperFunction.checkRenewDailyPaper());
+        dailyPaperElement.getRenewManualCheckRenewButton().setOnAction(actionEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
+            String temp = dailyPaperElement.getRenewManualCheckRenewButton().getText();
+            try {
+                Platform.runLater(() -> {
+                    dailyPaperElement.getRenewManualShowRenewHBox().setVisible(true);
+                    dailyPaperElement.getRenewManualCheckRenewButton().setDisable(true);
+                    dailyPaperElement.getRenewManualCheckRenewButton().setText("正在检查");
+                });
+                if (NetworkSystem.getInstance().getHasNetwork()) {
+                    Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("嘟嘟检查更新中..."));
+                    if (dailyPaperFunction.checkRenewDailyPaper()) {
+                        Platform.runLater(() -> {
+                            dailyPaperElement.getRenewManualShowRenewTextArea().setText("发现更新版本呀！");
+                            dailyPaperElement.getRenewManualShowRenewTextArea().setText(dailyPaperElement.getRenewManualShowRenewTextArea().getText() + "\n" + RenewConfig.getInstance().getLocalRemoteDB().get("RENEW", "未知更新内容"));
+                            dailyPaperElement.getRenewManualDownloadRenewHBox().setVisible(true);
+                        });
+                    } else {
+                        Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("已是最新版本啦！"));
+                    }
+                } else {
+                    Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("怎么好像没网络？"));
+                }
+            } catch (Exception exception) {
+                Platform.runLater(() -> {
+                    dailyPaperElement.getRenewManualShowRenewTextArea().setText("不小心出错了哦？");
+                    dailyPaperElement.getRenewManualShowRenewTextArea().setText(dailyPaperElement.getRenewManualShowRenewTextArea().getText() + "\n" + exception.getMessage());
+                });
+            } finally {
+                Platform.runLater(() -> {
+                    dailyPaperElement.getRenewManualCheckRenewButton().setText(temp);
+                    dailyPaperElement.getRenewManualCheckRenewButton().setDisable(false);
+                });
+            }
+        }));
 
-        dailyPaperElement.getRenewManualDownloadRenewButton().setOnAction(actionEvent -> dailyPaperFunction.downloadRenewDailyPaper());
+        dailyPaperElement.getRenewManualDownloadRenewButton().setOnAction(actionEvent -> {
+            String temp = dailyPaperElement.getRenewManualDownloadRenewButton().getText();
+            try {
+                Platform.runLater(() -> {
+                    dailyPaperElement.getRenewManualDownloadRenewButton().setDisable(true);
+                    dailyPaperElement.getRenewManualDownloadRenewButton().setText("正在更新");
+                });
+                if (NetworkSystem.getInstance().getHasNetwork()) {
+                    if (dailyPaperFunction.downloadRenewDailyPaper()) {
+                        Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新完成！"));
+                        if (dailyPaper.getDailyPaperRenewAutoOpen().get()) {
+                            dailyPaperApplication.stop();
+                        }
+                    } else {
+                        Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新失败？"));
+                    }
+                } else {
+                    Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("找不到网络哦？"));
+                }
+            } catch (Exception exception) {
+                dailyPaperElement.getRenewManualShowRenewTextArea().setText("不小心出错了哦？");
+                dailyPaperElement.getRenewManualShowRenewTextArea().setText(dailyPaperElement.getRenewManualShowRenewTextArea().getText() + "\n" + exception.getMessage());
+            } finally {
+                Platform.runLater(() -> {
+                    dailyPaperElement.getRenewManualDownloadRenewButton().setText(temp);
+                    dailyPaperElement.getRenewManualDownloadRenewButton().setDisable(false);
+                });
+            }
+            dailyPaperFunction.downloadRenewDailyPaper();
+        });
 
         dailyPaperElement.getRenewAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == dailyPaperElement.getRenewAutoCheckRenewOnButton()) {

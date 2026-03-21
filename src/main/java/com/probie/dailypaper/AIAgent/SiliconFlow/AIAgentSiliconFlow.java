@@ -1,5 +1,6 @@
 package com.probie.dailypaper.AIAgent.SiliconFlow;
 
+import lombok.Data;
 import java.io.File;
 import java.util.function.Supplier;
 import com.probie.dailypaper.AIAgent.AIAgent;
@@ -7,6 +8,7 @@ import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.encryption.Encryption.Encryption;
 import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.IAIAgentSiliconFlow;
 
+@Data
 public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSiliconFlow {
 
     /**

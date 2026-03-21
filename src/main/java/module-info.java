@@ -1,6 +1,7 @@
 module com.probie.dailypaper {
 
     requires javafx.fxml;
+    requires javafx.swing;
     requires javafx.controls;
     requires javafx.graphics;
 
@@ -15,7 +16,6 @@ module com.probie.dailypaper {
     requires com.alibaba.fastjson2;
 
     requires static lombok;
-    requires javafx.swing;
 
     exports com.probie.dailypaper;
     exports com.probie.dailypaper.DailyPaper;

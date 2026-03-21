@@ -58,7 +58,7 @@ public class DailyPaperData implements IDailyPaperData {
     private final Runnable autoDailyWallpaper = () -> {
         if (dailyPaper.getDailyAutoWallpaper().get() && dailyPaper.getDailyAutoWallpaperWhenTime().get() >= 1) {
             if (System.currentTimeMillis() - autoDailyWallpaperStartTime > (long) dailyPaper.getDailyAutoWallpaperWhenTime().get() * 60 * 1000) {
-                dailyPaperFunction.launchDailyWallpaper();
+                dailyPaperFunction.dailyWallpaper();
                 setAutoDailyWallpaperStartTime(System.currentTimeMillis());
             }
         }
@@ -70,28 +70,28 @@ public class DailyPaperData implements IDailyPaperData {
     private Supplier<Integer> nodeSizeSmall = () -> 15;
     private Supplier<Integer> nodeSizeSmallSmall = () -> 10;
 
-    private Supplier<Integer> nodeWidthLargeLarge = () -> 120;
-    private Supplier<Integer> nodeHeightLargeLarge = () -> 60;
-    private Supplier<Integer> nodeWidthLarge = () -> 100;
-    private Supplier<Integer> nodeHeightLarge = () -> 50;
-    private Supplier<Integer> nodeWidthMedium = () -> 80;
-    private Supplier<Integer> nodeHeightMedium = () -> 40;
-    private Supplier<Integer> nodeWidthSmall = () -> 60;
-    private Supplier<Integer> nodeHeightSmall = () -> 30;
-    private Supplier<Integer> nodeWidthSmallSmall = () -> 40;
-    private Supplier<Integer> nodeHeightSmallSmall = () -> 20;
+    private Supplier<Integer> nodeWidthLargeLarge = () -> 100;
+    private Supplier<Integer> nodeHeightLargeLarge = () -> 50;
+    private Supplier<Integer> nodeWidthLarge = () -> 80;
+    private Supplier<Integer> nodeHeightLarge = () -> 40;
+    private Supplier<Integer> nodeWidthMedium = () -> 60;
+    private Supplier<Integer> nodeHeightMedium = () -> 30;
+    private Supplier<Integer> nodeWidthSmall = () -> 40;
+    private Supplier<Integer> nodeHeightSmall = () -> 20;
+    private Supplier<Integer> nodeWidthSmallSmall = () -> 20;
+    private Supplier<Integer> nodeHeightSmallSmall = () -> 10;
 
-    private Supplier<Integer> spacingSizeLargeLarge = () -> 25;
-    private Supplier<Integer> spacingSizeLarge = () -> 20;
-    private Supplier<Integer> spacingSizeMedium = () -> 15;
-    private Supplier<Integer> spacingSizeSmall = () -> 10;
-    private Supplier<Integer> spacingSizeSmallSmall = () -> 5;
+    private Supplier<Integer> spacingSizeLargeLarge = () -> 30;
+    private Supplier<Integer> spacingSizeLarge = () -> 25;
+    private Supplier<Integer> spacingSizeMedium = () -> 20;
+    private Supplier<Integer> spacingSizeSmall = () -> 15;
+    private Supplier<Integer> spacingSizeSmallSmall = () -> 10;
 
-    private Supplier<Integer> fontSizeLargeLarge = () -> 25;
-    private Supplier<Integer> fontSizeLarge = () -> 20;
-    private Supplier<Integer> fontSizeMedium = () -> 15;
-    private Supplier<Integer> fontSizeSmall = () -> 10;
-    private Supplier<Integer> fontSizeSmallSmall = () -> 5;
+    private Supplier<Integer> fontSizeLargeLarge = () -> 30;
+    private Supplier<Integer> fontSizeLarge = () -> 25;
+    private Supplier<Integer> fontSizeMedium = () -> 20;
+    private Supplier<Integer> fontSizeSmall = () -> 15;
+    private Supplier<Integer> fontSizeSmallSmall = () -> 10;
 
     private Supplier<Integer> delay = () -> 10;
     private Supplier<Integer> offset = () -> 10;

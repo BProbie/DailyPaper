@@ -5,15 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-
-import com.probie.dailypaper.System.ImageSystem;
 import javafx.scene.image.Image;
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.metadata.IIOMetadataNode;
-import com.probie.dailypaper.DailyPaper.DailyPaper;
+import com.probie.dailypaper.System.ImageSystem;
 
 public interface IGIFSystem {
 
