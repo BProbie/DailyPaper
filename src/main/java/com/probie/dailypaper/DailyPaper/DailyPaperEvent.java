@@ -544,7 +544,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             }
         }));
 
-        dailyPaperElement.getRenewManualDownloadRenewButton().setOnAction(actionEvent -> {
+        dailyPaperElement.getRenewManualDownloadRenewButton().setOnAction(actionEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
             String temp = dailyPaperElement.getRenewManualDownloadRenewButton().getText();
             try {
                 Platform.runLater(() -> {
@@ -572,8 +572,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     dailyPaperElement.getRenewManualDownloadRenewButton().setDisable(false);
                 });
             }
-            dailyPaperFunction.downloadRenewDailyPaper();
-        });
+        }));
 
         dailyPaperElement.getRenewAutoCheckRenewGroup().selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == dailyPaperElement.getRenewAutoCheckRenewOnButton()) {

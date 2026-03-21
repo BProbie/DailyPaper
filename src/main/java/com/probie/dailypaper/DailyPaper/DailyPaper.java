@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.0";
+    private final String VERSION = "1.1";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -196,7 +196,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<String> DailyPaperRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriMac(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
     private Supplier<String> DailyPaperRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriAndroid(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
     private Supplier<String> DailyPaperRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getDailyPaperRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getDailyPaperRenewUriLinux() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getDailyPaperRenewUriMac() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getDailyPaperRenewUriAndroid() : null).toString();
-    private Supplier<Boolean> DailyPaperRenewAutoOpen = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), true)));
+    private Supplier<Boolean> DailyPaperRenewAutoOpen = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewAutoOpen(), true)));
 
     /// 记忆参数
     private Supplier<String> ChatImageDownloadFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFilePath(), getCurrentFilePath().get()).toString();

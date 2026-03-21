@@ -2,7 +2,7 @@
 
 ## 软件名称：DailyPaper（日常壁纸）
 
-## 软件版本：1.1（基础功能基本完工）
+## 软件版本：1.1
 
 ## 开发语言：Java（JDK-21.0.8）
 
@@ -10,7 +10,7 @@
 
 ## 开源地址：https://github.com/BProbie/DailyPaper/
 
-## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.0
+## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.1
 
 ## 依赖工具：Maven
 
@@ -22,11 +22,11 @@
 
 * ### Renew（个人原创：https://github.com/BProbie/Renew/
 
-* ### JavaFX
-
-* ### Lombok
+* ### JavaFX（集合）
 
 * ### JNI（JNA）
+
+* ### Lombok
 
 * ### OkHttp
 
@@ -84,11 +84,11 @@
 
 ### 你可以在这里设置每日推送的壁纸风格，一日一换，或几分钟一换，又或程序启动后一换。
 
-## Hobby（个性爱好）
+## Param（配置参数）
 
-### 修改你的个人爱好，依此让生成的壁纸更贴合你的个性。
+### 修改软件的各项参数，让其更符合你的个人使用习惯。
 
-## Setting（参数设置）
+## Setting（配置设置）
 
 ### 你可以在这里调配各种参数，甚至接入个人插件。
 
@@ -112,9 +112,9 @@
 
 ### 技术点在于操作系统系统级开机自启，需要灵活的权限管理，路径搜寻，线程维护，网络检测，AIAgent的整合，离散操作的兼容等。
 
-## Hobby
+## Param
 
-### 技术点在于软编程的尝试，AI自己创作代替硬编码等。
+### 数据的灵活存储，和使用，兼具对功能的动态调整。
 
 ## Setting
 
