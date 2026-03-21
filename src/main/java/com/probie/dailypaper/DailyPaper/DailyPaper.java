@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.1";
+    private final String VERSION = "1.0";
 
     /**
      * 维护一个懒加载的类单例对象
