@@ -555,7 +555,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     if (dailyPaperFunction.downloadRenewDailyPaper()) {
                         Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新完成！"));
                         if (dailyPaper.getDailyPaperRenewAutoOpen().get()) {
-                            dailyPaperApplication.stop();
+//                            dailyPaperApplication.stop();
+                            System.exit(0);
                         }
                     } else {
                         Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新失败？"));
