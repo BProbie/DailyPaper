@@ -82,16 +82,22 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
 
     private String KeyKolorsModelSiliconFlow = "KolorsAPIModelSiliconFlow";
-    private String KeyQwen3_8BModelSiliconFlow = "Qwen3_8BAPIModelSiliconFlow";
+    private String KeyQwen30_8BModelSiliconFlow = "Qwen30_8BAPIModelSiliconFlow";
+    private String KeyQwen35_4BModelSiliconFlow = "Qwen35_4BAPIModelSiliconFlow";
+    private String KeyGLM_41V_9B_ThinkingModelSiliconFlow = "GLM_41V_9B_ThinkingModelSiliconFlow";
 
     private String KeyAPIUrlTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
     private String KeyAPIUrlTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
+    private String KeyAPIUrlImageToTextSiliconFlow = "APIUrlImageToTextSiliconFlow";
+
     private String KeyAPIModelTextToTextSiliconFlow = "APIModelTextToTextSiliconFlow";
     private String KeyAPIModelTextToImageSiliconFlow = "APIModelTextToImageSiliconFlow";
+    private String KeyAPIModelImageToTextSiliconFlow = "APIModelImageToTextSiliconFlow";
 
     /// AI 生成参数
     private String KeySpawnImageSize = "SpawnImageSize";
     private String KeySpawnImageCount = "SpawnImageCount";
+    private String KeySpawnMaxTokens = "SpawnMaxTokens";
 
     /// 更新参数
     private String KeyRenewConfigRenewUriWindows = "RenewConfigRenewUriWindows";
@@ -170,16 +176,22 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<String> APIKeySiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIKeySiliconFlow(), "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
 
     private Supplier<String> KolorsModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyKolorsModelSiliconFlow(), "Kwai-Kolors/Kolors").toString();
-    private Supplier<String> Qwen3_8BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen3_8BModelSiliconFlow(), "Qwen/Qwen3-8B").toString();
+    private Supplier<String> Qwen30_8BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen30_8BModelSiliconFlow(), "Qwen/Qwen3-8B").toString();
+    private Supplier<String> Qwen35_4BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen35_4BModelSiliconFlow(), "Qwen/Qwen3.5-4B").toString();
+    private Supplier<String> GLM_41V_9B_ThinkingModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyGLM_41V_9B_ThinkingModelSiliconFlow(), "THUDM/GLM-4.1V-9B-Thinking").toString();
 
     private Supplier<String> APIUrlTextToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString();
     private Supplier<String> APIUrlTextToImageSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToImageSiliconFlow(), "https://api.siliconflow.cn/v1/images/generations").toString();
-    private Supplier<String> APIModelTextToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToTextSiliconFlow(), getQwen3_8BModelSiliconFlow().get()).toString();
+    private Supplier<String> APIUrlImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlImageToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString();
+
+    private Supplier<String> APIModelTextToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToTextSiliconFlow(), getQwen30_8BModelSiliconFlow().get()).toString();
     private Supplier<String> APIModelTextToImageSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(), getKolorsModelSiliconFlow().get()).toString();
+    private Supplier<String> APIModelImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get()).toString();
 
     /// AI 生成参数
     private Supplier<String> SpawnImageSize = () -> SettingConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight()))).toString();
     private Supplier<Integer> SpawnImageCount = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1)));
+    private Supplier<Integer> SpawnMaxTokens = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100)));
 
     /// 更新参数
     private Supplier<String> RenewConfigRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
@@ -266,16 +278,22 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyAPIKeySiliconFlow, APIKeySiliconFlow.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyKolorsModelSiliconFlow, KolorsModelSiliconFlow.get());
-        SettingConfig.getInstance().getLocalDB().set(KeyQwen3_8BModelSiliconFlow, Qwen3_8BModelSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyQwen30_8BModelSiliconFlow, Qwen30_8BModelSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyQwen35_4BModelSiliconFlow, Qwen35_4BModelSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyGLM_41V_9B_ThinkingModelSiliconFlow, GLM_41V_9B_ThinkingModelSiliconFlow.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlTextToTextSiliconFlow, APIUrlTextToTextSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlTextToImageSiliconFlow, APIUrlTextToImageSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlImageToTextSiliconFlow, APIUrlImageToTextSiliconFlow.get());
+
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelTextToTextSiliconFlow, APIModelTextToTextSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelTextToImageSiliconFlow, APIModelTextToImageSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIModelImageToTextSiliconFlow, APIModelImageToTextSiliconFlow.get());
 
         /// AI 生成参数
         SettingConfig.getInstance().getLocalDB().set(KeySpawnImageSize, SpawnImageSize.get());
         SettingConfig.getInstance().getLocalDB().set(KeySpawnImageCount, SpawnImageCount.get());
+        SettingConfig.getInstance().getLocalDB().set(KeySpawnMaxTokens, SpawnMaxTokens.get());
 
         /// 更新参数
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriWindows, RenewConfigRenewUriWindows.get());

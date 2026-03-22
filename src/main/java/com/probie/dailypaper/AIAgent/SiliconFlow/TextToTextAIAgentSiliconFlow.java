@@ -53,11 +53,11 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
                 .writeTimeout(getWriteTimeout().get(), TimeUnit.SECONDS)
                 .build();
 
-        /// 设置请求体
+        /// 设置请求体 Json
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
 
-        /// 设置请求体参数
+        /// 设置请求体 Json 参数
         JSONArray messages = new JSONArray();
         JSONObject userMessage = new JSONObject();
         userMessage.put("role", "user");
@@ -65,7 +65,7 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
         messages.add(userMessage);
         requestBodyJson.put("messages", messages);
 
-        /// 设置请求头
+        /// 设置请求体
         RequestBody requestBody = RequestBody.create(
                 requestBodyJson.toString(),
                 okhttp3.MediaType.parse("application/json; charset=utf-8")

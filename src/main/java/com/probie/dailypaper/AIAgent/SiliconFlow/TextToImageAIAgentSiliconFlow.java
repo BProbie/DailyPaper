@@ -60,14 +60,14 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
                 .writeTimeout(getWriteTimeout().get(), TimeUnit.SECONDS)
                 .build();
 
-        /// 设置请求体
+        /// 设置请求体 Json
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", getAPIModel());
         requestBodyJson.put("prompt", prompt);
         requestBodyJson.put("image_size", getImageSize().get());
         requestBodyJson.put("batch_size", getImageCount().get());
 
-        /// 设置请求头
+        /// 设置请求体
         RequestBody requestBody = RequestBody.create(
                 requestBodyJson.toString(),
                 okhttp3.MediaType.parse("application/json; charset=utf-8")
@@ -89,11 +89,11 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
                     /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
                     JSONArray images = responseBodyJson.getJSONArray("images");
-                    String[] strings = new String[images.size()];
-                    for (int i = 0; i < strings.length; i++) {
-                        strings[i] = images.getJSONObject(i).getString("url");
+                    String[] result = new String[images.size()];
+                    for (int i = 0; i < result.length; i++) {
+                        result[i] = images.getJSONObject(i).getString("url");
                     }
-                    return strings;
+                    return result;
                 }
             }
         } catch (IOException ioException) {

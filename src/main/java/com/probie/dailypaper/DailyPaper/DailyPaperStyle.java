@@ -87,7 +87,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getRootPaneTopTitleBarChooseHBox().prefWidthProperty().bind(dailyPaperElement.getRootPaneTopTitleBarHBox().widthProperty().divide(6.0).multiply(5.0));
         dailyPaperElement.getRootPaneTopTitleBarChooseHBox().prefHeightProperty().bind(dailyPaperElement.getRootPaneTopTitleBarHBox().heightProperty());
-        dailyPaperElement.getRootPaneTopTitleBarChooseHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
+        dailyPaperElement.getRootPaneTopTitleBarChooseHBox().setSpacing(dailyPaperData.getSpacingSizeSmallSmall().get());
         dailyPaperElement.getRootPaneTopTitleBarChooseHBox().setAlignment(Pos.CENTER_RIGHT);
 
         dailyPaperElement.getRootPaneTopTitleBarMinButton().setPrefWidth(dailyPaperData.getNodeSizeSmall().get());

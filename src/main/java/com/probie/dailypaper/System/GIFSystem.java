@@ -2,7 +2,7 @@ package com.probie.dailypaper.System;
 
 import com.probie.dailypaper.System.Interface.IGIFSystem;
 
-public class GIFSystem extends PictureSystem implements IGIFSystem {
+public class GIFSystem extends ImageSystem implements IGIFSystem {
 
     /**
      * 维护一个懒加载的类单例对象
