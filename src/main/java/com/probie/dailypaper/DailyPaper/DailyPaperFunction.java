@@ -182,7 +182,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     public void scrollToBottom(ScrollPane scrollPane) {
         dailyPaper.getDailyPaperPool().submit(() -> {
             ScrollBar verticalScrollBar = (ScrollBar) scrollPane.lookup(".scroll-bar:vertical");
-            waitADelay(1);
+            waitADelay(10);
             if (verticalScrollBar != null) {
                 Platform.runLater(() -> verticalScrollBar.setValue(verticalScrollBar.getMax()));
             } else {

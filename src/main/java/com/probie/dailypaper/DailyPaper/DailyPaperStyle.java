@@ -5,9 +5,7 @@ import java.io.File;
 import javafx.geometry.Pos;
 import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.scene.layout.Background;
 import javafx.scene.control.ScrollPane;
 import com.probie.dailypaper.Config.ParamConfig;
 import com.probie.dailypaper.Config.SettingConfig;
@@ -155,7 +153,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getChatVBox().prefHeightProperty().bind(dailyPaperElement.getRootPaneCenterStageBarVBox().heightProperty());
 
         dailyPaperElement.getChatTextShowVBox().prefWidthProperty().bind(dailyPaperElement.getChatVBox().widthProperty());
-        dailyPaperElement.getChatTextShowVBox().minHeightProperty().bind(dailyPaperElement.getChatVBox().heightProperty().divide(5.0).multiply(4.0));
+        dailyPaperElement.getChatTextShowVBox().minHeightProperty().bind(dailyPaperElement.getChatVBox().heightProperty().divide(4.0).multiply(3.0));
         dailyPaperElement.getChatTextShowVBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
 
         dailyPaperElement.getChatTextShowScrollPane().prefWidthProperty().bind(dailyPaperElement.getChatTextShowVBox().widthProperty());
@@ -168,12 +166,10 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getChatTextShowMessageVBox().getChildren().clear();
 
         dailyPaperElement.getChatTextInputVBox().prefWidthProperty().bind(dailyPaperElement.getChatVBox().widthProperty());
-        dailyPaperElement.getChatTextInputVBox().prefHeightProperty().bind(dailyPaperElement.getChatVBox().heightProperty().divide(5.0).multiply(1.0));
-        dailyPaperElement.getChatTextInputVBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
-        dailyPaperElement.getChatTextInputVBox().setBackground(Background.fill(Color.GREEN));
+        dailyPaperElement.getChatTextInputVBox().prefHeightProperty().bind(dailyPaperElement.getChatVBox().heightProperty().divide(4.0).multiply(1.0));
 
         dailyPaperElement.getChatTextInputScrollPane().prefWidthProperty().bind(dailyPaperElement.getChatTextInputVBox().widthProperty());
-        dailyPaperElement.getChatTextInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getChatTextInputVBox().heightProperty());
+        dailyPaperElement.getChatTextInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getChatTextInputVBox().heightProperty().divide(6.0).multiply(5.0));
         dailyPaperElement.getChatTextInputScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         dailyPaperElement.getChatTextInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
@@ -183,6 +179,15 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getChatTextInputTextArea().setPromptText("请输入提示词...");
         dailyPaperElement.getChatTextInputTextArea().clear();
         dailyPaperElement.getChatTextInputTextArea().setFont(new Font(dailyPaperData.getFontSizeLarge().get()));
+
+        dailyPaperElement.getChatTextInputToolsHBox().prefWidthProperty().bind(dailyPaperElement.getChatTextInputVBox().widthProperty());
+        dailyPaperElement.getChatTextInputToolsHBox().prefHeightProperty().bind(dailyPaperElement.getChatTextInputVBox().heightProperty().divide(6.0).multiply(1.0));
+        dailyPaperElement.getChatTextInputToolsHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
+        dailyPaperElement.getChatTextInputToolsHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getChatTextInputToolsUploadImageButton().setText("上传图像");
+        dailyPaperElement.getChatTextInputToolsUploadImageButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        dailyPaperElement.getChatTextInputToolsUploadImageButton().setAlignment(Pos.CENTER);
 
         dailyPaperData.getChatUserMessageArrayList().clear();
         dailyPaperData.getChatAgentMessageArrayList().clear();
@@ -217,12 +222,16 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
         );
 
-        dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().bind(dailyPaperElement.getLiveVBox().widthProperty());
-        dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLiveVBox().heightProperty().divide(8.0).multiply(6.0));
+        dailyPaperElement.getLiveImageShowSureVBox().prefWidthProperty().bind(dailyPaperElement.getLiveVBox().widthProperty());
+        dailyPaperElement.getLiveImageShowSureVBox().prefHeightProperty().bind(dailyPaperElement.getLiveVBox().heightProperty().divide(8.0).multiply(7.0));
+        dailyPaperElement.getLiveImageShowSureVBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().bind(dailyPaperElement.getLiveImageShowSureVBox().widthProperty());
+        dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().bind(dailyPaperElement.getLiveImageShowSureVBox().heightProperty().divide(7.0).multiply(6.0));
         dailyPaperElement.getLiveImageShowHBox().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getLiveImageSureHBox().prefWidthProperty().bind(dailyPaperElement.getLiveVBox().widthProperty());
-        dailyPaperElement.getLiveImageSureHBox().prefHeightProperty().bind(dailyPaperElement.getLiveVBox().heightProperty().divide(8.0).multiply(1.0));
+        dailyPaperElement.getLiveImageSureHBox().prefWidthProperty().bind(dailyPaperElement.getLiveImageShowSureVBox().widthProperty());
+        dailyPaperElement.getLiveImageSureHBox().prefHeightProperty().bind(dailyPaperElement.getLiveImageShowSureVBox().heightProperty().divide(7.0).multiply(1.0));
         dailyPaperElement.getLiveImageSureHBox().setAlignment(Pos.CENTER);
 
         dailyPaperData.setIsLiveImageShowing(() -> false);
@@ -312,26 +321,34 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getDailyWallpaperHobbyVBox().prefWidthProperty().bind(dailyPaperElement.getDailyVBox().widthProperty());
         dailyPaperElement.getDailyWallpaperHobbyVBox().prefHeightProperty().bind(dailyPaperElement.getDailyVBox().heightProperty().divide(10.0).multiply(8.0));
-        dailyPaperElement.getDailyWallpaperHobbyVBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
         dailyPaperElement.getDailyWallpaperHobbyVBox().setAlignment(Pos.CENTER);
         dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(dailyPaper.getDailyAutoWallpaper().get());
 
-        dailyPaperElement.getDailyHobbyLabel().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
-        dailyPaperElement.getDailyHobbyLabel().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty().divide(10.0).multiply(1.0));
-        dailyPaperElement.getDailyHobbyLabel().setText("推荐壁纸喜好描述");
-        dailyPaperElement.getDailyHobbyLabel().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
-        dailyPaperElement.getDailyHobbyLabel().setAlignment(Pos.CENTER);
+        dailyPaperElement.getDailyWallpaperHobbyLabel().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
+        dailyPaperElement.getDailyWallpaperHobbyLabel().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty().divide(10.0).multiply(1.0));
+        dailyPaperElement.getDailyWallpaperHobbyLabel().setText("推荐壁纸喜好描述");
+        dailyPaperElement.getDailyWallpaperHobbyLabel().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        dailyPaperElement.getDailyWallpaperHobbyLabel().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getDailyHobbyScrollPane().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
-        dailyPaperElement.getDailyHobbyScrollPane().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().heightProperty().divide(10.0).multiply(9.0));
-        dailyPaperElement.getDailyHobbyScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        dailyPaperElement.getDailyHobbyScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        dailyPaperElement.getDailyWallpaperHobbyScrollPane().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
+        dailyPaperElement.getDailyWallpaperHobbyScrollPane().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().heightProperty().divide(10.0).multiply(8.0));
+        dailyPaperElement.getDailyWallpaperHobbyScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        dailyPaperElement.getDailyWallpaperHobbyScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        dailyPaperElement.getDailyHobbyTextArea().prefWidthProperty().bind(dailyPaperElement.getDailyHobbyScrollPane().widthProperty());
-        dailyPaperElement.getDailyHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyHobbyScrollPane().heightProperty());
-        dailyPaperElement.getDailyHobbyTextArea().setWrapText(true);
-        dailyPaperElement.getDailyHobbyTextArea().setText(dailyPaper.getDailyImageHobby().get());
-        dailyPaperElement.getDailyHobbyTextArea().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().widthProperty());
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().heightProperty());
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().setWrapText(true);
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(dailyPaper.getDailyImageHobby().get());
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+
+        dailyPaperElement.getDailyWallpaperHobbyToolsHBox().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
+        dailyPaperElement.getDailyWallpaperHobbyToolsHBox().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().heightProperty().divide(10.0).multiply(1.0));
+        dailyPaperElement.getDailyWallpaperHobbyToolsHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
+        dailyPaperElement.getDailyWallpaperHobbyToolsHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("上传图像");
+        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setAlignment(Pos.CENTER);
     }
 
     @Override

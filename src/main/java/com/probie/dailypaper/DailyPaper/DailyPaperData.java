@@ -1,6 +1,7 @@
 package com.probie.dailypaper.DailyPaper;
 
 import lombok.Data;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 import com.probie.dailypaper.Enum.Date;
@@ -44,8 +45,10 @@ public class DailyPaperData implements IDailyPaperData {
             + "\n" + "现在是%d年%d月%d日%d时%d分%d秒，星期%d".formatted(ComputerSystem.getInstance().getDate(Date.YEAR), ComputerSystem.getInstance().getDate(Date.MONTH), ComputerSystem.getInstance().getDate(Date.DAY), ComputerSystem.getInstance().getDate(Date.HOUR), ComputerSystem.getInstance().getDate(Date.MINUTE), ComputerSystem.getInstance().getDate(Date.SECONDE), ComputerSystem.getInstance().getDate(Date.SUNDAY));
     private Supplier<String> promptIfImagePrompt = () -> "请你根据用户输入的上下文信息帮我推测判断出用户现在是否需要生成图片，是则回答单个字“是”，否则回答单个字“否”，无法推断或模糊不清则一律回答单个字“否”，以下是用户输入的上下文信息：";
     private Supplier<String> promptSpawnImagePrompt = () -> "请你根据用户输入的上下文信息整理回复用户想生成图片的描述信息，稍微简短，尽量详备，并只需要回复要生成的图片的描述信息即可，以下是用户输入的上下文信息：";
-    private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户输入的提示词信息，返回该图片生成成功的回复，以下是用户输入的提示词信息：";
-    private Supplier<String> promptSpawnDailyWallpaperPrompt = () -> "现在是%d年%d月%d日%d时%d分%d秒，星期%d。\n如果有请你根据今天的节日、节气、时节、时令、习俗、风俗、历史、文化、气氛、氛围等因素结合用户的喜爱偏好：%s。\n生成一张电脑桌面高清壁纸。".formatted(ComputerSystem.getInstance().getDate(Date.YEAR), ComputerSystem.getInstance().getDate(Date.MONTH), ComputerSystem.getInstance().getDate(Date.DAY), ComputerSystem.getInstance().getDate(Date.HOUR), ComputerSystem.getInstance().getDate(Date.MINUTE), ComputerSystem.getInstance().getDate(Date.SECONDE), ComputerSystem.getInstance().getDate(Date.SUNDAY), DailyPaper.getInstance().getDailyImageHobby().get());
+    private Supplier<String> promptSpawnImageResultPrompt = () -> "请你根据用户当前输入的用于生成图片提示词信息，返回该图片生成成功的回复，以下是用户输入的提示词信息：";
+    private Supplier<String> promptDelineateImagePrompt = () -> "这是什么？";
+    private Supplier<String> promptSpawnDailyWallpaperPrompt = () -> "现在是%d年%d月%d日%d时%d分%d秒，星期%d。\n如果有的话请你根据今天的节日、节气、时节、时令、习俗、风俗、历史、文化、气氛、氛围等因素结合用户的喜爱偏好：%s。\n生成一张电脑桌面高清壁纸。".formatted(ComputerSystem.getInstance().getDate(Date.YEAR), ComputerSystem.getInstance().getDate(Date.MONTH), ComputerSystem.getInstance().getDate(Date.DAY), ComputerSystem.getInstance().getDate(Date.HOUR), ComputerSystem.getInstance().getDate(Date.MINUTE), ComputerSystem.getInstance().getDate(Date.SECONDE), ComputerSystem.getInstance().getDate(Date.SUNDAY), DailyPaper.getInstance().getDailyImageHobby().get());
+    private Supplier<String> promptSpawnDailyWallpaperHobbyPrompt = () -> "请你结合图像内容和用户喜好，帮助用户优化用于生成图像的提示词，特别强调只需要回复要生成的图片的描述信息即可。\n*用户喜好：%s\n*图像内容：%s"; /// %s用户喜好 %s图像内容
 
     private ArrayList<String> chatUserMessageArrayList = new ArrayList<>();
     private ArrayList<String> chatAgentMessageArrayList = new ArrayList<>();
@@ -63,6 +66,9 @@ public class DailyPaperData implements IDailyPaperData {
             }
         }
     };
+
+    private ArrayList<String> supportImageFormat = new ArrayList<>(List.of(".png", ".jpg", ".jpeg"));
+    private ArrayList<String> supportLiveImageFormat = new ArrayList<>(List.of(".gif"));
 
     private Supplier<Integer> nodeSizeLargeLarge = () -> 30;
     private Supplier<Integer> nodeSizeLarge = () -> 25;

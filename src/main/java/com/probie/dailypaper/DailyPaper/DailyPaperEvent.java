@@ -28,6 +28,7 @@ import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.ImageToTextAIAgentSiliconFlow;
 
 @Data
 public class DailyPaperEvent implements IDailyPaperEvent {
@@ -199,18 +200,42 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             /// 收集上下文
                             try {
                                 Platform.runLater(() -> chatAgentMessageLabel.setText("收集上下文..."));
-                                StringBuilder content = new StringBuilder();
+
+                                /// 背景信息
+                                StringBuilder information = new StringBuilder();
                                 if (dailyPaperData.getChatUserMessageArrayList().size() > 1) {
-                                    for (int i = dailyPaperData.getChatUserMessageArrayList().size() - 1 - 1; i >= 0 && content.length() <= 10000; i--) {
+                                    for (int i = dailyPaperData.getChatUserMessageArrayList().size() - 1 - 1; i >= 0 && information.length() <= 10000; i--) {
                                         if (dailyPaperData.getChatAgentMessageArrayList().size() >= i + 1) {
-                                            content = new StringBuilder("\nAI：%s".formatted(dailyPaperData.getChatAgentMessageArrayList().get(i)) + content);
+                                            information = new StringBuilder("\nAI：%s".formatted(dailyPaperData.getChatAgentMessageArrayList().get(i)) + information);
                                         }
-                                        content = new StringBuilder("\n用户：%s".formatted(dailyPaperData.getChatUserMessageArrayList().get(i)) + content);
+                                        information = new StringBuilder("\n用户：%s".formatted(dailyPaperData.getChatUserMessageArrayList().get(i)) + information);
                                     }
-                                    content = new StringBuilder("\n*历史对话记录：%s".formatted(content));
+                                    information = new StringBuilder("\n*历史对话记录：%s".formatted(information));
                                 }
-                                content = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + content));
-                                content.append("\n*用户现在需求：\n%s".formatted(dailyPaperData.getChatUserMessageArrayList().getLast()));
+                                information = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + information));
+                                information.append("\n*用户现在需求：\n%s");
+
+                                /// 当前需求
+                                StringBuilder current = new StringBuilder();
+                                if (dailyPaperData.getChatUserMessageArrayList().getLast().contains(dailyPaper.getUploadImageFullFilePathMark().get())) {
+                                    String[] lasts = dailyPaperData.getChatUserMessageArrayList().getLast().split(dailyPaper.getUploadImageFullFilePathMark().get());
+                                    for (String last : lasts) {
+                                        File currentFile = new File(last);
+                                        String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
+                                        if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
+                                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(currentFile.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
+                                            String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
+                                            current.append(last).append("(").append(imageDelineate).append(")").append(dailyPaper.getUploadImageFullFilePathMark().get());
+                                        } else {
+                                            current.append(last).append(dailyPaper.getUploadImageFullFilePathMark().get());
+                                        }
+                                    }
+                                } else {
+                                    current.append(dailyPaperData.getChatUserMessageArrayList().getLast());
+                                }
+
+                                /// 合成上下文
+                                StringBuilder content = new StringBuilder(information.toString().formatted(current));
 
                                 Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
                                 String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get() + content);
@@ -324,6 +349,23 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 }
             }
         });
+
+        dailyPaperElement.getChatTextInputToolsUploadImageButton().setOnAction(actionEvent -> {
+            dailyPaperElement.getChatTextInputToolsUploadImageFileChooser().setInitialDirectory(new File(dailyPaper.getChatTextInputToolsImageUploadImageChosenFilePath().get()));
+            dailyPaperElement.getChatTextInputToolsUploadImageFileChooser().setInitialFileName(dailyPaper.getChatTextInputToolsImageUploadImageChosenFileName().get());
+            File file = dailyPaperElement.getChatTextInputToolsUploadImageFileChooser().showOpenDialog(dailyPaperElement.getStage());
+            if (file != null) {
+                dailyPaper.setChatTextInputToolsImageUploadImageChosenFilePath(file::getParent);
+                dailyPaper.setChatTextInputToolsImageUploadImageChosenFileName(file::getName);
+                String format = file.getName().contains(".") ? file.getName().toLowerCase().substring(file.getName().lastIndexOf(".")) : file.getName().toLowerCase();
+                if (dailyPaperData.getSupportImageFormat().contains(format)) {
+                    dailyPaperElement.getChatTextInputTextArea().setText(dailyPaperElement.getChatTextInputTextArea().getText() + dailyPaper.getUploadImageFullFilePathMark().get() + file.getAbsolutePath() + dailyPaper.getUploadImageFullFilePathMark().get());
+                } else {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getChatTextInputToolsUploadImageButton(), "仅能静图");
+                }
+            }
+        });
+
     }
 
     @Override
@@ -338,7 +380,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 dailyPaperFunction.waitADelay(10);
 
                 /// 图片壁纸
-                if (file.getAbsolutePath().toLowerCase().endsWith(".png") || file.getAbsolutePath().toLowerCase().endsWith(".jpg") || file.getAbsolutePath().toLowerCase().endsWith(".jpeg")) {
+                String format = file.getName().contains(".") ? file.getName().toLowerCase().substring(file.getName().lastIndexOf(".")) : file.getName().toLowerCase();
+                if (dailyPaperData.getSupportImageFormat().contains(format)) {
                     BufferedImage bufferedImage = ImageSystem.getInstance().turnLocalFileToBufferedImage(file.getAbsolutePath());
                     BufferedImage fitBufferedImage = bufferedImage;
                     if (fitBufferedImage.getWidth() > dailyPaperElement.getLiveImageShowHBox().maxWidthProperty().get()) {
@@ -370,7 +413,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 }
 
                 /// 动图壁纸
-                else if (file.getAbsolutePath().toLowerCase().endsWith(".gif")) {
+                else if (dailyPaperData.getSupportLiveImageFormat().contains(format)) {
                     BufferedImage[] bufferedImages  = GIFSystem.getInstance().turnGIFToBufferedImages(file.getAbsolutePath());
                     BufferedImage[] fitBufferedImages = bufferedImages.clone();
                     for (int i = 0; i < fitBufferedImages.length; i++) {
@@ -491,10 +534,41 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             }
         }));
 
-        dailyPaperElement.getDailyHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
             dailyPaperFunction.waitADelay(10);
-            dailyPaper.setDailyImageHobby(() -> dailyPaperElement.getDailyHobbyTextArea().getText());
+            dailyPaper.setDailyImageHobby(() -> dailyPaperElement.getDailyWallpaperHobbyTextArea().getText());
         }));
+
+        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setOnAction(actionEvent -> {
+            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageFileChooser().setInitialDirectory(new File(dailyPaper.getDailyWallpaperHobbyToolsImageUploadImageChosenFilePath().get()));
+            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageFileChooser().setInitialFileName(dailyPaper.getDailyWallpaperHobbyToolsImageUploadImageChosenFileName().get());
+            File file = dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageFileChooser().showOpenDialog(dailyPaperElement.getStage());
+            if (file != null) {
+                dailyPaper.setDailyWallpaperHobbyToolsImageUploadImageChosenFilePath(file::getParent);
+                dailyPaper.setDailyWallpaperHobbyToolsImageUploadImageChosenFileName(file::getName);
+                String format = file.getName().contains(".") ? file.getName().toLowerCase().substring(file.getName().lastIndexOf(".")) : file.getName().toLowerCase();
+                if (dailyPaperData.getSupportImageFormat().contains(format)) {
+                    dailyPaper.getDailyPaperPool().submit(() -> {
+                        String temp = dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().getText();
+                        Platform.runLater(() -> {
+                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
+                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
+                        });
+                        String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
+                        String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
+                        String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get().formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
+                        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);
+                        dailyPaper.setDailyImageHobby(() -> hobby);
+                        Platform.runLater(() -> {
+                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText(temp);
+                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(false);
+                        });
+                    });
+                } else {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton(), "仅能静图");
+                }
+            }
+        });
     }
 
     @Override

@@ -105,6 +105,10 @@ public class DailyPaperElement implements IDailyPaperElement {
     private ScrollPane chatTextInputScrollPane = new ScrollPane();
     private TextArea chatTextInputTextArea = new TextArea();
 
+    private HBox chatTextInputToolsHBox = new HBox();
+    private Button chatTextInputToolsUploadImageButton = new Button();
+    private FileChooser chatTextInputToolsUploadImageFileChooser = new FileChooser();
+
     /**
      * live
      * */
@@ -112,6 +116,8 @@ public class DailyPaperElement implements IDailyPaperElement {
     private Button liveImageChooseButton = new Button();
     private Label liveImageChooseLabel = new Label();
     private FileChooser liveImageChooseFileChooser = new FileChooser();
+
+    private VBox liveImageShowSureVBox = new VBox();
 
     private HBox liveImageShowHBox = new HBox();
     private ImageView liveImageShowImageView = new ImageView();
@@ -148,9 +154,13 @@ public class DailyPaperElement implements IDailyPaperElement {
     private TextField dailyTimeWallpaperTextField = new TextField();
 
     private VBox dailyWallpaperHobbyVBox = new VBox();
-    private Label dailyHobbyLabel = new Label();
-    private ScrollPane dailyHobbyScrollPane = new ScrollPane();
-    private TextArea dailyHobbyTextArea = new TextArea();
+    private Label dailyWallpaperHobbyLabel = new Label();
+    private ScrollPane dailyWallpaperHobbyScrollPane = new ScrollPane();
+    private TextArea dailyWallpaperHobbyTextArea = new TextArea();
+
+    private HBox dailyWallpaperHobbyToolsHBox = new HBox();
+    private Button dailyWallpaperHobbyToolsUploadImageButton = new Button();
+    private FileChooser dailyWallpaperHobbyToolsUploadImageFileChooser = new FileChooser();
 
     /**
      * param
@@ -241,7 +251,8 @@ public class DailyPaperElement implements IDailyPaperElement {
         chatTextShowVBox.getChildren().addAll(chatTextShowScrollPane);
 
         chatTextInputScrollPane.setContent(chatTextInputTextArea);
-        chatTextInputVBox.getChildren().addAll(chatTextInputScrollPane);
+        chatTextInputToolsHBox.getChildren().addAll(chatTextInputToolsUploadImageButton);
+        chatTextInputVBox.getChildren().addAll(chatTextInputScrollPane, chatTextInputToolsHBox);
 
         chatVBox.getChildren().addAll(chatTextShowVBox, chatTextInputVBox);
     }
@@ -252,7 +263,9 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         liveImageShowHBox.getChildren().addAll(liveImageShowImageView);
 
-        liveVBox.getChildren().addAll(liveImageChooseHBox, liveImageShowHBox, liveImageSureHBox);
+        liveImageShowSureVBox.getChildren().addAll(liveImageShowHBox, liveImageSureHBox);
+
+        liveVBox.getChildren().addAll(liveImageChooseHBox, liveImageShowSureVBox);
     }
 
     @Override
@@ -278,8 +291,9 @@ public class DailyPaperElement implements IDailyPaperElement {
 
         dailyWallpaperChooseHBox.getChildren().addAll(dailyLaunchWallpaperHBox, dailyTimeWallpaperHBox);
 
-        dailyHobbyScrollPane.setContent(dailyHobbyTextArea);
-        dailyWallpaperHobbyVBox.getChildren().addAll(dailyHobbyLabel, dailyHobbyScrollPane);
+        dailyWallpaperHobbyScrollPane.setContent(dailyWallpaperHobbyTextArea);
+        dailyWallpaperHobbyToolsHBox.getChildren().addAll(dailyWallpaperHobbyToolsUploadImageButton);
+        dailyWallpaperHobbyVBox.getChildren().addAll(dailyWallpaperHobbyLabel, dailyWallpaperHobbyScrollPane, dailyWallpaperHobbyToolsHBox);
 
         dailyVBox.getChildren().addAll(dailyChooseHBox, dailyWallpaperChooseHBox, dailyWallpaperHobbyVBox);
     }

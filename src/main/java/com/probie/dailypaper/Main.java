@@ -1,13 +1,13 @@
 /**
  * SoftWare-Name: DailyPaper
- * SoftWare-Version: 1.1
+ * SoftWare-Version: 1.2
  * SoftWare-Author: Probie
  * SoftWare-GitHub: <a href="https://github.com/BProbie/DailyPaper">DailyPaper-GitHub</a>
  * */
 
 /**
  * TODO
- * 偏好
+ * 参数
  * 设置
  * 日志
  * */

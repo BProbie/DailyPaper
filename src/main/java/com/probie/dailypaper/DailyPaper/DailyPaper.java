@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.1";
+    private final String VERSION = "1.2";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -52,6 +52,15 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
     /// 速度参数
     private String KeyLiveImagePlaySpeed = "LiveImagePlaySpeed";
+
+    /// AI 生成参数
+    private String KeySpawnImageSize = "SpawnImageSize";
+    private String KeySpawnImageCount = "SpawnImageCount";
+    private String KeySpawnMaxTokens = "SpawnMaxTokens";
+
+    /// 标记参数
+    private String KeyUploadImageFullFilePathMark = "UploadImageFullFilePathMark";
+    private String KeySplitMark = "SplitMark";
 
     /**
      * Setting 参键
@@ -94,11 +103,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyAPIModelTextToImageSiliconFlow = "APIModelTextToImageSiliconFlow";
     private String KeyAPIModelImageToTextSiliconFlow = "APIModelImageToTextSiliconFlow";
 
-    /// AI 生成参数
-    private String KeySpawnImageSize = "SpawnImageSize";
-    private String KeySpawnImageCount = "SpawnImageCount";
-    private String KeySpawnMaxTokens = "SpawnMaxTokens";
-
     /// 更新参数
     private String KeyRenewConfigRenewUriWindows = "RenewConfigRenewUriWindows";
     private String KeyRenewConfigRenewUriLinux = "RenewConfigRenewUriLinux";
@@ -119,6 +123,10 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 记忆参数
     private String KeyChatImageDownloadFilePath = "ChatImageDownloadFilePath";
     private String KeyChatImageDownloadFileName = "ChatImageDownloadFileName";
+    private String KeyChatTextInputToolsImageUploadImageChosenFilePath = "ChatTextInputToolsImageUploadImageChosenFilePath";
+    private String KeyChatTextInputToolsImageUploadImageChosenFileName = "ChatTextInputToolsImageUploadImageChosenFileName";
+    private String KeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath = "KeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath";
+    private String KeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName = "KeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName";
 
     private String KeyLiveImageChosenFilePath = "LiveImageChosenFilePath";
     private String KeyLiveImageChosenFileName = "LiveImageChosenFileName";
@@ -134,19 +142,25 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
     private String KeyDailyPaperAutoLaunch = "DailyPaperAutoLaunch";
 
-    /// 标记参数
-    private String KeySplitMark = "SplitMark";
-
     /**
      * Param 参值
      * */
 
     /// 大小参数
-    private Supplier<Integer> DailyPaperStageWidth = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageWidth(), 1200)));
-    private Supplier<Integer> DailyPaperStageHeight = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageHeight(), 700)));
+    private Supplier<Integer> DailyPaperStageWidth = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageWidth(), 1200)));
+    private Supplier<Integer> DailyPaperStageHeight = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageHeight(), 700)));
 
     /// 速度参数
-    private Supplier<Integer> LiveImagePlaySpeed = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImagePlaySpeed(), 10)));
+    private Supplier<Integer> LiveImagePlaySpeed = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyLiveImagePlaySpeed(), 10)));
+
+    /// AI 生成参数
+    private Supplier<String> SpawnImageSize = () -> ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight()))).toString();
+    private Supplier<Integer> SpawnImageCount = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1)));
+    private Supplier<Integer> SpawnMaxTokens = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100)));
+
+    /// 标记参数
+    private Supplier<String> UploadImageFullFilePathMark = () -> ParamConfig.getInstance().getLocalDB().get(getKeyUploadImageFullFilePathMark(), "#").toString();
+    private Supplier<String> SplitMark = () -> ParamConfig.getInstance().getLocalDB().get(getKeySplitMark(), " ").toString();
 
     /**
      * Setting 参值
@@ -188,11 +202,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<String> APIModelTextToImageSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(), getKolorsModelSiliconFlow().get()).toString();
     private Supplier<String> APIModelImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get()).toString();
 
-    /// AI 生成参数
-    private Supplier<String> SpawnImageSize = () -> SettingConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight()))).toString();
-    private Supplier<Integer> SpawnImageCount = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1)));
-    private Supplier<Integer> SpawnMaxTokens = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100)));
-
     /// 更新参数
     private Supplier<String> RenewConfigRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
     private Supplier<String> RenewConfigRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriLinux(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
@@ -213,6 +222,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 记忆参数
     private Supplier<String> ChatImageDownloadFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFilePath(), getCurrentFilePath().get()).toString();
     private Supplier<String> ChatImageDownloadFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFileName(), "image.png").toString();
+    private Supplier<String> ChatTextInputToolsImageUploadImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString();
+    private Supplier<String> ChatTextInputToolsImageUploadImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFileName(), "image.png").toString();
 
     private Supplier<String> LiveImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFilePath(), getCurrentFilePath().get()).toString();
     private Supplier<String> LiveImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFileName(), "image.png").toString();
@@ -222,13 +233,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<Boolean> DailyAutoWallpaperWhenLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenLaunch(), false)));
     private Supplier<Integer> DailyAutoWallpaperWhenTime = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenTime(), 0)));
     private Supplier<String> DailyImageHobby = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyImageHobby(), "古风唯美").toString();
+    private Supplier<String> DailyWallpaperHobbyToolsImageUploadImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString();
+    private Supplier<String> DailyWallpaperHobbyToolsImageUploadImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName(), "image.png").toString();
 
     private Supplier<Boolean> RenewAutoCheckRenew = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoCheckRenew(), false)));
     private Supplier<Boolean> RenewAutoDownloadRenew = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoDownloadRenew(), false)));
 
     private Supplier<Boolean> DailyPaperAutoLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperAutoLaunch(), false)));
-
-    private Supplier<String> SplitMark = () -> SettingConfig.getInstance().getLocalDB().get(getKeySplitMark(), " ").toString();
 
     @Override
     public void launch(String[] args) {
@@ -248,6 +259,15 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
         /// 速度参数
         ParamConfig.getInstance().getLocalDB().set(KeyLiveImagePlaySpeed, LiveImagePlaySpeed.get());
+
+        /// AI 生成参数
+        ParamConfig.getInstance().getLocalDB().set(KeySpawnImageSize, SpawnImageSize.get());
+        ParamConfig.getInstance().getLocalDB().set(KeySpawnImageCount, SpawnImageCount.get());
+        ParamConfig.getInstance().getLocalDB().set(KeySpawnMaxTokens, SpawnMaxTokens.get());
+
+        /// 标记参数
+        ParamConfig.getInstance().getLocalDB().set(KeyUploadImageFullFilePathMark, UploadImageFullFilePathMark.get());
+        ParamConfig.getInstance().getLocalDB().set(KeySplitMark, SplitMark.get());
 
         /**
          * 保存 Setting
@@ -290,11 +310,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelTextToImageSiliconFlow, APIModelTextToImageSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelImageToTextSiliconFlow, APIModelImageToTextSiliconFlow.get());
 
-        /// AI 生成参数
-        SettingConfig.getInstance().getLocalDB().set(KeySpawnImageSize, SpawnImageSize.get());
-        SettingConfig.getInstance().getLocalDB().set(KeySpawnImageCount, SpawnImageCount.get());
-        SettingConfig.getInstance().getLocalDB().set(KeySpawnMaxTokens, SpawnMaxTokens.get());
-
         /// 更新参数
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriWindows, RenewConfigRenewUriWindows.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriLinux, RenewConfigRenewUriLinux.get());
@@ -316,6 +331,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
         /// 记忆参数
         SettingConfig.getInstance().getLocalDB().set(KeyChatImageDownloadFilePath, ChatImageDownloadFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyChatImageDownloadFileName, ChatImageDownloadFileName.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyChatTextInputToolsImageUploadImageChosenFilePath, ChatTextInputToolsImageUploadImageChosenFilePath.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyChatTextInputToolsImageUploadImageChosenFileName, ChatTextInputToolsImageUploadImageChosenFileName.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyLiveImageChosenFilePath, LiveImageChosenFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyLiveImageChosenFileName, LiveImageChosenFileName.get());
@@ -325,13 +342,12 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyDailyAutoWallpaperWhenLaunch, DailyAutoWallpaperWhenLaunch.get());
         SettingConfig.getInstance().getLocalDB().set(KeyDailyAutoWallpaperWhenTime, DailyAutoWallpaperWhenTime.get());
         SettingConfig.getInstance().getLocalDB().set(KeyDailyImageHobby, DailyImageHobby.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath, DailyWallpaperHobbyToolsImageUploadImageChosenFilePath.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName, DailyWallpaperHobbyToolsImageUploadImageChosenFileName.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyRenewAutoCheckRenew, RenewAutoCheckRenew.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewAutoDownloadRenew, RenewAutoDownloadRenew.get());
         SettingConfig.getInstance().getLocalDB().set(KeyDailyPaperAutoLaunch, DailyPaperAutoLaunch.get());
-
-        /// 标记参数
-        SettingConfig.getInstance().getLocalDB().set(KeySplitMark, SplitMark.get());
 
         if (!new File(ConfigFilePath.get()).exists()) new File(ConfigFilePath.get()).mkdirs();
 
