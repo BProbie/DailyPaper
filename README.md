@@ -10,7 +10,7 @@
 
 ## 开源地址：https://github.com/BProbie/DailyPaper/
 
-## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.1
+## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.2
 
 ## 依赖工具：Maven
 
