@@ -346,7 +346,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperHobbyToolsHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
         dailyPaperElement.getDailyWallpaperHobbyToolsHBox().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("上传图像");
+        dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("结合图像");
         dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setAlignment(Pos.CENTER);
     }

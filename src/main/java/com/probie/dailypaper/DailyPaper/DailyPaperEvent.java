@@ -128,7 +128,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaperElement.getChatTextInputTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 if (keyEvent.isShiftDown() || keyEvent.isControlDown() || keyEvent.isAltDown()) {
-                    if (!dailyPaperElement.getChatTextInputTextArea().getText().isEmpty()) {
+                    if (!dailyPaperElement.getChatTextInputTextArea().getText().isEmpty() && dailyPaperElement.getChatTextInputTextArea().getText().length() < 10000) {
                         /// User
                         VBox chatUserMessageBar = new VBox();
                         VBox chatUserMessageContent = new VBox();
@@ -216,6 +216,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                 information.append("\n*用户现在需求：\n%s");
 
                                 /// 当前需求
+                                Platform.runLater(() -> chatAgentMessageLabel.setText("理解上下文..."));
                                 StringBuilder current = new StringBuilder();
                                 if (dailyPaperData.getChatUserMessageArrayList().getLast().contains(dailyPaper.getUploadImageFullFilePathMark().get())) {
                                     String[] lasts = dailyPaperData.getChatUserMessageArrayList().getLast().split(dailyPaper.getUploadImageFullFilePathMark().get());
@@ -550,19 +551,25 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 if (dailyPaperData.getSupportImageFormat().contains(format)) {
                     dailyPaper.getDailyPaperPool().submit(() -> {
                         String temp = dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().getText();
-                        Platform.runLater(() -> {
-                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
-                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
-                        });
-                        String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
-                        String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
-                        String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get().formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
-                        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);
-                        dailyPaper.setDailyImageHobby(() -> hobby);
-                        Platform.runLater(() -> {
-                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText(temp);
-                            dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(false);
-                        });
+                        try {
+                            Platform.runLater(() -> {
+                                dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
+                                dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
+                            });
+                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
+                            String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
+                            String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get().formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
+                            dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);
+                            dailyPaper.setDailyImageHobby(() -> hobby);
+                        } catch (Exception ignored) {
+                            Platform.runLater(() -> dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("分析超时"));
+                            dailyPaperFunction.waitADelay(100);
+                        } finally {
+                            Platform.runLater(() -> {
+                                dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText(temp);
+                                dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(false);
+                            });
+                        }
                     });
                 } else {
                     dailyPaperFunction.showButtonInformation(dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton(), "仅能静图");
