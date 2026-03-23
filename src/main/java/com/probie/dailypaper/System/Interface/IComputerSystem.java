@@ -72,7 +72,7 @@ public interface IComputerSystem {
      * 获取当前操作系统架构
      * Windows amd64 | x86
      * Linux amd64 | aarch64
-     * Mac aarch64 | x86
+     * Mac arch64 | x86
      * @return 操作系统架构
      * */
     default String getSystemArch() {

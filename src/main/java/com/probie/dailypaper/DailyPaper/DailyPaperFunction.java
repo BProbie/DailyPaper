@@ -5,6 +5,7 @@ import java.io.File;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.application.Platform;
+import com.probie.renew.Renew.Renew;
 import java.awt.image.BufferedImage;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
@@ -110,13 +111,13 @@ public class DailyPaperFunction implements IDailyPaperFunction {
 
     @Override
     public boolean downloadRenewDailyPaper() {
-        String command = "cmd /c" + " " +
-                dailyPaper.getJavaFilePath().get() + File.separator + "bin" + File.separator + "java" + " " + "-jar" + " "
-                + dailyPaper.getRenewRenewLocalFilePath().get() + File.separator + dailyPaper.getRenewRenewLocalFileName().get() + " "
-                + dailyPaper.getDailyPaperRenewUri().get() + " "
-                + dailyPaper.getDailyPaperRenewLocalFilePath().get() + File.separator + dailyPaper.getDailyPaperRenewLocalFileName().get() + " "
-                + dailyPaper.getDailyPaperRenewAutoOpen().get();
-        return ComputerSystem.getInstance().runCommand(command) == 0;
+        return Renew.getInstance()
+                .setJavaFilePath(dailyPaper.getJavaFilePath().get() + File.separator + "bin" + File.separator + "java" + " ")
+                .setRenewFilePath(dailyPaper.getRenewRenewLocalFilePath().get() + File.separator + dailyPaper.getRenewRenewLocalFileName().get())
+                .setFullFileUrl(dailyPaper.getDailyPaperRenewUri().get())
+                .setFullFilePath(dailyPaper.getDailyPaperRenewLocalFilePath().get() + File.separator + dailyPaper.getDailyPaperRenewLocalFileName().get())
+                .setIsOpen(dailyPaper.getDailyPaperRenewAutoOpen().get())
+                .renew();
     }
 
     @Override

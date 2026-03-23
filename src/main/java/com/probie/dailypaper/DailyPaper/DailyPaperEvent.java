@@ -128,7 +128,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaperElement.getChatTextInputTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 if (keyEvent.isShiftDown() || keyEvent.isControlDown() || keyEvent.isAltDown()) {
-                    if (!dailyPaperElement.getChatTextInputTextArea().getText().isEmpty() && dailyPaperElement.getChatTextInputTextArea().getText().length() < 10000) {
+                    if (!dailyPaperElement.getChatTextInputTextArea().getText().isEmpty()) {
                         /// User
                         VBox chatUserMessageBar = new VBox();
                         VBox chatUserMessageContent = new VBox();
@@ -159,8 +159,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         chatUserMessageContent.getChildren().addAll(chatUserMessageLabel);
                         chatUserMessageBar.getChildren().addAll(chatUserMessageContent);
                         dailyPaperElement.getChatTextShowMessageVBox().getChildren().addAll(chatUserMessageBar);
-                        dailyPaperData.getChatUserMessageArrayList().add(chatUserMessageLabel.getText());
-
                         dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
 
                         /// AI
@@ -195,157 +193,172 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextInputScrollPane());
                         dailyPaperElement.getChatTextInputTextArea().clear();
 
-                        /// AI 回复
-                        dailyPaper.getDailyPaperPool().submit(() -> {
-                            /// 收集上下文
-                            try {
-                                Platform.runLater(() -> chatAgentMessageLabel.setText("收集上下文..."));
-
-                                /// 背景信息
-                                StringBuilder information = new StringBuilder();
-                                if (dailyPaperData.getChatUserMessageArrayList().size() > 1) {
-                                    for (int i = dailyPaperData.getChatUserMessageArrayList().size() - 1 - 1; i >= 0 && information.length() <= 10000; i--) {
-                                        if (dailyPaperData.getChatAgentMessageArrayList().size() >= i + 1) {
-                                            information = new StringBuilder("\nAI：%s".formatted(dailyPaperData.getChatAgentMessageArrayList().get(i)) + information);
-                                        }
-                                        information = new StringBuilder("\n用户：%s".formatted(dailyPaperData.getChatUserMessageArrayList().get(i)) + information);
-                                    }
-                                    information = new StringBuilder("\n*历史对话记录：%s".formatted(information));
-                                }
-                                information = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + information));
-                                information.append("\n*用户现在需求：\n%s");
-
-                                /// 当前需求
-                                Platform.runLater(() -> chatAgentMessageLabel.setText("理解上下文..."));
-                                StringBuilder current = new StringBuilder();
-                                if (dailyPaperData.getChatUserMessageArrayList().getLast().contains(dailyPaper.getUploadImageFullFilePathMark().get())) {
-                                    String[] lasts = dailyPaperData.getChatUserMessageArrayList().getLast().split(dailyPaper.getUploadImageFullFilePathMark().get());
-                                    for (String last : lasts) {
-                                        File currentFile = new File(last);
+                        if (chatUserMessageLabel.getText().length() <= 10000) {
+                            /// AI 回复
+                            dailyPaper.getDailyPaperPool().submit(() -> {
+                                /// 解析输入
+                                Platform.runLater(() -> chatAgentMessageLabel.setText("解析输入中..."));
+                                StringBuilder currentText = new StringBuilder(chatUserMessageLabel.getText());
+                                if (currentText.toString().contains(dailyPaper.getUploadImageFullFilePathMark().get())) {
+                                    String[] texts = currentText.toString().split(dailyPaper.getUploadImageFullFilePathMark().get(), -1);
+                                    for (int i = 0; i < texts.length; i++) {
+                                        File currentFile = new File(texts[i]);
                                         String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
                                         if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
                                             String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(currentFile.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
                                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
-                                            current.append(last).append("(").append(imageDelineate).append(")").append(dailyPaper.getUploadImageFullFilePathMark().get());
-                                        } else {
-                                            current.append(last).append(dailyPaper.getUploadImageFullFilePathMark().get());
+                                            texts[i] = texts[i] + "(文件内容：" + imageDelineate + ")";
                                         }
                                     }
-                                } else {
-                                    current.append(dailyPaperData.getChatUserMessageArrayList().getLast());
+                                    currentText = new StringBuilder(String.join(dailyPaper.getUploadImageFullFilePathMark().get(), texts));
                                 }
+                                dailyPaperData.getChatUserMessageArrayList().add(currentText.toString());
 
-                                /// 合成上下文
-                                StringBuilder content = new StringBuilder(information.toString().formatted(current));
+                                /// 收集上下文
+                                try {
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("收集上下文..."));
 
-                                Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
-                                String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get() + content);
-
-                                /// 生成文本
-                                if (!ifImage[0].contains("是")) {
-                                    Platform.runLater(() -> chatAgentMessageLabel.setText("文本生成中..."));
-                                    String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(content.toString());
-                                    Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
-
-                                    Platform.runLater(() -> {
-                                        HBox chatPaneAgentMessageCopyTextButtonBar = new HBox();
-                                        Button chatPaneAgentMessageCopyTextButton = new Button("点击复制文本");
-
-                                        chatPaneAgentMessageCopyTextButtonBar.setMaxWidth(chatAgentMessageLabel.widthProperty().get());
-
-                                        chatPaneAgentMessageCopyTextButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
-
-                                        chatPaneAgentMessageCopyTextButton.setOnAction(actionEvent -> {
-                                            ClipboardContent clipboardContent = new ClipboardContent();
-                                            clipboardContent.putString(chatAgentMessageLabel.getText());
-                                            Clipboard.getSystemClipboard().setContent(clipboardContent);
-                                        });
-
-                                        chatPaneAgentMessageCopyTextButtonBar.getChildren().addAll(chatPaneAgentMessageCopyTextButton);
-                                        chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageCopyTextButtonBar);
-
-                                    });
-                                    dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
-                                    dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
-                                }
-
-                                /// 生成图片
-                                else {
-                                    Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
-
-                                    String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImageResultPrompt().get() + content);
-
-                                    HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
-                                    HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
-                                    FileChooser fileChooser = new FileChooser();
-
-                                    chatPaneAgentMessageSetWallpaperButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
-                                    chatPaneAgentMessageDownloadImageButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
-                                    fileChooser.getExtensionFilters().addAll(
-                                            new FileChooser.ExtensionFilter("ALL", "*.*"),
-                                            new FileChooser.ExtensionFilter("GIF", "*.gif"),
-                                            new FileChooser.ExtensionFilter("PNG", "*.png"),
-                                            new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                                            new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
-                                    );
-
-                                    String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + content)[0];
-                                    String[] imageURIs = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
-                                    for (int i = 0; i < imageURIs.length; i++) {
-                                        BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[i]);
-                                        bufferedImage = ImageSystem.getInstance().setBufferedImageSize(bufferedImage, (int) ((chatAgentMessageContent.widthProperty().get())), (int) ((double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[1]) * (((chatAgentMessageContent.widthProperty().get())) / (double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[0]))));
-                                        ImageView imageView = new ImageView(ImageSystem.getInstance().turnBufferedImageToFXImage(bufferedImage));
-                                        int index = i;
-                                        Platform.runLater(() -> {
-                                            chatAgentMessageBar.getChildren().addAll(imageView);
-                                            Button chatPaneAgentMessagesetWallPaperButton = new Button("点击设为壁纸");
-                                            Button chatPaneAgentMessagedownLoadImageButton = new Button("点击下载图片");
-                                            chatPaneAgentMessagesetWallPaperButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
-                                            chatPaneAgentMessagedownLoadImageButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
-                                            if (imageURIs.length > 1) {
-                                                chatPaneAgentMessagesetWallPaperButton.setText("点击设置图片%d为壁纸".formatted(index + 1));
-                                                chatPaneAgentMessagedownLoadImageButton.setText("点击下载图片%d到本地".formatted(index + 1));
+                                    /// 背景信息
+                                    StringBuilder information = new StringBuilder();
+                                    if (dailyPaperData.getChatUserMessageArrayList().size() > 1) {
+                                        for (int i = dailyPaperData.getChatUserMessageArrayList().size() - 1 - 1; i >= 0 && information.length() <= 10000; i--) {
+                                            if (dailyPaperData.getChatAgentMessageArrayList().size() >= i + 1) {
+                                                information = new StringBuilder("\nAI：%s".formatted(dailyPaperData.getChatAgentMessageArrayList().get(i)) + information);
                                             }
-                                            chatPaneAgentMessagesetWallPaperButton.setOnAction(actionEvent -> {
-                                                dailyPaperFunction.clearLiveImageWallpaper();
-                                                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
-                                                    dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置壁纸成功");
-                                                    ImageSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
-                                                } else {
-                                                    dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置壁纸失败");
-                                                }
+                                            information = new StringBuilder("\n用户：%s".formatted(dailyPaperData.getChatUserMessageArrayList().get(i)) + information);
+                                        }
+                                        information = new StringBuilder("\n*历史对话记录：%s".formatted(information));
+                                    }
+                                    information = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + information));
+                                    information.append("\n*用户现在需求：\n%s");
+
+                                    /// 当前内容
+                                    StringBuilder current = new StringBuilder(dailyPaperData.getChatUserMessageArrayList().getLast());
+
+                                    /// 合成上下文
+                                    StringBuilder content = new StringBuilder(information.toString().formatted(current));
+
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
+                                    String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get() + content);
+
+                                    /// 生成文本
+                                    if (!ifImage[0].contains("是")) {
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText("文本生成中..."));
+                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(content.toString());
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
+
+                                        Platform.runLater(() -> {
+                                            HBox chatPaneAgentMessageCopyTextButtonBar = new HBox();
+                                            Button chatPaneAgentMessageCopyTextButton = new Button("复制文本");
+
+                                            chatPaneAgentMessageCopyTextButtonBar.setMaxWidth(chatAgentMessageLabel.widthProperty().get());
+
+                                            chatPaneAgentMessageCopyTextButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+
+                                            chatPaneAgentMessageCopyTextButton.setOnAction(actionEvent -> {
+                                                ClipboardContent clipboardContent = new ClipboardContent();
+                                                clipboardContent.putString(chatAgentMessageLabel.getText());
+                                                Clipboard.getSystemClipboard().setContent(clipboardContent);
+                                                dailyPaperFunction.showButtonInformation(chatPaneAgentMessageCopyTextButton, "复制成功");
                                             });
 
-                                            chatPaneAgentMessagedownLoadImageButton.setOnAction(actionEvent -> {
-                                                fileChooser.setInitialDirectory(new File(dailyPaper.getChatImageDownloadFilePath().get()));
-                                                fileChooser.setInitialFileName(dailyPaper.getChatImageDownloadFileName().get());
-                                                File file = fileChooser.showSaveDialog(dailyPaperElement.getStage());
-                                                if (file != null) {
-                                                    dailyPaper.setChatImageDownloadFilePath(file::getParent);
-                                                    dailyPaper.setChatImageDownloadFileName(file::getName);
-                                                    ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath());
-                                                }
-                                            });
-                                            
-                                            chatPaneAgentMessageSetWallpaperButtonBar.getChildren().addAll(chatPaneAgentMessagesetWallPaperButton);
-                                            chatPaneAgentMessageDownloadImageButtonBar.getChildren().addAll(chatPaneAgentMessagedownLoadImageButton);
+                                            chatPaneAgentMessageCopyTextButtonBar.getChildren().addAll(chatPaneAgentMessageCopyTextButton);
+                                            chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageCopyTextButtonBar);
+
                                         });
+                                        dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
+                                        dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
                                     }
 
-                                    Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
-                                    Platform.runLater(() -> chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageSetWallpaperButtonBar, chatPaneAgentMessageDownloadImageButtonBar));
+                                    /// 生成图片
+                                    else {
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
 
-                                    dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
+                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImageResultPrompt().get() + content);
+
+                                        HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
+                                        HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
+                                        FileChooser fileChooser = new FileChooser();
+
+                                        chatPaneAgentMessageSetWallpaperButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
+                                        chatPaneAgentMessageDownloadImageButtonBar.maxWidthProperty().bind(chatAgentMessageLabel.widthProperty());
+                                        fileChooser.getExtensionFilters().addAll(
+                                                new FileChooser.ExtensionFilter("ALL", "*.*"),
+                                                new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                                                new FileChooser.ExtensionFilter("PNG", "*.png"),
+                                                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                                                new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
+                                        );
+
+                                        String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + content)[0];
+                                        String[] imageURIs = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
+                                        for (int i = 0; i < imageURIs.length; i++) {
+                                            BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[i]);
+                                            bufferedImage = ImageSystem.getInstance().setBufferedImageSize(bufferedImage, (int) ((chatAgentMessageContent.widthProperty().get())), (int) ((double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[1]) * (((chatAgentMessageContent.widthProperty().get())) / (double) Integer.parseInt(dailyPaper.getSpawnImageSize().get().split("x")[0]))));
+                                            ImageView imageView = new ImageView(ImageSystem.getInstance().turnBufferedImageToFXImage(bufferedImage));
+                                            int index = i;
+                                            Platform.runLater(() -> {
+                                                chatAgentMessageBar.getChildren().addAll(imageView);
+                                                Button chatPaneAgentMessagesetWallPaperButton = new Button("设为壁纸");
+                                                Button chatPaneAgentMessagedownLoadImageButton = new Button("下载图片");
+                                                chatPaneAgentMessagesetWallPaperButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                                chatPaneAgentMessagedownLoadImageButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                                if (imageURIs.length > 1) {
+                                                    chatPaneAgentMessagesetWallPaperButton.setText("设置图片%d为壁纸".formatted(index + 1));
+                                                    chatPaneAgentMessagedownLoadImageButton.setText("下载图片%d到本地".formatted(index + 1));
+                                                }
+                                                chatPaneAgentMessagesetWallPaperButton.setOnAction(actionEvent -> {
+                                                    dailyPaperFunction.clearLiveImageWallpaper();
+                                                    if (ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
+                                                        dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置成功");
+                                                        ImageSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
+                                                    } else {
+                                                        dailyPaperFunction.showButtonInformation(chatPaneAgentMessagesetWallPaperButton, "设置失败");
+                                                    }
+                                                });
+
+                                                chatPaneAgentMessagedownLoadImageButton.setOnAction(actionEvent -> {
+                                                    fileChooser.setInitialDirectory(new File(dailyPaper.getChatImageDownloadFilePath().get()));
+                                                    fileChooser.setInitialFileName(dailyPaper.getChatImageDownloadFileName().get());
+                                                    File file = fileChooser.showSaveDialog(dailyPaperElement.getStage());
+                                                    if (file != null) {
+                                                        dailyPaper.setChatImageDownloadFilePath(file::getParent);
+                                                        dailyPaper.setChatImageDownloadFileName(file::getName);
+                                                        if (ImageSystem.getInstance().turnBufferedImageToLocalFile(ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[index]), file.getAbsolutePath())) {
+                                                            dailyPaperFunction.showButtonInformation(chatPaneAgentMessagedownLoadImageButton, "下载成功");
+                                                        } else {
+                                                            dailyPaperFunction.showButtonInformation(chatPaneAgentMessagedownLoadImageButton, "下载失败");
+                                                        }
+                                                    }
+                                                });
+
+                                                chatPaneAgentMessageSetWallpaperButtonBar.getChildren().addAll(chatPaneAgentMessagesetWallPaperButton);
+                                                chatPaneAgentMessageDownloadImageButtonBar.getChildren().addAll(chatPaneAgentMessagedownLoadImageButton);
+                                            });
+                                        }
+
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
+                                        Platform.runLater(() -> chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageSetWallpaperButtonBar, chatPaneAgentMessageDownloadImageButtonBar));
+
+                                        dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
+                                        dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
+                                    }
+                                }
+
+                                /// 异常处理
+                                catch (Exception exception) {
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("不小心出错了:\n" + exception));
                                     dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
                                 }
-                            }
+                            });
+                        }
 
-                            /// 异常处理
-                            catch (Exception exception) {
-                                Platform.runLater(() -> chatAgentMessageLabel.setText("不小心出错了:\n" + exception));
-                                dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
-                            }
-                        });
+                        /// 字数超限
+                        else {
+                            Platform.runLater(() -> chatAgentMessageLabel.setText("超出单次最高字数上限: " + 10000));
+                            dailyPaperFunction.scrollToBottom(dailyPaperElement.getChatTextShowScrollPane());
+                        }
+
                     }
                 }
             }

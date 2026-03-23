@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.2";
+    private final String VERSION = "1.3";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -90,8 +90,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// AI 参数
     private String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
 
-    private String KeyKolorsModelSiliconFlow = "KolorsAPIModelSiliconFlow";
     private String KeyQwen30_8BModelSiliconFlow = "Qwen30_8BAPIModelSiliconFlow";
+    private String KeyKolorsModelSiliconFlow = "KolorsAPIModelSiliconFlow";
     private String KeyQwen35_4BModelSiliconFlow = "Qwen35_4BAPIModelSiliconFlow";
     private String KeyGLM_41V_9B_ThinkingModelSiliconFlow = "GLM_41V_9B_ThinkingModelSiliconFlow";
 
@@ -104,6 +104,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyAPIModelImageToTextSiliconFlow = "APIModelImageToTextSiliconFlow";
 
     /// 更新参数
+    private String KeyGithubRenewUri = "GithubRenewUri";
     private String KeyRenewConfigRenewUriWindows = "RenewConfigRenewUriWindows";
     private String KeyRenewConfigRenewUriLinux = "RenewConfigRenewUriLinux";
     private String KeyRenewConfigRenewUriMac = "RenewConfigRenewUriMac";
@@ -189,8 +190,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// AI 参数
     private Supplier<String> APIKeySiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIKeySiliconFlow(), "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
 
-    private Supplier<String> KolorsModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyKolorsModelSiliconFlow(), "Kwai-Kolors/Kolors").toString();
     private Supplier<String> Qwen30_8BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen30_8BModelSiliconFlow(), "Qwen/Qwen3-8B").toString();
+    private Supplier<String> KolorsModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyKolorsModelSiliconFlow(), "Kwai-Kolors/Kolors").toString();
     private Supplier<String> Qwen35_4BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen35_4BModelSiliconFlow(), "Qwen/Qwen3.5-4B").toString();
     private Supplier<String> GLM_41V_9B_ThinkingModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyGLM_41V_9B_ThinkingModelSiliconFlow(), "THUDM/GLM-4.1V-9B-Thinking").toString();
 
@@ -203,19 +204,20 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private Supplier<String> APIModelImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get()).toString();
 
     /// 更新参数
-    private Supplier<String> RenewConfigRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriLinux(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriMac(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriAndroid(), "https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/" + getRenewConfigFileName().get()).toString();
+    private Supplier<String> GithubRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyGithubRenewUri(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/res/" + getRenewConfigFileName().get()).toString();
+    private Supplier<String> RenewConfigRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), getGithubRenewUri() + getRenewConfigFileName().get()).toString();
+    private Supplier<String> RenewConfigRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriLinux(), getGithubRenewUri() + getRenewConfigFileName().get()).toString();
+    private Supplier<String> RenewConfigRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriMac(), getGithubRenewUri() + getRenewConfigFileName().get()).toString();
+    private Supplier<String> RenewConfigRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriAndroid(), getGithubRenewUri() + getRenewConfigFileName().get()).toString();
     private Supplier<String> RenewConfigRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getRenewConfigRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getRenewConfigRenewUriLinux().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getRenewConfigRenewUriMac().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getRenewConfigRenewUriAndroid().get() : null).toString();
     private Supplier<String> DailyPaperRenewLocalFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFilePath(), getCurrentFilePath().get()).toString();
     private Supplier<String> RenewRenewLocalFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFilePath(), getLibFilePath().get()).toString();
     private Supplier<String> RenewRenewLocalFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFileName(), "Renew.jar").toString();
     private Supplier<String> DailyPaperRenewLocalFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFileName(), getNAME() + ".exe").toString();
-    private Supplier<String> DailyPaperRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriWindows(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriLinux(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriMac(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriAndroid(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master/" + getDailyPaperRenewLocalFileName().get()).toString();
+    private Supplier<String> DailyPaperRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriWindows(), getGithubRenewUri() + getDailyPaperRenewLocalFileName().get()).toString();
+    private Supplier<String> DailyPaperRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriLinux(), getGithubRenewUri() + getDailyPaperRenewLocalFileName().get()).toString();
+    private Supplier<String> DailyPaperRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriMac(), getGithubRenewUri() + getDailyPaperRenewLocalFileName().get()).toString();
+    private Supplier<String> DailyPaperRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriAndroid(), getGithubRenewUri() + getDailyPaperRenewLocalFileName().get()).toString();
     private Supplier<String> DailyPaperRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getDailyPaperRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getDailyPaperRenewUriLinux() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getDailyPaperRenewUriMac() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getDailyPaperRenewUriAndroid() : null).toString();
     private Supplier<Boolean> DailyPaperRenewAutoOpen = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewAutoOpen(), true)));
 
@@ -297,8 +299,8 @@ public class DailyPaper implements IDailyPaper, Closeable {
         /// AI 参数
         SettingConfig.getInstance().getLocalDB().set(KeyAPIKeySiliconFlow, APIKeySiliconFlow.get());
 
-        SettingConfig.getInstance().getLocalDB().set(KeyKolorsModelSiliconFlow, KolorsModelSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyQwen30_8BModelSiliconFlow, Qwen30_8BModelSiliconFlow.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyKolorsModelSiliconFlow, KolorsModelSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyQwen35_4BModelSiliconFlow, Qwen35_4BModelSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyGLM_41V_9B_ThinkingModelSiliconFlow, GLM_41V_9B_ThinkingModelSiliconFlow.get());
 
@@ -311,6 +313,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelImageToTextSiliconFlow, APIModelImageToTextSiliconFlow.get());
 
         /// 更新参数
+        SettingConfig.getInstance().getLocalDB().set(KeyGithubRenewUri, GithubRenewUri.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriWindows, RenewConfigRenewUriWindows.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriLinux, RenewConfigRenewUriLinux.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigRenewUriMac, RenewConfigRenewUriMac.get());

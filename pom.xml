@@ -6,7 +6,7 @@
 
     <groupId>com.probie</groupId>
     <artifactId>DailyPaper</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <name>DailyPaper</name>
 
     <properties>
@@ -14,12 +14,14 @@
         <junit.version>5.12.1</junit.version>
     </properties>
 
-    <!-- 引入 jitpack 对 github 依赖进行管理 -->
     <repositories>
+
+        <!-- 引入 jitpack 对 github 依赖进行管理 -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -28,14 +30,21 @@
         <dependency>
             <groupId>com.github.BProbie</groupId>
             <artifactId>EasyDB</artifactId>
-            <version>2.6.0</version>
+            <version>least</version>
         </dependency>
 
         <!-- 原创数据加密工具 Encryption -->
         <dependency>
             <groupId>com.github.BProbie</groupId>
             <artifactId>Encryption</artifactId>
-            <version>2.2.0</version>
+            <version>least</version>
+        </dependency>
+
+        <!-- 原创软件更新工具 Renew -->
+        <dependency>
+            <groupId>com.github.BProbie</groupId>
+            <artifactId>Renew</artifactId>
+            <version>least</version>
         </dependency>
 
         <!-- lombok:语法糖 -->
