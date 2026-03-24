@@ -387,7 +387,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         dailyPaperElement.getLiveImageChooseButton().setOnAction(actionEvent -> {
             dailyPaperElement.getLiveImageChooseFileChooser().setInitialDirectory(new File(dailyPaper.getLiveImageChosenFilePath().get()));
             File file = dailyPaperElement.getLiveImageChooseFileChooser().showOpenDialog(dailyPaperElement.getStage());
-            dailyPaperFunction.clearLive();
             if (file != null) {
                 dailyPaperElement.getLiveImageChooseLabel().setText(file.getAbsolutePath());
                 dailyPaper.setLiveImageChosenFilePath(file::getParent);
