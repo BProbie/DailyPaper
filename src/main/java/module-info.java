@@ -5,9 +5,9 @@ module com.probie.dailypaper {
     requires javafx.controls;
     requires javafx.graphics;
 
-    requires Renew.least;
-    requires EasyDB.least;
-    requires Encryption.least;
+    requires Renew;
+    requires EasyDB;
+    requires Encryption;
 
     requires okhttp3;
     requires fastjson;
@@ -18,7 +18,6 @@ module com.probie.dailypaper {
     requires com.alibaba.fastjson2;
 
     requires static lombok;
-
 
     exports com.probie.dailypaper;
     exports com.probie.dailypaper.DailyPaper;
