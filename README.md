@@ -10,6 +10,8 @@
 
 ## 开源地址：https://github.com/BProbie/DailyPaper/
 
+## 开源协议：https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/LICENSE
+
 ## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.3
 
 ## 依赖工具：Maven

@@ -120,6 +120,17 @@
 
     </dependencies>
 
+    <licenses>
+
+        <!-- MIT 开源协议 -->
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+
+    </licenses>
+
     <build>
         <plugins>
             <plugin>
