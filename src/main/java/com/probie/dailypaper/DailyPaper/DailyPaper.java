@@ -3,12 +3,12 @@ package com.probie.dailypaper.DailyPaper;
 import lombok.Data;
 import java.io.File;
 import java.io.Closeable;
-import java.util.function.Supplier;
 import java.util.concurrent.Executors;
 import com.probie.dailypaper.Config.*;
 import com.probie.dailypaper.System.*;
 import javafx.application.Application;
 import java.util.concurrent.ExecutorService;
+import javafx.beans.property.SimpleObjectProperty;
 import java.util.concurrent.ScheduledExecutorService;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaper;
 
@@ -45,7 +45,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /**
      * Parm 参键
      * */
-
     /// 大小参数
     private String KeyDailyPaperStageWidth = "DailyPaperStageWidth";
     private String KeyDailyPaperStageHeight = "DailyPaperStageHeight";
@@ -65,7 +64,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /**
      * Setting 参键
      * */
-
     /// 文件参数
     private String KeyCurrentFilePath = "CurrentFilePath";
     private String KeyDailyPaperFilePath = "DailyPaperFilePath";
@@ -143,105 +141,109 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
     private String KeyDailyPaperAutoLaunch = "DailyPaperAutoLaunch";
 
+    /// 测试参数
+    private String KeyDebug = "Debug";
+    
     /**
      * Param 参值
      * */
-
     /// 大小参数
-    private Supplier<Integer> DailyPaperStageWidth = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageWidth(), 1200)));
-    private Supplier<Integer> DailyPaperStageHeight = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageHeight(), 700)));
+    private SimpleObjectProperty<Object> DailyPaperStageWidth = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageWidth(), 1200));
+    private SimpleObjectProperty<Object> DailyPaperStageHeight = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyDailyPaperStageHeight(), 700));
 
     /// 速度参数
-    private Supplier<Integer> LiveImagePlaySpeed = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyLiveImagePlaySpeed(), 10)));
+    private SimpleObjectProperty<Object> LiveImagePlaySpeed = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyLiveImagePlaySpeed(), 10));
 
     /// AI 生成参数
-    private Supplier<String> SpawnImageSize = () -> ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight()))).toString();
-    private Supplier<Integer> SpawnImageCount = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1)));
-    private Supplier<Integer> SpawnMaxTokens = () -> Integer.parseInt(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100)));
+    private SimpleObjectProperty<Object> SpawnImageSize = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight()))).toString());
+    private SimpleObjectProperty<Object> SpawnImageCount = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1));
+    private SimpleObjectProperty<Object> SpawnMaxTokens = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100));
 
     /// 标记参数
-    private Supplier<String> UploadImageFullFilePathMark = () -> ParamConfig.getInstance().getLocalDB().get(getKeyUploadImageFullFilePathMark(), "#").toString();
-    private Supplier<String> SplitMark = () -> ParamConfig.getInstance().getLocalDB().get(getKeySplitMark(), " ").toString();
+    private SimpleObjectProperty<Object> UploadImageFullFilePathMark = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyUploadImageFullFilePathMark(), "#").toString());
+    private SimpleObjectProperty<Object> SplitMark = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySplitMark(), " ").toString());
 
     /**
      * Setting 参值
      * */
-
     /// 文件参数
-    private Supplier<String> CurrentFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyCurrentFilePath(), ComputerSystem.getInstance().getHere()).toString();
-    private Supplier<String> DailyPaperFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperFilePath(), getCurrentFilePath().get() + File.separator + "DailyPaper").toString();
-    private Supplier<String> ConfigFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyConfigFilePath(), DailyPaperFilePath.get()).toString();
-    private Supplier<String> TempFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyTempFilePath(), DailyPaperFilePath.get()).toString();
-    private Supplier<String> JavaFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyJavaFilePath(), DailyPaperFilePath.get() + File.separator + "jdk-21.0.8").toString();
-    private Supplier<String> LibFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLibFilePath(), DailyPaperFilePath.get() + File.separator + "lib").toString();
-    private Supplier<String> LiveImageFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageFilePath(), DailyPaperFilePath.get() + File.separator + "LiveImage").toString();
-    private Supplier<String> LiveImageConfigFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageConfigFileName(), "liveImage.config").toString();
-    private Supplier<String> ParamConfigFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyParamConfigFileName(), "param.config").toString();
-    private Supplier<String> SettingConfigFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeySettingConfigFileName(), "setting.config").toString();
-    private Supplier<String> RenewConfigFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigFileName(), "renew.config").toString();
+    private SimpleObjectProperty<Object> CurrentFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyCurrentFilePath(), ComputerSystem.getInstance().getHere()).toString());
+    private SimpleObjectProperty<Object> DailyPaperFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperFilePath(), getCurrentFilePath().get() + File.separator + "DailyPaper").toString());
+    private SimpleObjectProperty<Object> ConfigFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyConfigFilePath(), DailyPaperFilePath.get()).toString());
+    private SimpleObjectProperty<Object> TempFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyTempFilePath(), DailyPaperFilePath.get()).toString());
+    private SimpleObjectProperty<Object> JavaFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyJavaFilePath(), DailyPaperFilePath.get() + File.separator + "jdk-21.0.8").toString());
+    private SimpleObjectProperty<Object> LibFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLibFilePath(), DailyPaperFilePath.get() + File.separator + "lib").toString());
+    private SimpleObjectProperty<Object> LiveImageFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageFilePath(), DailyPaperFilePath.get() + File.separator + "LiveImage").toString());
+    private SimpleObjectProperty<Object> LiveImageConfigFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageConfigFileName(), "liveImage.config").toString());
+    private SimpleObjectProperty<Object> ParamConfigFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyParamConfigFileName(), "param.config").toString());
+    private SimpleObjectProperty<Object> SettingConfigFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeySettingConfigFileName(), "setting.config").toString());
+    private SimpleObjectProperty<Object> RenewConfigFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigFileName(), "renew.config").toString());
 
-    private Supplier<String> TempImageFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyTempImageFileName(), "image.png").toString();
+    private SimpleObjectProperty<Object> TempImageFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyTempImageFileName(), "image.png").toString());
 
     /// web 请求参数
-    private Supplier<Integer> ConnectTimeout = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180)));
-    private Supplier<Integer> ReadTimeout = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getReadTimeout(), 180)));
-    private Supplier<Integer> WriteTimeout = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getWriteTimeout(), 180)));
+    private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180));
+    private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 180));
+    private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 180));
 
     /// AI 参数
-    private Supplier<String> APIKeySiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIKeySiliconFlow(), "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString();
+    private SimpleObjectProperty<Object> APIKeySiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIKeySiliconFlow(), "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y").toString());
 
-    private Supplier<String> Qwen30_8BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen30_8BModelSiliconFlow(), "Qwen/Qwen3-8B").toString();
-    private Supplier<String> KolorsModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyKolorsModelSiliconFlow(), "Kwai-Kolors/Kolors").toString();
-    private Supplier<String> Qwen35_4BModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyQwen35_4BModelSiliconFlow(), "Qwen/Qwen3.5-4B").toString();
-    private Supplier<String> GLM_41V_9B_ThinkingModelSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyGLM_41V_9B_ThinkingModelSiliconFlow(), "THUDM/GLM-4.1V-9B-Thinking").toString();
+    private SimpleObjectProperty<Object> Qwen30_8BModelSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyQwen30_8BModelSiliconFlow(), "Qwen/Qwen3-8B").toString());
+    private SimpleObjectProperty<Object> KolorsModelSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyKolorsModelSiliconFlow(), "Kwai-Kolors/Kolors").toString());
+    private SimpleObjectProperty<Object> Qwen35_4BModelSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyQwen35_4BModelSiliconFlow(), "Qwen/Qwen3.5-4B").toString());
+    private SimpleObjectProperty<Object> GLM_41V_9B_ThinkingModelSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyGLM_41V_9B_ThinkingModelSiliconFlow(), "THUDM/GLM-4.1V-9B-Thinking").toString());
 
-    private Supplier<String> APIUrlTextToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString();
-    private Supplier<String> APIUrlTextToImageSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToImageSiliconFlow(), "https://api.siliconflow.cn/v1/images/generations").toString();
-    private Supplier<String> APIUrlImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlImageToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString();
+    private SimpleObjectProperty<Object> APIUrlTextToTextSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString());
+    private SimpleObjectProperty<Object> APIUrlTextToImageSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToImageSiliconFlow(), "https://api.siliconflow.cn/v1/images/generations").toString());
+    private SimpleObjectProperty<Object> APIUrlImageToTextSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlImageToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions").toString());
 
-    private Supplier<String> APIModelTextToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToTextSiliconFlow(), getQwen30_8BModelSiliconFlow().get()).toString();
-    private Supplier<String> APIModelTextToImageSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(), getKolorsModelSiliconFlow().get()).toString();
-    private Supplier<String> APIModelImageToTextSiliconFlow = () -> SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get()).toString();
+    private SimpleObjectProperty<Object> APIModelTextToTextSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToTextSiliconFlow(), getQwen30_8BModelSiliconFlow().get()).toString());
+    private SimpleObjectProperty<Object> APIModelTextToImageSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(), getKolorsModelSiliconFlow().get()).toString());
+    private SimpleObjectProperty<Object> APIModelImageToTextSiliconFlow = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get()).toString());
 
     /// 更新参数
-    private Supplier<String> GithubRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyGithubRenewUri(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master" + "/" + "res" + "/").toString();
-    private Supplier<String> RenewConfigRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), getGithubRenewUri().get() + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriLinux(), getGithubRenewUri().get() + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriMac(), getGithubRenewUri().get() + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriAndroid(), getGithubRenewUri().get() + getRenewConfigFileName().get()).toString();
-    private Supplier<String> RenewConfigRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getRenewConfigRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getRenewConfigRenewUriLinux().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getRenewConfigRenewUriMac().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getRenewConfigRenewUriAndroid().get() : null).toString();
-    private Supplier<String> DailyPaperRenewLocalFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFilePath(), getCurrentFilePath().get()).toString();
-    private Supplier<String> RenewRenewLocalFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFilePath(), getLibFilePath().get()).toString();
-    private Supplier<String> RenewRenewLocalFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFileName(), "Renew.jar").toString();
-    private Supplier<String> DailyPaperRenewLocalFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFileName(), getNAME() + ".exe").toString();
-    private Supplier<String> DailyPaperRenewUriWindows = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriWindows(), getGithubRenewUri().get() + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriLinux = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriLinux(), getGithubRenewUri().get() + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriMac = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriMac(), getGithubRenewUri().get() + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUriAndroid = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriAndroid(), getGithubRenewUri().get() + getDailyPaperRenewLocalFileName().get()).toString();
-    private Supplier<String> DailyPaperRenewUri = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getDailyPaperRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getDailyPaperRenewUriLinux() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getDailyPaperRenewUriMac() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getDailyPaperRenewUriAndroid() : null).toString();
-    private Supplier<Boolean> DailyPaperRenewAutoOpen = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewAutoOpen(), true)));
+    private SimpleObjectProperty<Object> GithubRenewUri = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyGithubRenewUri(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master" + "/" + "res" + "/").toString());
+    private SimpleObjectProperty<Object> RenewConfigRenewUriWindows = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriWindows(), getGithubRenewUri().get().toString() + getRenewConfigFileName().get()).toString());
+    private SimpleObjectProperty<Object> RenewConfigRenewUriLinux = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriLinux(), getGithubRenewUri().get().toString() + getRenewConfigFileName().get()).toString());
+    private SimpleObjectProperty<Object> RenewConfigRenewUriMac = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriMac(), getGithubRenewUri().get().toString() + getRenewConfigFileName().get()).toString());
+    private SimpleObjectProperty<Object> RenewConfigRenewUriAndroid = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUriAndroid(), getGithubRenewUri().get().toString() + getRenewConfigFileName().get()).toString());
+    private SimpleObjectProperty<Object> RenewConfigRenewUri = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getRenewConfigRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getRenewConfigRenewUriLinux().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getRenewConfigRenewUriMac().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getRenewConfigRenewUriAndroid().get() : null).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewLocalFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFilePath(), getCurrentFilePath().get()).toString());
+    private SimpleObjectProperty<Object> RenewRenewLocalFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFilePath(), getLibFilePath().get()).toString());
+    private SimpleObjectProperty<Object> RenewRenewLocalFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewRenewLocalFileName(), "Renew.jar").toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewLocalFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewLocalFileName(), getNAME() + ".exe").toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewUriWindows = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriWindows(), getGithubRenewUri().get().toString() + getDailyPaperRenewLocalFileName().get()).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewUriLinux = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriLinux(), getGithubRenewUri().get().toString() + getDailyPaperRenewLocalFileName().get()).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewUriMac = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriMac(), getGithubRenewUri().get().toString() + getDailyPaperRenewLocalFileName().get()).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewUriAndroid = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUriAndroid(), getGithubRenewUri().get().toString() + getDailyPaperRenewLocalFileName().get()).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewUri = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewUri(), ComputerSystem.getInstance().getSystemName().toLowerCase().contains("windows") ? getDailyPaperRenewUriWindows().get() : ComputerSystem.getInstance().getSystemName().toLowerCase().contains("linux") ? getDailyPaperRenewUriLinux() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("mac") ? getDailyPaperRenewUriMac() :  ComputerSystem.getInstance().getSystemName().toLowerCase().contains("android") ? getDailyPaperRenewUriAndroid() : null).toString());
+    private SimpleObjectProperty<Object> DailyPaperRenewAutoOpen = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperRenewAutoOpen(), true));
 
     /// 记忆参数
-    private Supplier<String> ChatImageDownloadFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFilePath(), getCurrentFilePath().get()).toString();
-    private Supplier<String> ChatImageDownloadFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFileName(), "image.png").toString();
-    private Supplier<String> ChatTextInputToolsImageUploadImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString();
-    private Supplier<String> ChatTextInputToolsImageUploadImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFileName(), "image.png").toString();
+    private SimpleObjectProperty<Object> ChatImageDownloadFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFilePath(), getCurrentFilePath().get()).toString());
+    private SimpleObjectProperty<Object> ChatImageDownloadFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyChatImageDownloadFileName(), "image.png").toString());
+    private SimpleObjectProperty<Object> ChatTextInputToolsImageUploadImageChosenFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString());
+    private SimpleObjectProperty<Object> ChatTextInputToolsImageUploadImageChosenFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyChatTextInputToolsImageUploadImageChosenFileName(), "image.png").toString());
 
-    private Supplier<String> LiveImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFilePath(), getCurrentFilePath().get()).toString();
-    private Supplier<String> LiveImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFileName(), "image.png").toString();
-    private Supplier<Boolean> LiveImageAutoLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageAutoLaunch(), false)));
+    private SimpleObjectProperty<Object> LiveImageChosenFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFilePath(), getCurrentFilePath().get()).toString());
+    private SimpleObjectProperty<Object> LiveImageChosenFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageChosenFileName(), "image.png").toString());
+    private SimpleObjectProperty<Object> LiveImageAutoLaunch = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageAutoLaunch(), false));
 
-    private Supplier<Boolean> DailyAutoWallpaper = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaper(), false)));
-    private Supplier<Boolean> DailyAutoWallpaperWhenLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenLaunch(), false)));
-    private Supplier<Integer> DailyAutoWallpaperWhenTime = () -> Integer.parseInt(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenTime(), 0)));
-    private Supplier<String> DailyImageHobby = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyImageHobby(), "古风唯美").toString();
-    private Supplier<String> DailyWallpaperHobbyToolsImageUploadImageChosenFilePath = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString();
-    private Supplier<String> DailyWallpaperHobbyToolsImageUploadImageChosenFileName = () -> SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName(), "image.png").toString();
+    private SimpleObjectProperty<Object> DailyAutoWallpaper = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaper(), false));
+    private SimpleObjectProperty<Object> DailyAutoWallpaperWhenLaunch = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenLaunch(), false));
+    private SimpleObjectProperty<Object> DailyAutoWallpaperWhenTime = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyAutoWallpaperWhenTime(), 0));
+    private SimpleObjectProperty<Object> DailyImageHobby = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyImageHobby(), "古风唯美").toString());
+    private SimpleObjectProperty<Object> DailyWallpaperHobbyToolsImageUploadImageChosenFilePath = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFilePath(), getCurrentFilePath().get()).toString());
+    private SimpleObjectProperty<Object> DailyWallpaperHobbyToolsImageUploadImageChosenFileName = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyWallpaperHobbyToolsImageUploadImageChosenFileName(), "image.png").toString());
 
-    private Supplier<Boolean> RenewAutoCheckRenew = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoCheckRenew(), false)));
-    private Supplier<Boolean> RenewAutoDownloadRenew = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoDownloadRenew(), false)));
+    private SimpleObjectProperty<Object> RenewAutoCheckRenew = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoCheckRenew(), false));
+    private SimpleObjectProperty<Object> RenewAutoDownloadRenew = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyRenewAutoDownloadRenew(), false));
 
-    private Supplier<Boolean> DailyPaperAutoLaunch = () -> Boolean.parseBoolean(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperAutoLaunch(), false)));
+    private SimpleObjectProperty<Object> DailyPaperAutoLaunch = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperAutoLaunch(), false));
+
+    /// 测试参数
+    private SimpleObjectProperty<Object> Debug = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyDebug(), false));
 
     @Override
     public void launch(String[] args) {
@@ -250,7 +252,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
 
     @Override
     public void close() {
-
         /**
          * 保存 Param
          * */
@@ -352,11 +353,12 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyRenewAutoDownloadRenew, RenewAutoDownloadRenew.get());
         SettingConfig.getInstance().getLocalDB().set(KeyDailyPaperAutoLaunch, DailyPaperAutoLaunch.get());
 
-        if (!new File(ConfigFilePath.get()).exists()) new File(ConfigFilePath.get()).mkdirs();
+        SettingConfig.getInstance().getLocalDB().set(KeyDebug, Debug.get());
+
+        if (!new File(ConfigFilePath.get().toString()).exists()) new File(ConfigFilePath.get().toString()).mkdirs();
 
         ParamConfig.getInstance().getLocalDB().commit();
         SettingConfig.getInstance().getLocalDB().commit();
-
     }
 
 }

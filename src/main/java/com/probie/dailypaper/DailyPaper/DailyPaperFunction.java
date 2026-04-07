@@ -1,16 +1,18 @@
 package com.probie.dailypaper.DailyPaper;
 
+import javafx.scene.text.Font;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.application.Platform;
-import com.probie.renew.Renew.Renew;
 import java.awt.image.BufferedImage;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.control.ScrollPane;
 import com.probie.dailypaper.System.ImageSystem;
 import com.probie.dailypaper.Config.RenewConfig;
+import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.System.ComputerSystem;
 import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperFunction;
@@ -48,10 +50,10 @@ public class DailyPaperFunction implements IDailyPaperFunction {
 
     @Override
     public void launchLiveImageWallpaper() {
-        dailyPaper.setLiveImageAutoLaunch(() -> true);
+        dailyPaper.getLiveImageAutoLaunch().set(true);
 
         /// 获取本地切片数据
-        String[] speeds = LiveImageConfig.getInstance().getLocalDB().get("Speed").toString().split(DailyPaper.getInstance().getSplitMark().get());
+        String[] speeds = LiveImageConfig.getInstance().getLocalDB().get("Speed").toString().split(DailyPaper.getInstance().getSplitMark().get().toString());
         int[] imagesWallpaperSpeed = new int[speeds.length];
         for (int i = 0; i < speeds.length; i++) {
             imagesWallpaperSpeed[i] = Integer.parseInt(speeds[i]);
@@ -82,7 +84,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
 
     @Override
     public void clearLiveImageWallpaper() {
-        DailyPaper.getInstance().setLiveImageAutoLaunch(() -> false);
+        DailyPaper.getInstance().getLiveImageAutoLaunch().set(false);
         if (dailyPaperData.getIsLiveWallpaperShowing().get()) {
             dailyPaperData.setIsLiveWallpaperShowing(() -> false);
             waitADelay(10);
@@ -96,9 +98,9 @@ public class DailyPaperFunction implements IDailyPaperFunction {
                 String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get())[0];
                 String[] urls = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                 BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(urls[0]);
-                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get())) {
+                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString())) {
                     if (dailyPaperData.getIsLiveWallpaperShowing().get()) dailyPaperFunction.clearLiveImageWallpaper();
-                    ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get(), dailyPaper.getTempImageFileName().get());
+                    ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString());
                 }
             });
         } catch (Exception ignored) {}
@@ -223,6 +225,32 @@ public class DailyPaperFunction implements IDailyPaperFunction {
                 button.setDisable(false);
             });
         });
+    }
+
+    @Override
+    public HBox createTextFieldHBox(Pane pane, String information, SimpleObjectProperty<Object> data) {
+        HBox hBox = new HBox();
+        hBox.prefWidthProperty().bind(pane.widthProperty());
+        hBox.prefHeightProperty().bind(pane.heightProperty().divide(10.0));
+        hBox.setAlignment(Pos.CENTER);
+
+        Label label = new Label(information);
+        label.prefWidthProperty().bind(hBox.widthProperty().divide(4.0));
+        label.prefHeightProperty().bind(hBox.heightProperty());
+        label.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        label.setAlignment(Pos.CENTER);
+
+        TextField textField = new TextField(data.getValue().toString());
+        textField.prefWidthProperty().bind(hBox.widthProperty().divide(4.0));
+        textField.prefHeightProperty().bind(hBox.heightProperty());
+        textField.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        textField.setAlignment(Pos.CENTER);
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> data.setValue(newValue));
+
+        hBox.getChildren().addAll(label, textField);
+
+        return hBox;
     }
 
 }

@@ -59,7 +59,7 @@ public class DailyPaperData implements IDailyPaperData {
     private volatile long autoDailyWallpaperStartTime = System.currentTimeMillis();
     private Supplier<Boolean> isAutoDailyWallpaperRunning = () -> false;
     private final Runnable autoDailyWallpaper = () -> {
-        if (dailyPaper.getDailyAutoWallpaper().get() && dailyPaper.getDailyAutoWallpaperWhenTime().get() >= 1) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())) && Integer.parseInt(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) >= 1) {
             if (System.currentTimeMillis() - autoDailyWallpaperStartTime > (long) dailyPaper.getDailyAutoWallpaperWhenTime().get() * 60 * 1000) {
                 dailyPaperFunction.dailyWallpaper();
                 setAutoDailyWallpaperStartTime(System.currentTimeMillis());

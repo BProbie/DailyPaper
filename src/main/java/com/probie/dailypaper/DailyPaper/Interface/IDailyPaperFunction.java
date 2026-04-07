@@ -1,8 +1,12 @@
 package com.probie.dailypaper.DailyPaper.Interface;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 
 public interface IDailyPaperFunction {
 
@@ -87,5 +91,10 @@ public interface IDailyPaperFunction {
      * @param information 信息
      * */
     void showButtonInformation(Button button, String information);
+
+    /**
+     * 创建文本输入
+     * */
+    HBox createTextFieldHBox(Pane pane, String information, SimpleObjectProperty<Object> data);
 
 }

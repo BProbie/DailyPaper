@@ -2,8 +2,8 @@ package com.probie.dailypaper.AIAgent.SiliconFlow;
 
 import lombok.Data;
 import java.io.File;
-import java.util.function.Supplier;
 import com.probie.dailypaper.AIAgent.AIAgent;
+import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.encryption.Encryption.Encryption;
 import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.IAIAgentSiliconFlow;
@@ -44,11 +44,11 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
     }
 
     @Override
-    protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
+    protected SimpleObjectProperty<Object> getAPIKey(SimpleObjectProperty<Object> APIKey) {
         if (!Encryption.getInstance().isDebug()) {
             if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
                 Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
-                return () -> Encryption.getInstance().getDecrypterFactory().getMapDecrypter().decryptByMap(APIKey.get());
+                return new SimpleObjectProperty<>(Encryption.getInstance().getDecrypterFactory().getMapDecrypter().decryptByMap(APIKey.get()));
             }
         }
         System.exit(0);

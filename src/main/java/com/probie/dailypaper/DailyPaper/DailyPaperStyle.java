@@ -57,8 +57,8 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createStageStyle() {
-        dailyPaperElement.getStage().setWidth(dailyPaper.getDailyPaperStageWidth().get());
-        dailyPaperElement.getStage().setHeight(dailyPaper.getDailyPaperStageHeight().get());
+        dailyPaperElement.getStage().setWidth(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageWidth().get())));
+        dailyPaperElement.getStage().setHeight(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageHeight().get())));
         dailyPaperElement.getStage().initStyle(StageStyle.UNDECORATED);
     }
 
@@ -207,7 +207,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getLiveImageChooseButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getLiveImageChooseButton().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getLiveImageChooseLabel().setText(dailyPaper.getLiveImageChosenFilePath().get());
+        dailyPaperElement.getLiveImageChooseLabel().setText(dailyPaper.getLiveImageChosenFilePath().get().toString());
         dailyPaperElement.getLiveImageChooseLabel().prefWidthProperty().bind(dailyPaperElement.getLiveImageChooseHBox().widthProperty().divide(5.0).multiply(4.0));
         dailyPaperElement.getLiveImageChooseLabel().prefHeightProperty().bind(dailyPaperElement.getLiveImageChooseHBox().heightProperty());
         dailyPaperElement.getLiveImageChooseLabel().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
@@ -262,7 +262,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperOffButton().setText("关");
         dailyPaperElement.getDailyWallpaperOffButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getDailyWallpaperOffButton().setAlignment(Pos.CENTER);
-        if (dailyPaper.getDailyAutoWallpaper().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get()))) {
             dailyPaperElement.getDailyWallpaperOnButton().setSelected(true);
         } else {
             dailyPaperElement.getDailyWallpaperOffButton().setSelected(true);
@@ -280,7 +280,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyLaunchOffButton().setText("关");
         dailyPaperElement.getDailyLaunchOffButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getDailyLaunchOffButton().setAlignment(Pos.CENTER);
-        if (dailyPaper.getDailyPaperAutoLaunch().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyPaperAutoLaunch().get()))) {
             dailyPaperElement.getDailyLaunchOnButton().setSelected(true);
         } else {
             dailyPaperElement.getDailyLaunchOffButton().setSelected(true);
@@ -290,7 +290,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperChooseHBox().prefHeightProperty().bind(dailyPaperElement.getDailyVBox().heightProperty().divide(10.0).multiply(1.0));
         dailyPaperElement.getDailyWallpaperChooseHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
         dailyPaperElement.getDailyWallpaperChooseHBox().setAlignment(Pos.CENTER);
-        dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(dailyPaper.getDailyAutoWallpaper().get());
+        dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())));
 
         dailyPaperElement.getDailyLaunchWallpaperHBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
         dailyPaperElement.getDailyLaunchWallpaperHBox().setAlignment(Pos.CENTER);
@@ -304,7 +304,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyLaunchWallpaperOffButton().setText("关");
         dailyPaperElement.getDailyLaunchWallpaperOffButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getDailyLaunchWallpaperOffButton().setAlignment(Pos.CENTER);
-        if (dailyPaper.getDailyAutoWallpaperWhenLaunch().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenLaunch().get()))) {
             dailyPaperElement.getDailyLaunchWallpaperOnButton().setSelected(true);
         } else {
             dailyPaperElement.getDailyLaunchWallpaperOffButton().setSelected(true);
@@ -322,7 +322,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperHobbyVBox().prefWidthProperty().bind(dailyPaperElement.getDailyVBox().widthProperty());
         dailyPaperElement.getDailyWallpaperHobbyVBox().prefHeightProperty().bind(dailyPaperElement.getDailyVBox().heightProperty().divide(10.0).multiply(8.0));
         dailyPaperElement.getDailyWallpaperHobbyVBox().setAlignment(Pos.CENTER);
-        dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(dailyPaper.getDailyAutoWallpaper().get());
+        dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())));
 
         dailyPaperElement.getDailyWallpaperHobbyLabel().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
         dailyPaperElement.getDailyWallpaperHobbyLabel().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty().divide(10.0).multiply(1.0));
@@ -338,7 +338,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperHobbyTextArea().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().widthProperty());
         dailyPaperElement.getDailyWallpaperHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().heightProperty());
         dailyPaperElement.getDailyWallpaperHobbyTextArea().setWrapText(true);
-        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(dailyPaper.getDailyImageHobby().get());
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(dailyPaper.getDailyImageHobby().get().toString());
         dailyPaperElement.getDailyWallpaperHobbyTextArea().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
 
         dailyPaperElement.getDailyWallpaperHobbyToolsHBox().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
@@ -353,22 +353,37 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createParamStyle() {
+        dailyPaperElement.getParamVBox().getChildren().clear();
+
         dailyPaperElement.getParamVBox().prefWidthProperty().bind(dailyPaperElement.getRootPaneCenterStageBarVBox().widthProperty());
         dailyPaperElement.getParamVBox().prefHeightProperty().bind(dailyPaperElement.getRootPaneCenterStageBarVBox().heightProperty());
+        dailyPaperElement.getParamVBox().setSpacing(dailyPaperData.getSpacingSizeSmall().get());
         dailyPaperElement.getParamVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getParamInformationLabel().setText("> 作者项目有点多，缓慢更新中，请见谅！\n> 另外你可以在更新模块中实时查看新版本的更新情况。\n> 如有需要请参考参数文件：" + ParamConfig.getInstance().getLocalDB().getFullFilePath());
         dailyPaperElement.getParamInformationLabel().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+
+        dailyPaperElement.getParamVBox().getChildren().addAll(
+//                dailyPaperElement.getParamInformationLabel(),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamVBox(), "窗口宽度", dailyPaper.getDailyPaperStageWidth()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamVBox(), "窗口高度", dailyPaper.getDailyPaperStageHeight())
+        );
     }
 
     @Override
     public void createSettingStyle() {
+        dailyPaperElement.getSettingVBox().getChildren().clear();
+
         dailyPaperElement.getSettingVBox().prefWidthProperty().bind(dailyPaperElement.getRootPaneCenterStageBarVBox().widthProperty());
         dailyPaperElement.getSettingVBox().prefHeightProperty().bind(dailyPaperElement.getRootPaneCenterStageBarVBox().heightProperty());
         dailyPaperElement.getSettingVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getSettingInformationLabel().setText("> 作者项目有点多，缓慢更新中，请见谅！\n> 另外你可以在更新模块中实时查看新版本的更新情况。\n> 如有需要请参考设置文件：" + SettingConfig.getInstance().getLocalDB().getFullFilePath());
         dailyPaperElement.getSettingInformationLabel().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+
+        dailyPaperElement.getSettingVBox().getChildren().addAll(
+//                dailyPaperElement.getSettingInformationLabel()
+        );
     }
 
     @Override
@@ -443,7 +458,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRenewAutoCheckRenewOffButton().setText("关");
         dailyPaperElement.getRenewAutoCheckRenewOffButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getRenewAutoCheckRenewOffButton().setAlignment(Pos.CENTER);
-        if (dailyPaper.getRenewAutoCheckRenew().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getRenewAutoCheckRenew().get()))) {
             dailyPaperElement.getRenewAutoCheckRenewOnButton().setSelected(true);
         } else {
             dailyPaperElement.getRenewAutoCheckRenewOffButton().setSelected(true);
@@ -463,7 +478,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getRenewAutoDownloadRenewOffButton().setText("关");
         dailyPaperElement.getRenewAutoDownloadRenewOffButton().setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
         dailyPaperElement.getRenewAutoDownloadRenewOffButton().setAlignment(Pos.CENTER);
-        if (dailyPaper.getRenewAutoDownloadRenew().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getRenewAutoDownloadRenew().get()))) {
             dailyPaperElement.getRenewAutoDownloadRenewOnButton().setSelected(true);
         } else {
             dailyPaperElement.getRenewAutoDownloadRenewOffButton().setSelected(true);

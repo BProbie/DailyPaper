@@ -49,14 +49,14 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
     public String[] turnImageToText(String fullFilePath, String prompt) {
         /// 设置请求参数
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(getConnectTimeout().get(), TimeUnit.SECONDS)
-                .readTimeout(getReadTimeout().get(), TimeUnit.SECONDS)
-                .writeTimeout(getWriteTimeout().get(), TimeUnit.SECONDS)
+                .connectTimeout(Integer.parseInt(String.valueOf(getConnectTimeout().get())), TimeUnit.SECONDS)
+                .readTimeout(Integer.parseInt(String.valueOf(getReadTimeout().get())), TimeUnit.SECONDS)
+                .writeTimeout(Integer.parseInt(String.valueOf(getWriteTimeout().get())), TimeUnit.SECONDS)
                 .build();
 
         /// 设置请求体 Json
         JSONObject requestBodyJson = new JSONObject();
-        requestBodyJson.put("model", getAPIModel());
+        requestBodyJson.put("model", getAPIModel().get().toString());
         requestBodyJson.put("stream", false);
         requestBodyJson.put("max_tokens", DailyPaper.getInstance().getSpawnMaxTokens().get());
 
@@ -93,8 +93,8 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
 
         /// 构造请求
         Request request = new Request.Builder()
-                .url(getAPIUrl())
-                .addHeader("Authorization", "Bearer " + getAPIKey())
+                .url(getAPIUrl().get().toString())
+                .addHeader("Authorization", "Bearer " + getAPIKey().get().toString())
                 .addHeader("Content-Type", "application/json")
                 .post(requestBody)
                 .build();
@@ -103,6 +103,9 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
         try (Response response = okHttpClient.newCall(request).execute()) {
             if (response.body() != null) {
                 String responseBody = response.body().string();
+                if (Boolean.parseBoolean(String.valueOf(DailyPaper.getInstance().getDebug().get()))) {
+                    System.out.println("ImageToText" + "\n" + responseBody);
+                }
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果
                     JSONObject responseBodyJson = JSONObject.parseObject(responseBody);

@@ -23,7 +23,7 @@ public class RenewConfig implements IRenewConfig {
             INSTANCE = new RenewConfig();
         }
         if (INSTANCE.getLocalRemoteDB() == null) {
-            INSTANCE.setLocalRemoteDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigRenewUri().get()));
+            INSTANCE.setLocalRemoteDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(DailyPaper.getInstance().getRenewConfigRenewUri().get().toString()));
             INSTANCE.getLocalRemoteDB().setFullFilePath(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get());
             INSTANCE.getLocalRemoteDB().setIsAutoCommit(false);
             INSTANCE.getLocalRemoteDB().downloadDatabase(true);

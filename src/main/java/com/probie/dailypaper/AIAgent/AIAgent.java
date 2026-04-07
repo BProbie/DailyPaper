@@ -1,8 +1,8 @@
 package com.probie.dailypaper.AIAgent;
 
 import lombok.Data;
-import java.util.function.Supplier;
 import java.util.concurrent.locks.Lock;
+import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.AIAgent.Interface.IAIAgent;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -28,7 +28,7 @@ public abstract class AIAgent implements IAIAgent {
      * @param APIKey 被加密过的 APIKey
      * @return 解密后的 APIKey
      * */
-    protected abstract Supplier<String> getAPIKey(Supplier<String> APIKey);
+    protected abstract SimpleObjectProperty<Object> getAPIKey(SimpleObjectProperty<Object> APIKey);
 
     /**
      * 维护一个懒加载的类单例对象
@@ -47,7 +47,7 @@ public abstract class AIAgent implements IAIAgent {
                 }
 
                 @Override
-                protected Supplier<String> getAPIKey(Supplier<String> APIKey) {
+                protected SimpleObjectProperty<Object> getAPIKey(SimpleObjectProperty<Object> APIKey) {
                     /// 空实现
                     return null;
                 }
@@ -66,35 +66,20 @@ public abstract class AIAgent implements IAIAgent {
     /**
      * 请求连接参数
      * */
-    private Supplier<Integer> connectTimeout = DailyPaper.getInstance().getConnectTimeout();
-    private Supplier<Integer> readTimeout = DailyPaper.getInstance().getReadTimeout();
-    private Supplier<Integer> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
+    private SimpleObjectProperty<Object> connectTimeout = DailyPaper.getInstance().getConnectTimeout();
+    private SimpleObjectProperty<Object> readTimeout = DailyPaper.getInstance().getReadTimeout();
+    private SimpleObjectProperty<Object> writeTimeout = DailyPaper.getInstance().getWriteTimeout();
 
     /**
      * AI-API 基本参数
      * */
-    private Supplier<String> APIKey;
-    private Supplier<String> APIUrl;
-    private Supplier<String> APIModel;
+    private SimpleObjectProperty<Object> APIKey;
+    private SimpleObjectProperty<Object> APIUrl;
+    private SimpleObjectProperty<Object> APIModel;
 
     @Override
     public AIAgentSiliconFlow getAIAgentSiliconFlow() {
         return AIAgentSiliconFlow.getInstance();
-    }
-
-    /**
-     * 获取动态参数的静态值
-     * */
-    public String getAPIKey() {
-        return APIKey.get();
-    }
-
-    public String getAPIUrl() {
-        return APIUrl.get();
-    }
-
-    public String getAPIModel() {
-        return APIModel.get();
     }
 
 }

@@ -70,29 +70,29 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
 
     @Override
     public void beforeStart() {
-        if (!new File(dailyPaper.getDailyPaperFilePath().get()).exists()) new File(dailyPaper.getDailyPaperFilePath().get()).mkdirs();
-        if (!new File(dailyPaper.getConfigFilePath().get()).exists()) new File(dailyPaper.getConfigFilePath().get()).mkdirs();
-        if (!new File(dailyPaper.getTempFilePath().get()).exists()) new File(dailyPaper.getTempFilePath().get()).mkdirs();
-        if (!new File(dailyPaper.getJavaFilePath().get()).exists()) new File(dailyPaper.getJavaFilePath().get()).mkdirs();
-        if (!new File(dailyPaper.getLibFilePath().get()).exists()) new File(dailyPaper.getLibFilePath().get()).mkdirs();
-        if (!new File(dailyPaper.getLiveImageFilePath().get()).exists()) new File(dailyPaper.getLiveImageFilePath().get()).mkdirs();
+        if (!new File(dailyPaper.getDailyPaperFilePath().get().toString()).exists()) new File(dailyPaper.getDailyPaperFilePath().get().toString()).mkdirs();
+        if (!new File(dailyPaper.getConfigFilePath().get().toString()).exists()) new File(dailyPaper.getConfigFilePath().get().toString()).mkdirs();
+        if (!new File(dailyPaper.getTempFilePath().get().toString()).exists()) new File(dailyPaper.getTempFilePath().get().toString()).mkdirs();
+        if (!new File(dailyPaper.getJavaFilePath().get().toString()).exists()) new File(dailyPaper.getJavaFilePath().get().toString()).mkdirs();
+        if (!new File(dailyPaper.getLibFilePath().get().toString()).exists()) new File(dailyPaper.getLibFilePath().get().toString()).mkdirs();
+        if (!new File(dailyPaper.getLiveImageFilePath().get().toString()).exists()) new File(dailyPaper.getLiveImageFilePath().get().toString()).mkdirs();
     }
 
     @Override
     public void afterStart() {
 
         /// 播放动图
-        if (dailyPaper.getLiveImageAutoLaunch().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getLiveImageAutoLaunch().get()))) {
             dailyPaperFunction.launchLiveImageWallpaper();
         }
 
         /// 启动自动推荐壁纸
-        if (dailyPaper.getDailyAutoWallpaper().get() && dailyPaper.getDailyAutoWallpaperWhenLaunch().get()) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())) && Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenLaunch().get()))) {
             dailyPaperFunction.dailyWallpaper();
         }
 
         /// 时间自动推荐壁纸
-        if (dailyPaper.getDailyAutoWallpaper().get() && dailyPaper.getDailyAutoWallpaperWhenTime().get() >= 1) {
+        if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())) && Integer.parseInt(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) >= 1) {
             if (!dailyPaperData.getIsAutoDailyWallpaperRunning().get()) {
                 dailyPaperData.setAutoDailyWallpaperStartTime(System.currentTimeMillis());
                 dailyPaper.getScheduledExecutorService().scheduleAtFixedRate(dailyPaperData.getAutoDailyWallpaper(), 1 , 1, TimeUnit.MINUTES);
@@ -102,7 +102,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
 
         /// 自动更新
         dailyPaper.getDailyPaperPool().submit(() -> {
-            if (dailyPaper.getRenewAutoCheckRenew().get()) {
+            if (Boolean.parseBoolean(String.valueOf(dailyPaper.getRenewAutoCheckRenew().get()))) {
                 String checkTemp = dailyPaperElement.getRenewManualCheckRenewButton().getText();
                 try {
                     Platform.runLater(() -> {
@@ -118,7 +118,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                                 dailyPaperElement.getRenewManualShowRenewTextArea().setText(dailyPaperElement.getRenewManualShowRenewTextArea().getText() + "\n" + RenewConfig.getInstance().getLocalRemoteDB().get("RENEW", "未知更新内容"));
                                 dailyPaperElement.getRenewManualDownloadRenewHBox().setVisible(true);
 
-                                if (dailyPaper.getRenewAutoDownloadRenew().get()) {
+                                if (Boolean.parseBoolean(String.valueOf(dailyPaper.getRenewAutoDownloadRenew().get()))) {
                                     String downloadTemp = dailyPaperElement.getRenewManualDownloadRenewButton().getText();
                                     try {
                                         Platform.runLater(() -> {
@@ -128,7 +128,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                                         if (NetworkSystem.getInstance().getHasNetwork()) {
                                             if (dailyPaperFunction.downloadRenewDailyPaper()) {
                                                 Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新完成！"));
-                                                if (dailyPaper.getDailyPaperRenewAutoOpen().get()) {
+                                                if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyPaperRenewAutoOpen().get()))) {
 //                                                    dailyPaperApplication.stop();
                                                     System.exit(0);
                                                 }
