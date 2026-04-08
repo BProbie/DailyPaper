@@ -1,10 +1,10 @@
 package com.probie.dailypaper.DailyPaper;
 
-import javafx.scene.text.Font;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
 import javafx.geometry.Pos;
+import javafx.scene.text.Font;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.HBox;
@@ -65,28 +65,28 @@ public class DailyPaperFunction implements IDailyPaperFunction {
 
         /// 循环播放切片
         dailyPaper.getDailyPaperPool().submit(() -> {
-            dailyPaperData.setIsLiveWallpaperShowing(() -> true);
+            dailyPaperData.getIsLiveWallpaperShowing().set(true);
             do {
                 for (int i = 0; i < imagesWallPaperFullFilePath.length; i++) {
                     ImageSystem.getInstance().setWallPaper(imagesWallPaperFullFilePath[i]);
                     try {
-                        Thread.sleep(imagesWallpaperSpeed[i]);
+                        Thread.sleep(imagesWallpaperSpeed[i] / Integer.parseInt(String.valueOf(dailyPaper.getLiveImagePlaySpeed().get())));
                     } catch (InterruptedException interruptedException) {
                         throw new RuntimeException(interruptedException);
                     }
-                    if (!dailyPaperData.getIsLiveWallpaperShowing().get()) {
+                    if (!Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get()))) {
                         break;
                     }
                 }
-            } while (dailyPaperData.getIsLiveWallpaperShowing().get());
+            } while (Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get())));
         });
     }
 
     @Override
     public void clearLiveImageWallpaper() {
         DailyPaper.getInstance().getLiveImageAutoLaunch().set(false);
-        if (dailyPaperData.getIsLiveWallpaperShowing().get()) {
-            dailyPaperData.setIsLiveWallpaperShowing(() -> false);
+        if (Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get()))) {
+            dailyPaperData.getIsLiveWallpaperShowing().set(false);
             waitADelay(10);
         }
     }
@@ -95,11 +95,11 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     public void dailyWallpaper() {
         try {
             DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
-                String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get())[0];
+                String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get().toString()+ dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get().toString())[0];
                 String[] urls = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                 BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(urls[0]);
                 if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString())) {
-                    if (dailyPaperData.getIsLiveWallpaperShowing().get()) dailyPaperFunction.clearLiveImageWallpaper();
+                    if (Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get()))) dailyPaperFunction.clearLiveImageWallpaper();
                     ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString());
                 }
             });
@@ -228,6 +228,48 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     }
 
     @Override
+    public HBox createTitleHBox(Pane pane, String information) {
+        HBox hBox = new HBox();
+        hBox.prefWidthProperty().bind(pane.widthProperty());
+        hBox.prefHeightProperty().bind(pane.heightProperty().divide(10.0));
+        hBox.setAlignment(Pos.CENTER);
+
+        Label label = new Label(information);
+        label.prefWidthProperty().bind(hBox.widthProperty());
+        label.prefHeightProperty().bind(hBox.heightProperty());
+        label.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        label.setAlignment(Pos.CENTER);
+
+        hBox.getChildren().addAll(label);
+
+        return hBox;
+    }
+
+    @Override
+    public HBox createLabelHBox(Pane pane, String information, SimpleObjectProperty<Object> data) {
+        HBox hBox = new HBox();
+        hBox.prefWidthProperty().bind(pane.widthProperty());
+        hBox.prefHeightProperty().bind(pane.heightProperty().divide(10.0));
+        hBox.setAlignment(Pos.CENTER);
+
+        Label informationLabel = new Label(information);
+        informationLabel.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
+        informationLabel.prefHeightProperty().bind(hBox.heightProperty());
+        informationLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        informationLabel.setAlignment(Pos.CENTER);
+
+        Label dataLabel = new Label(data.get().toString());
+        dataLabel.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
+        dataLabel.prefHeightProperty().bind(hBox.heightProperty());
+        dataLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        dataLabel.setAlignment(Pos.CENTER);
+
+        hBox.getChildren().addAll(informationLabel, dataLabel);
+
+        return hBox;
+    }
+
+    @Override
     public HBox createTextFieldHBox(Pane pane, String information, SimpleObjectProperty<Object> data) {
         HBox hBox = new HBox();
         hBox.prefWidthProperty().bind(pane.widthProperty());
@@ -235,20 +277,76 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         hBox.setAlignment(Pos.CENTER);
 
         Label label = new Label(information);
-        label.prefWidthProperty().bind(hBox.widthProperty().divide(4.0));
+        label.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
         label.prefHeightProperty().bind(hBox.heightProperty());
-        label.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        label.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         label.setAlignment(Pos.CENTER);
 
         TextField textField = new TextField(data.getValue().toString());
-        textField.prefWidthProperty().bind(hBox.widthProperty().divide(4.0));
+        textField.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
         textField.prefHeightProperty().bind(hBox.heightProperty());
-        textField.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+        textField.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         textField.setAlignment(Pos.CENTER);
 
         textField.textProperty().addListener((observable, oldValue, newValue) -> data.setValue(newValue));
 
         hBox.getChildren().addAll(label, textField);
+
+        return hBox;
+    }
+
+    @Override
+    public HBox createChooseButtonHBox(Pane pane, String information, SimpleObjectProperty<Object> data) {
+        HBox hBox = new HBox();
+        hBox.prefWidthProperty().bind(pane.widthProperty());
+        hBox.prefHeightProperty().bind(pane.heightProperty().divide(10.0));
+        hBox.setAlignment(Pos.CENTER);
+
+        HBox labelHBox = new HBox();
+        labelHBox.prefWidthProperty().bind(pane.widthProperty().divide(3.0));
+        labelHBox.prefHeightProperty().bind(pane.heightProperty());
+        labelHBox.setAlignment(Pos.CENTER);
+
+        HBox chooseButtonHBox = new HBox();
+        chooseButtonHBox.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
+        chooseButtonHBox.prefHeightProperty().bind(hBox.heightProperty());
+        chooseButtonHBox.setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get())));
+        chooseButtonHBox.setAlignment(Pos.CENTER);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+
+        Label label = new Label(information);
+        label.prefWidthProperty().bind(labelHBox.widthProperty());
+        label.prefHeightProperty().bind(labelHBox.heightProperty());
+        label.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        label.setAlignment(Pos.CENTER);
+
+        RadioButton onRadioButton = new RadioButton("开");
+        onRadioButton.prefWidthProperty().bind(chooseButtonHBox.widthProperty().divide(2.0));
+        onRadioButton.prefHeightProperty().bind(chooseButtonHBox.heightProperty());
+        onRadioButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        onRadioButton.setAlignment(Pos.CENTER);
+
+        RadioButton offRadioButton = new RadioButton("关");
+        offRadioButton.prefWidthProperty().bind(chooseButtonHBox.widthProperty().divide(2.0));
+        offRadioButton.prefHeightProperty().bind(chooseButtonHBox.heightProperty());
+        offRadioButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        offRadioButton.setAlignment(Pos.CENTER);
+
+        if (Boolean.parseBoolean(String.valueOf(data.get()))) {
+            onRadioButton.setSelected(true);
+        } else {
+            offRadioButton.setSelected(true);
+        }
+
+        onRadioButton.setToggleGroup(toggleGroup);
+        offRadioButton.setToggleGroup(toggleGroup);
+
+        toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> data.setValue(newValue == onRadioButton));
+
+        labelHBox.getChildren().addAll(label);
+        chooseButtonHBox.getChildren().addAll(onRadioButton, offRadioButton);
+        hBox.getChildren().addAll(labelHBox, chooseButtonHBox);
 
         return hBox;
     }

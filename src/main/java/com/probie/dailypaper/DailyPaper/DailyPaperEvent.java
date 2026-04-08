@@ -82,7 +82,28 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
     @Override
     public void createStageEvent() {
+        /// 响应式 stage 长宽
+        dailyPaper.getDailyPaperStageWidth().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (Integer.parseInt(String.valueOf(newValue)) < 500) {
+                    dailyPaper.getDailyPaperStageWidth().set(500);
+                } else if (Integer.parseInt(String.valueOf(newValue)) > 2000) {
+                    dailyPaper.getDailyPaperStageWidth().set(2000);
+                }
+                dailyPaperElement.getStage().setWidth(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageWidth().get())));
+            } catch (NumberFormatException ignored) {}
+        });
 
+        dailyPaper.getDailyPaperStageHeight().addListener((observable, oldValue, newValue) -> {
+            try {
+                if (Integer.parseInt(String.valueOf(newValue)) < 500) {
+                    dailyPaper.getDailyPaperStageHeight().set(500);
+                } else if (Integer.parseInt(String.valueOf(newValue)) > 2000) {
+                    dailyPaper.getDailyPaperStageHeight().set(2000);
+                }
+                dailyPaperElement.getStage().setHeight(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageHeight().get())));
+            } catch (NumberFormatException ignored) {}
+        });
     }
 
     @Override
@@ -143,17 +164,17 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         chatUserMessageContent.setAlignment(Pos.CENTER_RIGHT);
 
                         chatUserMessageLabel.setText(dailyPaperElement.getChatTextInputTextArea().getText());
-                        chatUserMessageLabel.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                        chatUserMessageLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
                         chatUserMessageLabel.setAlignment(Pos.CENTER_RIGHT);
                         chatUserMessageLabel.setWrapText(true);
 
-                        chatUserMessageLabel.setPadding(new Insets(dailyPaperData.getSpacingSizeSmall().get()));
+                        chatUserMessageLabel.setPadding(new Insets(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get()))));
                         chatUserMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
                         chatUserMessageLabel.setBorder(new Border(new BorderStroke(
                                 Color.PURPLE,
                                 BorderStrokeStyle.SOLID,
-                                new CornerRadii(dailyPaperData.getSpacingSizeSmall().get()),
-                                new BorderWidths(dailyPaperData.getSpacingSizeSmallSmall().get())
+                                new CornerRadii(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get()))),
+                                new BorderWidths(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmallSmall().get())))
                         )));
 
                         chatUserMessageContent.getChildren().addAll(chatUserMessageLabel);
@@ -173,17 +194,17 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         chatAgentMessageContent.setAlignment(Pos.CENTER_LEFT);
 
                         chatAgentMessageLabel.setText("等待响应中...");
-                        chatAgentMessageLabel.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                        chatAgentMessageLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
                         chatAgentMessageLabel.setAlignment(Pos.CENTER_LEFT);
                         chatAgentMessageLabel.setWrapText(true);
 
-                        chatAgentMessageLabel.setPadding(new Insets(dailyPaperData.getSpacingSizeSmall().get()));
+                        chatAgentMessageLabel.setPadding(new Insets(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get()))));
                         chatAgentMessageLabel.setBackground(Background.fill(Color.LIGHTGRAY));
                         chatAgentMessageLabel.setBorder(new Border(new BorderStroke(
                                 Color.GOLD,
                                 BorderStrokeStyle.SOLID,
-                                new CornerRadii(dailyPaperData.getSpacingSizeSmall().get()),
-                                new BorderWidths(dailyPaperData.getSpacingSizeSmallSmall().get())
+                                new CornerRadii(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get()))),
+                                new BorderWidths(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmallSmall().get())))
                         )));
 
                         chatAgentMessageContent.getChildren().addAll(chatAgentMessageLabel);
@@ -205,7 +226,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                         File currentFile = new File(texts[i]);
                                         String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
                                         if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
-                                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(currentFile.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
+                                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(currentFile.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get().toString());
                                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
                                             texts[i] = texts[i] + "(文件内容：" + imageDelineate + ")";
                                         }
@@ -229,7 +250,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                         }
                                         information = new StringBuilder("\n*历史对话记录：%s".formatted(information));
                                     }
-                                    information = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get() + information));
+                                    information = new StringBuilder("*信息背景：\n%s".formatted(dailyPaperData.getPromptInformationPrompt().get().toString() + information));
                                     information.append("\n*用户现在需求：\n%s");
 
                                     /// 当前内容
@@ -242,7 +263,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     }
 
                                     Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
-                                    String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get() + content);
+                                    String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptIfImagePrompt().get().toString() + content);
 
                                     /// 生成文本
                                     if (!ifImage[0].contains("是")) {
@@ -256,7 +277,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
 
                                             chatPaneAgentMessageCopyTextButtonBar.setMaxWidth(chatAgentMessageLabel.widthProperty().get());
 
-                                            chatPaneAgentMessageCopyTextButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                            chatPaneAgentMessageCopyTextButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
 
                                             chatPaneAgentMessageCopyTextButton.setOnAction(actionEvent -> {
                                                 ClipboardContent clipboardContent = new ClipboardContent();
@@ -277,7 +298,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     else {
                                         Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
 
-                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImageResultPrompt().get() + content);
+                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImageResultPrompt().get().toString() + content);
 
                                         HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
                                         HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
@@ -293,7 +314,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                                 new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
                                         );
 
-                                        String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get() + content)[0];
+                                        String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get().toString() + content)[0];
                                         String[] imageURIs = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                                         for (int i = 0; i < imageURIs.length; i++) {
                                             BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[i]);
@@ -304,8 +325,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                                 chatAgentMessageBar.getChildren().addAll(imageView);
                                                 Button chatPaneAgentMessagesetWallPaperButton = new Button("设为壁纸");
                                                 Button chatPaneAgentMessagedownLoadImageButton = new Button("下载图片");
-                                                chatPaneAgentMessagesetWallPaperButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
-                                                chatPaneAgentMessagedownLoadImageButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                                                chatPaneAgentMessagesetWallPaperButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+                                                chatPaneAgentMessagedownLoadImageButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
                                                 if (imageURIs.length > 1) {
                                                     chatPaneAgentMessagesetWallPaperButton.setText("设置图片%d为壁纸".formatted(index + 1));
                                                     chatPaneAgentMessagedownLoadImageButton.setText("下载图片%d到本地".formatted(index + 1));
@@ -413,7 +434,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     dailyPaperElement.getLiveImageShowImageView().setImage(ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImage));
 
                     Button livePaneImageSureButton = new Button("点击设为壁纸");
-                    livePaneImageSureButton.setFont(new Font(dailyPaperData.getFontSizeMedium().get()));
+                    livePaneImageSureButton.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
                     livePaneImageSureButton.setPrefWidth(fitBufferedImage.getWidth());
                     livePaneImageSureButton.setPrefHeight(dailyPaperElement.getLiveImageSureHBox().prefHeightProperty().get());
                     livePaneImageSureButton.setOnAction(actionEvent1 -> {
@@ -448,7 +469,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     for (int i = 0; i < fitBufferedImages.length; i++) images[i] = ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImages[i]);
                     Integer[] gifPlaySpeed = GIFSystem.getInstance().getGIFPlaySpeed(file.getAbsolutePath());
 
-                    dailyPaperData.setIsLiveImageShowing(() -> true);
+                    dailyPaperData.getIsLiveImageShowing().set(true);
                     dailyPaper.getDailyPaperPool().submit(() -> {
                         do {
                             for (int i = 0; i < images.length; i++) {
@@ -458,12 +479,12 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                 } catch (InterruptedException interruptedException) {
                                     throw new RuntimeException(interruptedException);
                                 }
-                                if (!dailyPaperData.getIsLiveImageShowing().get()) {
+                                if (!Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveImageShowing().get()))) {
                                     dailyPaperElement.getLiveImageShowImageView().setImage(null);
                                     break;
                                 }
                             }
-                        } while (dailyPaperData.getIsLiveImageShowing().get());
+                        } while (Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveImageShowing().get())));
                     });
 
                     Button livePaneImageSureButton = new Button("点击设为壁纸");
@@ -479,7 +500,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         }
                         StringBuilder speed = new StringBuilder(String.valueOf(gifPlaySpeed[0]));
                         for (int i = 1; i < gifPlaySpeed.length; i++) {
-                            speed.append(dailyPaper.getSplitMark().get()).append(gifPlaySpeed[i] / Integer.parseInt(String.valueOf(dailyPaper.getLiveImagePlaySpeed().get())));
+                            speed.append(dailyPaper.getSplitMark().get()).append(gifPlaySpeed[i]);
                         }
                         LiveImageConfig.getInstance().getLocalDB().set("Speed", speed.toString());
                         LiveImageConfig.getInstance().getLocalDB().commit();
@@ -537,18 +558,15 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             } catch (NumberFormatException ignored) {}
 
             if (Boolean.parseBoolean(String.valueOf(DailyPaper.getInstance().getDailyAutoWallpaper().get())) && Integer.parseInt(String.valueOf(DailyPaper.getInstance().getDailyAutoWallpaperWhenTime().get())) >= 1) {
-                if (!dailyPaperData.getIsAutoDailyWallpaperRunning().get()) {
+                if (!Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsAutoDailyWallpaperRunning().get()))) {
                     dailyPaperData.setAutoDailyWallpaperStartTime(System.currentTimeMillis());
                     dailyPaper.getScheduledExecutorService().scheduleAtFixedRate(dailyPaperData.getAutoDailyWallpaper(), 1, 1, TimeUnit.MINUTES);
-                    dailyPaperData.setIsAutoDailyWallpaperRunning(() -> true);
+                    dailyPaperData.getIsAutoDailyWallpaperRunning().set(true);
                 }
             }
         });
 
-        dailyPaperElement.getDailyWallpaperHobbyTextArea().addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> dailyPaper.getDailyPaperPool().submit(() -> {
-            dailyPaperFunction.waitADelay(10);
-            dailyPaper.getDailyImageHobby().set(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText());
-        }));
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().textProperty().addListener((observable, oldValue, newValue) -> dailyPaper.getDailyImageHobby().set(newValue));
 
         dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setOnAction(actionEvent -> {
             dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageFileChooser().setInitialDirectory(new File(dailyPaper.getDailyWallpaperHobbyToolsImageUploadImageChosenFilePath().get().toString()));
@@ -566,9 +584,9 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
                             });
-                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get());
+                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), dailyPaperData.getPromptDelineateImagePrompt().get().toString());
                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
-                            String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get().formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
+                            String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get().toString().formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
                             dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);
                             dailyPaper.getDailyImageHobby().set(hobby);
                         } catch (Exception ignored) {

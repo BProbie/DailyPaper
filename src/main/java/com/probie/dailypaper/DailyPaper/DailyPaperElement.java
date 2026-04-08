@@ -165,12 +165,16 @@ public class DailyPaperElement implements IDailyPaperElement {
     /**
      * param
      * */
-    private Label paramInformationLabel = new Label();
+    private VBox paramInputVBox = new VBox();
+    private ScrollPane paramInputScrollPane = new ScrollPane();
+    private VBox paramInputScrollPaneVBox = new VBox();
 
     /**
      * setting
      * */
-    private Label settingInformationLabel = new Label();
+    private VBox settingInputVBox = new VBox();
+    private ScrollPane settingInputScrollPane = new ScrollPane();
+    private VBox settingInputScrollPaneVBox = new VBox();
 
     /**
      * renew
@@ -300,12 +304,16 @@ public class DailyPaperElement implements IDailyPaperElement {
 
     @Override
     public void createParamElement() {
-        paramVBox.getChildren().addAll(paramInformationLabel);
+        paramInputScrollPane.setContent(paramInputScrollPaneVBox);
+        paramInputVBox.getChildren().addAll(paramInputScrollPane);
+        paramVBox.getChildren().addAll(paramInputVBox);
     }
 
     @Override
     public void createSettingElement() {
-        settingVBox.getChildren().addAll(settingInformationLabel);
+        settingInputScrollPane.setContent(settingInputScrollPaneVBox);
+        settingInputVBox.getChildren().addAll(settingInputScrollPane);
+        settingVBox.getChildren().addAll(settingInputVBox);
     }
 
     @Override

@@ -93,10 +93,10 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
 
         /// 时间自动推荐壁纸
         if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())) && Integer.parseInt(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) >= 1) {
-            if (!dailyPaperData.getIsAutoDailyWallpaperRunning().get()) {
+            if (!Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsAutoDailyWallpaperRunning().get()))) {
                 dailyPaperData.setAutoDailyWallpaperStartTime(System.currentTimeMillis());
                 dailyPaper.getScheduledExecutorService().scheduleAtFixedRate(dailyPaperData.getAutoDailyWallpaper(), 1 , 1, TimeUnit.MINUTES);
-                dailyPaperData.setIsAutoDailyWallpaperRunning(() -> true);
+                dailyPaperData.getIsAutoDailyWallpaperRunning().set(true);
             }
         }
 
