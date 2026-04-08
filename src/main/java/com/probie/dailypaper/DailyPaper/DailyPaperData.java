@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
 import com.probie.dailypaper.Enum.Date;
+import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.System.ComputerSystem;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperData;
 

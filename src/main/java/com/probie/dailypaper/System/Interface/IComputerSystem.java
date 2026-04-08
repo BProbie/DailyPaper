@@ -38,7 +38,7 @@ public interface IComputerSystem {
      * @return 当前格式化时间
      * */
     default String getCurrentFormatDate() {
-        return LocalDateTime.now().toString();
+        return String.valueOf(LocalDateTime.now());
     }
 
     /**

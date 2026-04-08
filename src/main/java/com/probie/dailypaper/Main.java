@@ -1,6 +1,6 @@
 /**
  * SoftWare-Name: DailyPaper
- * SoftWare-Version: 1.2
+ * SoftWare-Version: 1.4
  * SoftWare-Author: Probie
  * SoftWare-GitHub: <a href="https://github.com/BProbie/DailyPaper">DailyPaper-GitHub</a>
  * */

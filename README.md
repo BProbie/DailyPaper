@@ -2,7 +2,7 @@
 
 ## 软件名称：DailyPaper（日常壁纸）
 
-## 软件版本：1.3（稳定版）
+## 软件版本：1.4（稳定版）
 
 ## 开发语言：Java（JDK-21.0.8）
 
@@ -12,7 +12,7 @@
 
 ## 开源协议：https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/LICENSE
 
-## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.3
+## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.4
 
 ## 依赖工具：Maven
 
@@ -72,9 +72,9 @@
 
 ## 支持上传素材图像解析并作为每日壁纸的推送依据。
 
-## 支持用户手动调整各项软件参数让用户体验更符合用户习惯。（施工中）
+## 支持用户手动调整各项软件参数让用户体验更符合用户习惯。
 
-## 支持用户手动调整各种软化设置和软件高级设置。（施工中）
+## 支持用户手动调整各种软化设置和软件高级设置
 
 ## 支持用户接入多样的个人或官方插件补丁。（施工中）
 

@@ -56,7 +56,7 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
 
         /// 设置请求体 Json
         JSONObject requestBodyJson = new JSONObject();
-        requestBodyJson.put("model", getAPIModel().get().toString());
+        requestBodyJson.put("model", String.valueOf(getAPIModel().get()));
         requestBodyJson.put("stream", false);
         requestBodyJson.put("max_tokens", DailyPaper.getInstance().getSpawnMaxTokens().get());
 
@@ -93,8 +93,8 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
 
         /// 构造请求
         Request request = new Request.Builder()
-                .url(getAPIUrl().get().toString())
-                .addHeader("Authorization", "Bearer " + getAPIKey().get().toString())
+                .url(String.valueOf(getAPIUrl().get()))
+                .addHeader("Authorization", "Bearer " + String.valueOf(getAPIKey().get()))
                 .addHeader("Content-Type", "application/json")
                 .post(requestBody)
                 .build();

@@ -168,6 +168,8 @@ public class DailyPaperElement implements IDailyPaperElement {
     private VBox paramInputVBox = new VBox();
     private ScrollPane paramInputScrollPane = new ScrollPane();
     private VBox paramInputScrollPaneVBox = new VBox();
+    private HBox paramButtonBarHBox = new HBox();
+    private Button paramButtonBarResetButton = new Button();
 
     /**
      * setting
@@ -175,6 +177,8 @@ public class DailyPaperElement implements IDailyPaperElement {
     private VBox settingInputVBox = new VBox();
     private ScrollPane settingInputScrollPane = new ScrollPane();
     private VBox settingInputScrollPaneVBox = new VBox();
+    private HBox settingButtonBarHBox = new HBox();
+    private Button settingButtonBarResetButton = new Button();
 
     /**
      * renew
@@ -306,14 +310,16 @@ public class DailyPaperElement implements IDailyPaperElement {
     public void createParamElement() {
         paramInputScrollPane.setContent(paramInputScrollPaneVBox);
         paramInputVBox.getChildren().addAll(paramInputScrollPane);
-        paramVBox.getChildren().addAll(paramInputVBox);
+        paramButtonBarHBox.getChildren().addAll(paramButtonBarResetButton);
+        paramVBox.getChildren().addAll(paramInputVBox, paramButtonBarHBox);
     }
 
     @Override
     public void createSettingElement() {
         settingInputScrollPane.setContent(settingInputScrollPaneVBox);
         settingInputVBox.getChildren().addAll(settingInputScrollPane);
-        settingVBox.getChildren().addAll(settingInputVBox);
+        settingButtonBarHBox.getChildren().addAll(settingButtonBarResetButton);
+        settingVBox.getChildren().addAll(settingInputVBox, settingButtonBarHBox);
     }
 
     @Override

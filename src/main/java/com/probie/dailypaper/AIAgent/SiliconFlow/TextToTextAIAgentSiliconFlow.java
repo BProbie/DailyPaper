@@ -55,7 +55,7 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
 
         /// 设置请求体 Json
         JSONObject requestBodyJson = new JSONObject();
-        requestBodyJson.put("model", getAPIModel().get().toString());
+        requestBodyJson.put("model", String.valueOf(getAPIModel().get()));
 
         /// 设置请求体 Json 参数
         JSONArray messages = new JSONArray();
@@ -67,14 +67,14 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
 
         /// 设置请求体
         RequestBody requestBody = RequestBody.create(
-                requestBodyJson.toString(),
+                String.valueOf(requestBodyJson),
                 okhttp3.MediaType.parse("application/json; charset=utf-8")
         );
 
         /// 构造请求
         Request request = new Request.Builder()
-                .url(getAPIUrl().get().toString())
-                .addHeader("Authorization", "Bearer " + getAPIKey().get().toString())
+                .url(String.valueOf(getAPIUrl().get()))
+                .addHeader("Authorization", "Bearer " + String.valueOf(getAPIKey().get()))
                 .addHeader("Content-Type", "application/json")
                 .post(requestBody)
                 .build();

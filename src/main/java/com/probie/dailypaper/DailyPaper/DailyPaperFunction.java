@@ -53,7 +53,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         dailyPaper.getLiveImageAutoLaunch().set(true);
 
         /// 获取本地切片数据
-        String[] speeds = LiveImageConfig.getInstance().getLocalDB().get("Speed").toString().split(DailyPaper.getInstance().getSplitMark().get().toString());
+        String[] speeds = String.valueOf(LiveImageConfig.getInstance().getLocalDB().get("Speed")).split(String.valueOf(DailyPaper.getInstance().getSplitMark().get()));
         int[] imagesWallpaperSpeed = new int[speeds.length];
         for (int i = 0; i < speeds.length; i++) {
             imagesWallpaperSpeed[i] = Integer.parseInt(speeds[i]);
@@ -95,12 +95,12 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     public void dailyWallpaper() {
         try {
             DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
-                String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(dailyPaperData.getPromptSpawnImagePrompt().get().toString()+ dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get().toString())[0];
+                String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnImagePrompt().get()) + String.valueOf(dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get()))[0];
                 String[] urls = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                 BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(urls[0]);
-                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString())) {
+                if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, String.valueOf(dailyPaper.getTempFilePath().get()), String.valueOf(dailyPaper.getTempImageFileName().get()))) {
                     if (Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get()))) dailyPaperFunction.clearLiveImageWallpaper();
-                    ComputerSystem.getInstance().setWallPaper(dailyPaper.getTempFilePath().get().toString(), dailyPaper.getTempImageFileName().get().toString());
+                    ComputerSystem.getInstance().setWallPaper(String.valueOf(dailyPaper.getTempFilePath().get()), String.valueOf(dailyPaper.getTempImageFileName().get()));
                 }
             });
         } catch (Exception ignored) {}
@@ -192,7 +192,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     @Override
     public void waitADelay(int count) {
         try {
-            Thread.sleep((long) dailyPaperData.getDelay().get() * count);
+            Thread.sleep(Long.parseLong(String.valueOf(dailyPaperData.getDelay().get())) * count);
         } catch (InterruptedException interruptedException) {
             throw new RuntimeException(interruptedException);
         }
@@ -258,7 +258,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         informationLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         informationLabel.setAlignment(Pos.CENTER);
 
-        Label dataLabel = new Label(data.get().toString());
+        Label dataLabel = new Label(String.valueOf(data.get()));
         dataLabel.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
         dataLabel.prefHeightProperty().bind(hBox.heightProperty());
         dataLabel.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
@@ -282,13 +282,14 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         label.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         label.setAlignment(Pos.CENTER);
 
-        TextField textField = new TextField(data.getValue().toString());
+        TextField textField = new TextField(String.valueOf(data.get()));
         textField.prefWidthProperty().bind(hBox.widthProperty().divide(3.0));
         textField.prefHeightProperty().bind(hBox.heightProperty());
         textField.setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         textField.setAlignment(Pos.CENTER);
 
         textField.textProperty().addListener((observable, oldValue, newValue) -> data.setValue(newValue));
+        data.addListener((observable, oldValue, newValue) -> textField.setText(String.valueOf(newValue)));
 
         hBox.getChildren().addAll(label, textField);
 
@@ -343,6 +344,13 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         offRadioButton.setToggleGroup(toggleGroup);
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> data.setValue(newValue == onRadioButton));
+        data.addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                onRadioButton.setSelected(true);
+            } else {
+                offRadioButton.setSelected(true);
+            }
+        });
 
         labelHBox.getChildren().addAll(label);
         chooseButtonHBox.getChildren().addAll(onRadioButton, offRadioButton);

@@ -7,8 +7,6 @@ import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
 import javafx.stage.FileChooser;
 import javafx.scene.control.ScrollPane;
-import com.probie.dailypaper.Config.ParamConfig;
-import com.probie.dailypaper.Config.SettingConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperStyle;
 
 @Data
@@ -207,7 +205,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getLiveImageChooseButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
         dailyPaperElement.getLiveImageChooseButton().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getLiveImageChooseLabel().setText(dailyPaper.getLiveImageChosenFilePath().get().toString());
+        dailyPaperElement.getLiveImageChooseLabel().setText(String.valueOf(dailyPaper.getLiveImageChosenFilePath().get()));
         dailyPaperElement.getLiveImageChooseLabel().prefWidthProperty().bind(dailyPaperElement.getLiveImageChooseHBox().widthProperty().divide(5.0).multiply(4.0));
         dailyPaperElement.getLiveImageChooseLabel().prefHeightProperty().bind(dailyPaperElement.getLiveImageChooseHBox().heightProperty());
         dailyPaperElement.getLiveImageChooseLabel().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
@@ -338,7 +336,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getDailyWallpaperHobbyTextArea().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().widthProperty());
         dailyPaperElement.getDailyWallpaperHobbyTextArea().prefHeightProperty().bind(dailyPaperElement.getDailyWallpaperHobbyScrollPane().heightProperty());
         dailyPaperElement.getDailyWallpaperHobbyTextArea().setWrapText(true);
-        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(dailyPaper.getDailyImageHobby().get().toString());
+        dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(String.valueOf(dailyPaper.getDailyImageHobby().get()));
         dailyPaperElement.getDailyWallpaperHobbyTextArea().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
 
         dailyPaperElement.getDailyWallpaperHobbyToolsHBox().prefWidthProperty().bind(dailyPaperElement.getDailyWallpaperHobbyVBox().widthProperty());
@@ -360,13 +358,13 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getParamVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getParamInputVBox().prefWidthProperty().bind(dailyPaperElement.getParamVBox().widthProperty());
-        dailyPaperElement.getParamInputVBox().prefHeightProperty().bind(dailyPaperElement.getParamVBox().heightProperty());
+        dailyPaperElement.getParamInputVBox().prefHeightProperty().bind(dailyPaperElement.getParamVBox().heightProperty().divide(10.0).multiply(9.0));
         dailyPaperElement.getParamInputVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getParamInputScrollPane().prefWidthProperty().bind(dailyPaperElement.getParamInputVBox().widthProperty());
         dailyPaperElement.getParamInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getParamInputVBox().heightProperty());
         dailyPaperElement.getParamInputScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        dailyPaperElement.getParamInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        dailyPaperElement.getParamInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         dailyPaperElement.getParamInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getParamInputScrollPane().widthProperty());
         dailyPaperElement.getParamInputScrollPaneVBox().prefHeightProperty().bind(dailyPaperElement.getParamInputScrollPane().prefHeightProperty());
@@ -389,6 +387,16 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createLabelHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "本地图片标符", dailyPaper.getUploadImageFullFilePathMark()),
                 dailyPaperFunction.createLabelHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "字符分割标符", dailyPaper.getSplitMark())
                 );
+
+        dailyPaperElement.getParamButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getParamVBox().widthProperty());
+        dailyPaperElement.getParamButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getParamVBox().heightProperty().divide(10.0));
+        dailyPaperElement.getParamButtonBarHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getParamButtonBarResetButton().prefWidthProperty().bind(dailyPaperElement.getParamButtonBarHBox().widthProperty().divide(10.0).multiply(1.0));
+        dailyPaperElement.getParamButtonBarResetButton().prefHeightProperty().bind(dailyPaperElement.getParamButtonBarHBox().heightProperty());
+        dailyPaperElement.getParamButtonBarResetButton().setText("重置");
+        dailyPaperElement.getParamButtonBarResetButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        dailyPaperElement.getParamButtonBarHBox().setAlignment(Pos.CENTER);
     }
 
     @Override
@@ -400,13 +408,13 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getSettingVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getSettingInputVBox().prefWidthProperty().bind(dailyPaperElement.getSettingVBox().widthProperty());
-        dailyPaperElement.getSettingInputVBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().heightProperty());
+        dailyPaperElement.getSettingInputVBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().heightProperty().divide(10.0).multiply(9.0));
         dailyPaperElement.getSettingInputVBox().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getSettingInputScrollPane().prefWidthProperty().bind(dailyPaperElement.getSettingInputVBox().widthProperty());
         dailyPaperElement.getSettingInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getSettingInputVBox().heightProperty());
         dailyPaperElement.getSettingInputScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        dailyPaperElement.getSettingInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        dailyPaperElement.getSettingInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         dailyPaperElement.getSettingInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getSettingInputScrollPane().widthProperty());
         dailyPaperElement.getSettingInputScrollPaneVBox().prefHeightProperty().bind(dailyPaperElement.getSettingInputScrollPane().prefHeightProperty());
@@ -425,8 +433,75 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "参数配置文件名称", dailyPaper.getParamConfigFileName()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "设置配置文件名称", dailyPaper.getSettingConfigFileName()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "更新配置文件名称", dailyPaper.getRenewConfigFileName()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "缓存图片文件名称", dailyPaper.getTempImageFileName())
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "缓存图片文件名称", dailyPaper.getTempImageFileName()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Web请求设置"),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大连接时间", dailyPaper.getConnectTimeout()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大读取时间", dailyPaper.getReadTimeout()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大写入时间", dailyPaper.getWriteTimeout()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "AI设置"),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "轨迹流动API密钥", dailyPaper.getAPIKeySiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen30_8B大模型", dailyPaper.getQwen30_8BModelSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Kolors大模型", dailyPaper.getKolorsModelSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen35_4B大模型", dailyPaper.getQwen35_4BModelSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "GLM_41V_9B_Thinking大模型", dailyPaper.getGLM_41V_9B_ThinkingModelSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前文生文大模型", dailyPaper.getAPIModelTextToTextSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前文生图大模型", dailyPaper.getAPIModelTextToImageSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前图生文大模型", dailyPaper.getAPIModelImageToTextSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文生文URL地址", dailyPaper.getAPIUrlTextToTextSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文生图URL地址", dailyPaper.getAPIUrlTextToImageSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "图生文URL地址", dailyPaper.getAPIUrlImageToTextSiliconFlow()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "更新设置"),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Github更新URL地址", dailyPaper.getGithubRenewUri()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Windows更新配置文件URL地址", dailyPaper.getRenewConfigRenewUriWindows()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Linux更新配置文件URL地址", dailyPaper.getRenewConfigRenewUriLinux()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Mac更新配置文件URL地址", dailyPaper.getRenewConfigRenewUriMac()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Android更新配置文件URL地址", dailyPaper.getRenewConfigRenewUriAndroid()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前更新配置文件URL地址", dailyPaper.getRenewConfigRenewUri()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Renew工具本地路径", dailyPaper.getRenewRenewLocalFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Renew工具本地名称", dailyPaper.getRenewRenewLocalFileName()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "DailyPaper本地更新路径", dailyPaper.getDailyPaperRenewLocalFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "DailyPaper本地更新名称", dailyPaper.getDailyPaperRenewLocalFileName()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Windows中DailyPaper更新URL地址", dailyPaper.getDailyPaperRenewUriWindows()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Linux中DailyPaper更新URL地址", dailyPaper.getDailyPaperRenewUriLinux()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Mac中DailyPaper更新URL地址", dailyPaper.getDailyPaperRenewUriMac()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Android中DailyPaper更新URL地址", dailyPaper.getDailyPaperRenewUriAndroid()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前DailyPaper更新URL地址", dailyPaper.getDailyPaperRenewUri()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "DailyPaper更新后是否自动启动", dailyPaper.getDailyPaperRenewAutoOpen()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "记忆设置"),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "聊天图片下载地址", dailyPaper.getChatImageDownloadFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "聊天图片下载名称", dailyPaper.getChatImageDownloadFileName()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "聊天图片上传文件选择默认路径", dailyPaper.getChatTextInputToolsImageUploadImageChosenFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "聊天图片上传文件选择默认名称", dailyPaper.getChatTextInputToolsImageUploadImageChosenFileName()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "动图文件选择默认路径", dailyPaper.getLiveImageChosenFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "动图文件选择默认名称", dailyPaper.getLiveImageChosenFileName()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "软件启动时动图自动启动", dailyPaper.getLiveImageAutoLaunch()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用每日壁纸推荐", dailyPaper.getDailyAutoWallpaper()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用程序启动时推送每日壁纸", dailyPaper.getDailyAutoWallpaperWhenLaunch()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用每隔一定时间推送每日壁纸", dailyPaper.getDailyAutoWallpaperWhenTime()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "每日壁纸偏好", dailyPaper.getDailyImageHobby()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "选择每日壁纸参考默认选择路径", dailyPaper.getDailyWallpaperHobbyToolsImageUploadImageChosenFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "选择每日壁纸参考默认选择名称", dailyPaper.getDailyWallpaperHobbyToolsImageUploadImageChosenFileName()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "自动检查更新", dailyPaper.getRenewAutoCheckRenew()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "自动下载更新", dailyPaper.getRenewAutoDownloadRenew()),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "更新后自动启动软件", dailyPaper.getDailyPaperAutoLaunch()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "测试设置"),
+                dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用测试模式", dailyPaper.getDebug())
                 );
+
+        dailyPaperElement.getSettingButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().widthProperty());
+        dailyPaperElement.getSettingButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().heightProperty().divide(10.0).multiply(1.0));
+        dailyPaperElement.getSettingButtonBarHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getSettingButtonBarResetButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
+        dailyPaperElement.getSettingButtonBarResetButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());
+        dailyPaperElement.getSettingButtonBarResetButton().setText("重置");
+        dailyPaperElement.getSettingButtonBarResetButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        dailyPaperElement.getSettingButtonBarHBox().setAlignment(Pos.CENTER);
     }
 
     @Override

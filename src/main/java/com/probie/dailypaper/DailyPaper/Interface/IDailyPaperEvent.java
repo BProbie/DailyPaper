@@ -28,7 +28,7 @@ public interface IDailyPaperEvent {
     void createChatEvent();
     void createLiveEvent();
     void createDailyEvent();
-    void createHobbyEvent();
+    void createParamEvent();
     void createSettingEvent();
     void createRenewEvent();
 
