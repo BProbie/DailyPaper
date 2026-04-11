@@ -1,11 +1,12 @@
 package com.probie.dailypaper.Enum;
 
 import lombok.Getter;
+import com.probie.dailypaper.Enum.Interface.IData;
 
 /**
  * 日期时间枚举
  * */
-public enum Date {
+public enum Date implements IData {
 
     YEAR(0, "年"),
     MONTH(1, "月"),
