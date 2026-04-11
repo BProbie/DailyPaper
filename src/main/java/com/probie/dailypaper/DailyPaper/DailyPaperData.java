@@ -1,6 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import javafx.beans.property.SimpleObjectProperty;
 import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;

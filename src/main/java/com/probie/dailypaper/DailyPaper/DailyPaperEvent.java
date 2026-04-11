@@ -425,6 +425,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         int width = (int) (fitBufferedImage.getWidth() * (dailyPaperElement.getLiveImageShowHBox().maxHeightProperty().get() / fitBufferedImage.getHeight()));
                         fitBufferedImage =  ImageSystem.getInstance().setBufferedImageSize(fitBufferedImage, width, height);
                     }
+                    dailyPaperFunction.clearLiveImage();
                     dailyPaperElement.getLiveImageShowImageView().setImage(ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImage));
 
                     Button livePaneImageSureButton = new Button("点击设为壁纸");
@@ -440,6 +441,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             dailyPaperFunction.showButtonInformation(livePaneImageSureButton, "壁纸设置失败");
                         }
                     });
+                    dailyPaperElement.getLiveImageSureHBox().getChildren().clear();
                     dailyPaperElement.getLiveImageSureHBox().getChildren().addAll(livePaneImageSureButton);
                 }
 
@@ -463,6 +465,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     for (int i = 0; i < fitBufferedImages.length; i++) images[i] = ImageSystem.getInstance().turnBufferedImageToFXImage(fitBufferedImages[i]);
                     Integer[] gifPlaySpeed = GIFSystem.getInstance().getGIFPlaySpeed(file.getAbsolutePath());
 
+                    dailyPaperFunction.clearLiveImage();
                     dailyPaperData.getIsLiveImageShowing().set(true);
                     dailyPaper.getDailyPaperPool().submit(() -> {
                         do {
@@ -502,6 +505,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         dailyPaperFunction.showButtonInformation(livePaneImageSureButton, "壁纸设置成功");
                         dailyPaperFunction.launchLiveImageWallpaper();
                     });
+                    dailyPaperElement.getLiveImageSureHBox().getChildren().clear();
                     dailyPaperElement.getLiveImageSureHBox().getChildren().addAll(livePaneImageSureButton);
                 }
             }

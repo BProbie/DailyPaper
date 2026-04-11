@@ -20,6 +20,11 @@ public interface IDailyPaperFunction {
     void clearLiveImageWallpaper();
 
     /**
+     * 取消动态图片
+     * */
+    void clearLiveImage();
+
+    /**
      * 每日壁纸推荐
      * */
     void dailyWallpaper();

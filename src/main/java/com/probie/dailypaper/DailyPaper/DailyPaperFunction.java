@@ -92,6 +92,12 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     }
 
     @Override
+    public void clearLiveImage() {
+        dailyPaperData.getIsLiveImageShowing().set(false);
+        waitADelay(10);
+    }
+
+    @Override
     public void dailyWallpaper() {
         try {
             DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
