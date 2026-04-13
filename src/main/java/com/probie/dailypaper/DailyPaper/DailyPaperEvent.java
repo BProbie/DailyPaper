@@ -608,6 +608,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     public void createParamEvent() {
         dailyPaperElement.getParamButtonBarResetButton().setOnAction(actionEvent -> {
             if (ParamConfig.getInstance().getLocalDB().deleteFile(ParamConfig.getInstance().getLocalDB().getFullFilePath()) && ParamConfig.getInstance().getLocalDB().createFile(ParamConfig.getInstance().getLocalDB().getFullFilePath())) {
+                dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "重启");
                 System.exit(0);
             } else {
                 dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "失败");
@@ -619,6 +620,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     public void createSettingEvent() {
         dailyPaperElement.getSettingButtonBarResetButton().setOnAction(actionEvent -> {
             if (SettingConfig.getInstance().getLocalDB().deleteFile(SettingConfig.getInstance().getLocalDB().getFullFilePath()) && SettingConfig.getInstance().getLocalDB().createFile(SettingConfig.getInstance().getLocalDB().getFullFilePath())) {
+                dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "重启");
                 System.exit(0);
             } else {
                 dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "失败");

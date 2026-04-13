@@ -64,8 +64,8 @@ public class TextToImageAIAgentSiliconFlow extends AIAgentSiliconFlow implements
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", String.valueOf(getAPIModel().get()));
         requestBodyJson.put("prompt", prompt);
-        requestBodyJson.put("image_size", getImageSize().get());
-        requestBodyJson.put("batch_size", getImageCount().get());
+        requestBodyJson.put("image_size", String.valueOf(getImageSize().get()));
+        requestBodyJson.put("batch_size", Integer.parseInt(String.valueOf(getImageCount().get())));
 
         /// 设置请求体
         RequestBody requestBody = RequestBody.create(

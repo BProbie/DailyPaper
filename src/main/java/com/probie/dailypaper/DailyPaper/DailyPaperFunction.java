@@ -148,6 +148,9 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     @Override
     public void chooseMenu(Node node) {
         if (node != dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().getFirst()) {
+            if (node == dailyPaperElement.getDailyVBox()) {
+                clearDaily();
+            }
             dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().clear();
             dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().add(node);
         } else {

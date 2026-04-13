@@ -58,7 +58,7 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
         JSONObject requestBodyJson = new JSONObject();
         requestBodyJson.put("model", String.valueOf(getAPIModel().get()));
         requestBodyJson.put("stream", false);
-        requestBodyJson.put("max_tokens", DailyPaper.getInstance().getSpawnMaxTokens().get());
+        requestBodyJson.put("max_tokens", Integer.parseInt(String.valueOf(DailyPaper.getInstance().getSpawnMaxTokens().get())));
 
         /// 设置请求体 Json 参数
         JSONArray content = new JSONArray();

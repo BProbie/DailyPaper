@@ -368,7 +368,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getParamInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getParamInputScrollPane().widthProperty());
         dailyPaperElement.getParamInputScrollPaneVBox().prefHeightProperty().bind(dailyPaperElement.getParamInputScrollPane().prefHeightProperty());
-        dailyPaperElement.getParamInputScrollPaneVBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get())));
+        dailyPaperElement.getParamInputScrollPaneVBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeMedium().get())));
 
         dailyPaperElement.getParamInputScrollPaneVBox().getChildren().addAll(
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "大小参数"),
@@ -418,7 +418,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getSettingInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getSettingInputScrollPane().widthProperty());
         dailyPaperElement.getSettingInputScrollPaneVBox().prefHeightProperty().bind(dailyPaperElement.getSettingInputScrollPane().prefHeightProperty());
-        dailyPaperElement.getSettingInputScrollPaneVBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get())));
+        dailyPaperElement.getSettingInputScrollPaneVBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeMedium().get())));
 
         dailyPaperElement.getSettingInputScrollPaneVBox().getChildren().addAll(
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文件设置"),
@@ -441,7 +441,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大写入时间", dailyPaper.getWriteTimeout()),
 
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "AI设置"),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "轨迹流动API密钥", dailyPaper.getAPIKeySiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "硅基流动API密钥", dailyPaper.getAPIKeySiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen30_8B大模型", dailyPaper.getQwen30_8BModelSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Kolors大模型", dailyPaper.getKolorsModelSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen35_4B大模型", dailyPaper.getQwen35_4BModelSiliconFlow()),
