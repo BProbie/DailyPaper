@@ -40,8 +40,8 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
     @Override
     protected void init() {
         setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
-        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToTextSiliconFlow());
         setAPIModel(DailyPaper.getInstance().getAPIModelTextToTextSiliconFlow());
+        setAPIUrl(DailyPaper.getInstance().getAPIUrlTextToTextSiliconFlow());
     }
 
     @Override

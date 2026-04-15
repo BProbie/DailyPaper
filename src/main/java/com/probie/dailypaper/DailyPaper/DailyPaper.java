@@ -97,9 +97,15 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyAPIModelTextToImageSiliconFlow = "APIModelTextToImageSiliconFlow";
     private String KeyAPIModelImageToTextSiliconFlow = "APIModelImageToTextSiliconFlow";
 
+    private String KeyAPIModelTextSiliconFlowAnalysis = "APIModelTextSiliconFlowAnalysis";
+    private String KeyAPIModelImageSiliconFlowAnalysis = "APIModelImageSiliconFlowAnalysis";
+
     private String KeyAPIUrlTextToTextSiliconFlow = "APIUrlTextToTextSiliconFlow";
     private String KeyAPIUrlTextToImageSiliconFlow = "APIUrlTextToImageSiliconFlow";
     private String KeyAPIUrlImageToTextSiliconFlow = "APIUrlImageToTextSiliconFlow";
+
+    private String KeyAPIUrlTextSiliconFlowAnalysis = "APIUrlTextSiliconFlowAnalysis";
+    private String KeyAPIUrlImageSiliconFlowAnalysis = "APIUrlImageSiliconFlowAnalysis";
 
     /// 更新参数
     private String KeyGithubRenewUri = "GithubRenewUri";
@@ -199,9 +205,15 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> APIModelTextToImageSiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextToImageSiliconFlow(), getKolorsModelSiliconFlow().get())));
     private SimpleObjectProperty<Object> APIModelImageToTextSiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageToTextSiliconFlow(), getQwen35_4BModelSiliconFlow().get())));
 
+    private SimpleObjectProperty<Object> APIModelTextSiliconFlowAnalysis = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelTextSiliconFlowAnalysis(), String.valueOf(getAPIModelTextToTextSiliconFlow().get()))));
+    private SimpleObjectProperty<Object> APIModelImageSiliconFlowAnalysis = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIModelImageSiliconFlowAnalysis(), String.valueOf(getAPIModelImageToTextSiliconFlow().get()))));
+
     private SimpleObjectProperty<Object> APIUrlTextToTextSiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions")));
     private SimpleObjectProperty<Object> APIUrlTextToImageSiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextToImageSiliconFlow(), "https://api.siliconflow.cn/v1/images/generations")));
     private SimpleObjectProperty<Object> APIUrlImageToTextSiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlImageToTextSiliconFlow(), "https://api.siliconflow.cn/v1/chat/completions")));
+
+    private SimpleObjectProperty<Object> APIUrlTextSiliconFlowAnalysis = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlTextSiliconFlowAnalysis(), String.valueOf(getAPIUrlTextToTextSiliconFlow().get()))));
+    private SimpleObjectProperty<Object> APIUrlImageSiliconFlowAnalysis = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIUrlImageSiliconFlowAnalysis(), String.valueOf(getAPIUrlImageToTextSiliconFlow().get()))));
 
     /// 更新参数
     private SimpleObjectProperty<Object> GithubRenewUri = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyGithubRenewUri(), "https://github.com/BProbie/DailyPaper/raw/refs/heads/master" + "/" + "res" + "/")));
@@ -308,9 +320,15 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelTextToImageSiliconFlow, APIModelTextToImageSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIModelImageToTextSiliconFlow, APIModelImageToTextSiliconFlow.get());
 
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIModelTextSiliconFlowAnalysis, APIModelTextSiliconFlowAnalysis.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIModelImageSiliconFlowAnalysis, APIModelImageSiliconFlowAnalysis.get());
+
         SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlTextToTextSiliconFlow, APIUrlTextToTextSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlTextToImageSiliconFlow, APIUrlTextToImageSiliconFlow.get());
         SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlImageToTextSiliconFlow, APIUrlImageToTextSiliconFlow.get());
+
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlTextSiliconFlowAnalysis, APIUrlTextSiliconFlowAnalysis.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyAPIUrlImageSiliconFlowAnalysis, APIUrlImageSiliconFlowAnalysis.get());
 
         /// 更新参数
         SettingConfig.getInstance().getLocalDB().set(KeyGithubRenewUri, GithubRenewUri.get());

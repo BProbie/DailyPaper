@@ -48,7 +48,7 @@ public abstract class AIAgentSiliconFlow extends AIAgent implements IAIAgentSili
         if (!Encryption.getInstance().isDebug()) {
             if (Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().connect(ClassLoader.getSystemResourceAsStream(new File(Encryption.getFilePath()).getName()))) {
                 Encryption.getInstance().getConfigFactory().getKeyConfig().getLocalDB().setIsAutoCommit(false);
-                return new SimpleObjectProperty<>(Encryption.getInstance().getDecrypterFactory().getMapDecrypter().decryptByMap(APIKey.get()));
+                return new SimpleObjectProperty<>(String.valueOf(APIKey.get()).toLowerCase().startsWith("sk") ? APIKey.get() : Encryption.getInstance().getDecrypterFactory().getMapDecrypter().decryptByMap(APIKey.get()));
             }
         }
         System.exit(0);

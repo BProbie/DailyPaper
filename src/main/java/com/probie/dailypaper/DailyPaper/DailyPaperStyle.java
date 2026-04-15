@@ -55,8 +55,8 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
     @Override
     public void createStageStyle() {
-        dailyPaperElement.getStage().setWidth(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageWidth().get())));
-        dailyPaperElement.getStage().setHeight(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageHeight().get())));
+        dailyPaperElement.getStage().setWidth(Math.clamp(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageWidth().get())), 500, 2000));
+        dailyPaperElement.getStage().setHeight(Math.clamp(Integer.parseInt(String.valueOf(dailyPaper.getDailyPaperStageHeight().get())), 500, 2000));
         dailyPaperElement.getStage().initStyle(StageStyle.UNDECORATED);
     }
 
@@ -442,16 +442,20 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "AI设置"),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "硅基流动API密钥", dailyPaper.getAPIKeySiliconFlow()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen30_8B大模型", dailyPaper.getQwen30_8BModelSiliconFlow()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Kolors大模型", dailyPaper.getKolorsModelSiliconFlow()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen35_4B大模型", dailyPaper.getQwen35_4BModelSiliconFlow()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "GLM_41V_9B_Thinking大模型", dailyPaper.getGLM_41V_9B_ThinkingModelSiliconFlow()),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen30_8B大模型", dailyPaper.getQwen30_8BModelSiliconFlow()),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Kolors大模型", dailyPaper.getKolorsModelSiliconFlow()),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Qwen35_4B大模型", dailyPaper.getQwen35_4BModelSiliconFlow()),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "GLM_41V_9B_Thinking大模型", dailyPaper.getGLM_41V_9B_ThinkingModelSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前文生文大模型", dailyPaper.getAPIModelTextToTextSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前文生图大模型", dailyPaper.getAPIModelTextToImageSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前图生文大模型", dailyPaper.getAPIModelImageToTextSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前文本解释模型", dailyPaper.getAPIModelTextSiliconFlowAnalysis()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "当前图像解释模型", dailyPaper.getAPIModelImageSiliconFlowAnalysis()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文生文URL地址", dailyPaper.getAPIUrlTextToTextSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文生图URL地址", dailyPaper.getAPIUrlTextToImageSiliconFlow()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "图生文URL地址", dailyPaper.getAPIUrlImageToTextSiliconFlow()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "文本解释URL地址", dailyPaper.getAPIUrlTextSiliconFlowAnalysis()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "图像解释URL地址", dailyPaper.getAPIUrlImageSiliconFlowAnalysis()),
 
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "更新设置"),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Github更新URL地址", dailyPaper.getGithubRenewUri()),

@@ -1,5 +1,7 @@
 package com.probie.dailypaper.DailyPaper;
 
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.ImageAIAgentSiliconFlowAnalysis;
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
 import lombok.Data;
 import java.io.File;
 import javafx.geometry.Pos;
@@ -220,7 +222,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                         File currentFile = new File(texts[i]);
                                         String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
                                         if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
-                                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(currentFile.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
+                                            String[] imageData = ImageAIAgentSiliconFlowAnalysis.getInstance().analysisImage(currentFile.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
                                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
                                             texts[i] = texts[i] + "(文件内容：" + imageDelineate + ")";
                                         }
@@ -257,7 +259,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     }
 
                                     Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
-                                    String[] ifImage = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptIfImagePrompt().get()) + content);
+                                    String[] ifImage = TextAIAgentSiliconFlowAnalysis.getInstance().analysisText(String.valueOf(dailyPaperData.getPromptIfImagePrompt().get()) + content);
 
                                     /// 生成文本
                                     if (!ifImage[0].contains("是")) {
@@ -292,7 +294,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     else {
                                         Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
 
-                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnImageResultPrompt().get()) + content);
+                                        String[] result = TextAIAgentSiliconFlowAnalysis.getInstance().analysisText(String.valueOf(dailyPaperData.getPromptSpawnImageResultPrompt().get()) + content);
 
                                         HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
                                         HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();
@@ -308,7 +310,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                                 new FileChooser.ExtensionFilter("JPEG", "*.jpeg")
                                         );
 
-                                        String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnImagePrompt().get()) + content)[0];
+                                        String prompt = TextAIAgentSiliconFlowAnalysis.getInstance().analysisText(String.valueOf(dailyPaperData.getPromptSpawnImagePrompt().get()) + content)[0];
                                         String[] imageURIs = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                                         for (int i = 0; i < imageURIs.length; i++) {
                                             BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(imageURIs[i]);
@@ -582,7 +584,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
                             });
-                            String[] imageData = ImageToTextAIAgentSiliconFlow.getInstance().turnImageToText(file.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
+                            String[] imageData = ImageAIAgentSiliconFlowAnalysis.getInstance().analysisImage(file.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
                             String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get()).formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
                             dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);

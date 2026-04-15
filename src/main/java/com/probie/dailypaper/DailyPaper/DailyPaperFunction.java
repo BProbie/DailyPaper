@@ -1,5 +1,6 @@
 package com.probie.dailypaper.DailyPaper;
 
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
@@ -101,7 +102,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     public void dailyWallpaper() {
         try {
             DailyPaper.getInstance().getDailyPaperPool().submit(() -> {
-                String prompt = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnImagePrompt().get()) + String.valueOf(dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get()))[0];
+                String prompt = TextAIAgentSiliconFlowAnalysis.getInstance().analysisText(String.valueOf(dailyPaperData.getPromptSpawnImagePrompt().get()) + dailyPaperData.getPromptSpawnDailyWallpaperPrompt().get())[0];
                 String[] urls = TextToImageAIAgentSiliconFlow.getInstance().turnTextToImage(prompt);
                 BufferedImage bufferedImage = ImageSystem.getInstance().turnUrlToBufferedImage(urls[0]);
                 if (ImageSystem.getInstance().turnBufferedImageToLocalFile(bufferedImage, String.valueOf(dailyPaper.getTempFilePath().get()), String.valueOf(dailyPaper.getTempImageFileName().get()))) {

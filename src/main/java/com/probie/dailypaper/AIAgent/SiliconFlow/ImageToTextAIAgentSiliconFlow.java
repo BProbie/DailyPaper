@@ -41,8 +41,8 @@ public class ImageToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements
     @Override
     protected void init() {
         setAPIKey(getAPIKey(DailyPaper.getInstance().getAPIKeySiliconFlow()));
-        setAPIUrl(DailyPaper.getInstance().getAPIUrlImageToTextSiliconFlow());
         setAPIModel(DailyPaper.getInstance().getAPIModelImageToTextSiliconFlow());
+        setAPIUrl(DailyPaper.getInstance().getAPIUrlImageToTextSiliconFlow());
     }
 
     @Override
