@@ -1,7 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.ImageAIAgentSiliconFlowAnalysis;
-import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
 import lombok.Data;
 import java.io.File;
 import javafx.geometry.Pos;
@@ -32,7 +30,8 @@ import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
-import com.probie.dailypaper.AIAgent.SiliconFlow.ImageToTextAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.ImageAIAgentSiliconFlowAnalysis;
 
 @Data
 public class DailyPaperEvent implements IDailyPaperEvent {

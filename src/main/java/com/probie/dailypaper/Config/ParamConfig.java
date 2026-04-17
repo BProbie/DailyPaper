@@ -8,7 +8,7 @@ import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.Config.Interface.IParamConfig;
 
 @Data
-public class ParamConfig implements IParamConfig {
+public class ParamConfig extends Config implements IParamConfig {
 
     /**
      * 维护一个懒加载的类单例对象
@@ -22,6 +22,11 @@ public class ParamConfig implements IParamConfig {
         if (INSTANCE == null) {
             INSTANCE = new ParamConfig();
         }
+
+//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getParamConfigFileName().get()).exists()) {
+//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getParamConfigFileName().get()).mkdirs();
+//        }
+
         if (INSTANCE.getLocalDB() == null) {
             INSTANCE.setLocalDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
             INSTANCE.getLocalDB().setFullFilePath(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getParamConfigFileName().get());

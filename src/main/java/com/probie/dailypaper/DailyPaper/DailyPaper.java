@@ -72,11 +72,17 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyJavaFilePath = "JavaFilePath";
     private String KeyLibFilePath = "LibFilePath";
     private String KeyLiveImageFilePath = "LiveImageFilePath";
+    private String KeyLogConfigFilePath = "LogConfigFilePath";
 
     private String KeyLiveImageConfigFileName = "LiveImageConfigFileName";
     private String KeyParamConfigFileName = "ParamConfigFileName";
     private String KeySettingConfigFileName = "SettingConfigFileName";
     private String KeyRenewConfigFileName = "RenewConfigFileName";
+    private String KeyLogConfigFileName = "LogConfigFileName";
+    private String KeyLogDebugConfigFileName = "LogDebugConfigFileName";
+    private String KeyLogInfoConfigFileName = "LogInfoConfigFileName";
+    private String KeyLogWarnConfigFileName = "LogWarnConfigFileName";
+    private String KeyLogErrorConfigFileName = "LogErrorConfigFileName";
 
     private String KeyTempImageFileName = "TempImageFileName";
 
@@ -180,15 +186,20 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> JavaFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyJavaFilePath(), DailyPaperFilePath.get() + File.separator + "jdk-21.0.8")));
     private SimpleObjectProperty<Object> LibFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLibFilePath(), DailyPaperFilePath.get() + File.separator + "lib")));
     private SimpleObjectProperty<Object> LiveImageFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageFilePath(), DailyPaperFilePath.get() + File.separator + "LiveImage")));
+    private SimpleObjectProperty<Object> LogConfigFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogConfigFilePath(), DailyPaperFilePath.get() + File.separator + "Log")));
     private SimpleObjectProperty<Object> LiveImageConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageConfigFileName(), "liveImage.config")));
     private SimpleObjectProperty<Object> ParamConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyParamConfigFileName(), "param.config")));
     private SimpleObjectProperty<Object> SettingConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySettingConfigFileName(), "setting.config")));
     private SimpleObjectProperty<Object> RenewConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigFileName(), "renew.config")));
+    private SimpleObjectProperty<Object> LogConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogConfigFileName(), "log.log")));
+    private SimpleObjectProperty<Object> LogDebugConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogDebugConfigFileName(), "debug.log")));
+    private SimpleObjectProperty<Object> LogInfoConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogInfoConfigFileName(), "info.log")));
+    private SimpleObjectProperty<Object> LogWarnConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogWarnConfigFileName(), "warn.log")));
+    private SimpleObjectProperty<Object> LogErrorConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogErrorConfigFileName(), "error.log")));
 
     private SimpleObjectProperty<Object> TempImageFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyTempImageFileName(), "image.png")));
 
     /// web 请求参数
-
     private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180));
     private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 180));
     private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 180));
@@ -295,11 +306,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyJavaFilePath, JavaFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyLibFilePath, LibFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyLiveImageFilePath, LiveImageFilePath.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyLogConfigFilePath, LogConfigFilePath.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyLiveImageConfigFileName, LiveImageConfigFileName.get());
         SettingConfig.getInstance().getLocalDB().set(KeyParamConfigFileName, ParamConfigFileName.get());
         SettingConfig.getInstance().getLocalDB().set(KeySettingConfigFileName, SettingConfigFileName.get());
         SettingConfig.getInstance().getLocalDB().set(KeyRenewConfigFileName, RenewConfigFileName.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyLogConfigFileName, LogConfigFileName.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyTempImageFileName, TempImageFileName.get());
 

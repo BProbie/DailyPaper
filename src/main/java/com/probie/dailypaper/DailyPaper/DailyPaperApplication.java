@@ -70,12 +70,13 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
 
     @Override
     public void beforeStart() {
-        if (!new File(dailyPaper.getDailyPaperFilePath().get().toString()).exists()) new File(dailyPaper.getDailyPaperFilePath().get().toString()).mkdirs();
-        if (!new File(dailyPaper.getConfigFilePath().get().toString()).exists()) new File(dailyPaper.getConfigFilePath().get().toString()).mkdirs();
-        if (!new File(dailyPaper.getTempFilePath().get().toString()).exists()) new File(dailyPaper.getTempFilePath().get().toString()).mkdirs();
-        if (!new File(dailyPaper.getJavaFilePath().get().toString()).exists()) new File(dailyPaper.getJavaFilePath().get().toString()).mkdirs();
-        if (!new File(dailyPaper.getLibFilePath().get().toString()).exists()) new File(dailyPaper.getLibFilePath().get().toString()).mkdirs();
-        if (!new File(dailyPaper.getLiveImageFilePath().get().toString()).exists()) new File(dailyPaper.getLiveImageFilePath().get().toString()).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getDailyPaperFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getDailyPaperFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getConfigFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getConfigFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getTempFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getTempFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getJavaFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getJavaFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getLibFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLibFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).mkdirs();
     }
 
     @Override

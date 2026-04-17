@@ -1,6 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
@@ -17,8 +16,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.System.ComputerSystem;
 import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperFunction;
-import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
+import com.probie.dailypaper.AIAgent.SiliconFlow.Analysis.TextAIAgentSiliconFlowAnalysis;
 
 @Data
 public class DailyPaperFunction implements IDailyPaperFunction {

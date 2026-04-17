@@ -15,7 +15,7 @@ public class Config implements IConfig {
     /**
      * 获取一个懒加载的类单例对象
      * */
-    public synchronized static DailyPaper getInstance() {
+    private synchronized static DailyPaper getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new DailyPaper();
         }

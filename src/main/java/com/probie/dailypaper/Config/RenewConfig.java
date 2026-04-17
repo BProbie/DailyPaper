@@ -8,7 +8,7 @@ import com.probie.easydb.Database.Local.LocalRemoteDB;
 import com.probie.dailypaper.Config.Interface.IRenewConfig;
 
 @Data
-public class RenewConfig implements IRenewConfig {
+public class RenewConfig extends Config implements IRenewConfig {
 
     /**
      * 维护一个懒加载的类单例对象
@@ -22,6 +22,11 @@ public class RenewConfig implements IRenewConfig {
         if (INSTANCE == null) {
             INSTANCE = new RenewConfig();
         }
+
+//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get()).exists()) {
+//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get()).mkdirs();
+//        }
+
         if (INSTANCE.getLocalRemoteDB() == null) {
             INSTANCE.setLocalRemoteDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalRemoteDB(String.valueOf(DailyPaper.getInstance().getRenewConfigRenewUri().get())));
             INSTANCE.getLocalRemoteDB().setFullFilePath(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get());

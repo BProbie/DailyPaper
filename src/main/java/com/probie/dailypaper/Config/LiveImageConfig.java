@@ -8,7 +8,7 @@ import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.Config.Interface.ILiveImageConfig;
 
 @Data
-public class LiveImageConfig implements ILiveImageConfig {
+public class LiveImageConfig extends Config implements ILiveImageConfig {
 
     /**
      * 维护一个懒加载的类单例对象
@@ -22,6 +22,11 @@ public class LiveImageConfig implements ILiveImageConfig {
         if (INSTANCE == null) {
             INSTANCE = new LiveImageConfig();
         }
+
+//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLiveImageConfigFileName().get()).exists()) {
+//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLiveImageConfigFileName().get()).mkdirs();
+//        }
+
         if (INSTANCE.getLocalDB() == null) {
             INSTANCE.setLocalDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
             INSTANCE.getLocalDB().setFullFilePath(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLiveImageConfigFileName().get());
