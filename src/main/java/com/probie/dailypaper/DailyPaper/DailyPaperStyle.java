@@ -490,6 +490,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "动图文件选择默认名称", dailyPaper.getLiveImageChosenFileName()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "软件启动时动图自动启动", dailyPaper.getLiveImageAutoLaunch()),
                 dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用每日壁纸推荐", dailyPaper.getDailyAutoWallpaper()),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "开机自动启动", dailyPaper.getDailyPaperAutoLaunch()),
                 dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用程序启动时推送每日壁纸", dailyPaper.getDailyAutoWallpaperWhenLaunch()),
                 dailyPaperFunction.createChooseButtonHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "启用每隔一定时间推送每日壁纸", dailyPaper.getDailyAutoWallpaperWhenTime()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "每日壁纸偏好", dailyPaper.getDailyImageHobby()),

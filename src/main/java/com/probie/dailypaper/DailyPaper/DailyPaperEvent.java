@@ -18,15 +18,12 @@ import javafx.scene.image.ImageView;
 import java.awt.image.BufferedImage;
 import javafx.scene.input.Clipboard;
 import java.util.concurrent.TimeUnit;
+import com.probie.dailypaper.Config.*;
 import javafx.scene.input.ClipboardContent;
 import com.probie.dailypaper.System.GIFSystem;
-import com.probie.dailypaper.Config.RenewConfig;
-import com.probie.dailypaper.Config.ParamConfig;
 import com.probie.dailypaper.System.ImageSystem;
-import com.probie.dailypaper.Config.SettingConfig;
 import com.probie.dailypaper.System.NetworkSystem;
 import com.probie.dailypaper.System.ComputerSystem;
-import com.probie.dailypaper.Config.LiveImageConfig;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperEvent;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToTextAIAgentSiliconFlow;
 import com.probie.dailypaper.AIAgent.SiliconFlow.TextToImageAIAgentSiliconFlow;
@@ -254,7 +251,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     /// 合成上下文
                                     StringBuilder content = new StringBuilder(String.valueOf(information).formatted(current));
                                     if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDebug().get()))) {
-                                        System.out.println("Content" + "\n" + content);
+                                        String message = "Content" + "\n" + content;
+                                        LogConfig.getInstance().debug(message);
                                     }
 
                                     Platform.runLater(() -> chatAgentMessageLabel.setText("分析需求中..."));
@@ -264,7 +262,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     if (!ifImage[0].contains("是")) {
                                         Platform.runLater(() -> chatAgentMessageLabel.setText("文本生成中..."));
                                         String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(content));
-                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0].replaceAll("^[\\s\\n]+", "").replaceAll("[\\s\\n]+$", "")));
 
                                         Platform.runLater(() -> {
                                             HBox chatPaneAgentMessageCopyTextButtonBar = new HBox();
@@ -356,7 +354,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                             });
                                         }
 
-                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0]));
+                                        Platform.runLater(() -> chatAgentMessageLabel.setText(result[0].replaceAll("^[\\s\\n]+", "").replaceAll("[\\s\\n]+$", "")));
                                         Platform.runLater(() -> chatAgentMessageBar.getChildren().addAll(chatPaneAgentMessageSetWallpaperButtonBar, chatPaneAgentMessageDownloadImageButtonBar));
 
                                         dailyPaperData.getChatAgentMessageArrayList().add(result[0]);
@@ -603,6 +601,43 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 }
             }
         });
+
+        /// 响应式按钮属性
+        dailyPaper.getDailyAutoWallpaper().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(true);
+                dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(true);
+                dailyPaperElement.getDailyWallpaperOnButton().setSelected(true);
+            } else {
+                dailyPaperElement.getDailyWallpaperChooseHBox().setVisible(false);
+                dailyPaperElement.getDailyWallpaperHobbyVBox().setVisible(false);
+                dailyPaperElement.getDailyWallpaperOffButton().setSelected(true);
+            }
+        });
+
+        dailyPaper.getDailyPaperAutoLaunch().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                dailyPaperElement.getDailyLaunchOnButton().setSelected(true);
+            } else {
+                dailyPaperElement.getDailyLaunchOffButton().setSelected(true);
+            }
+        });
+
+        dailyPaper.getDailyAutoWallpaperWhenLaunch().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                dailyPaperElement.getDailyLaunchWallpaperOnButton().setSelected(true);
+            } else {
+                dailyPaperElement.getDailyLaunchWallpaperOffButton().setSelected(true);
+            }
+        });
+
+        dailyPaper.getDailyAutoWallpaperWhenTime().addListener((observable, oldValue, newValue) -> {
+            dailyPaperElement.getDailyTimeWallpaperTextField().setText(String.valueOf(newValue));
+        });
+
+        dailyPaper.getDailyImageHobby().addListener((observable, oldValue, newValue) -> {
+            dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(String.valueOf(newValue));
+        });
     }
 
     @Override
@@ -717,6 +752,23 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                 }
             } else {
                 dailyPaper.getRenewAutoDownloadRenew().set(false);
+            }
+        });
+
+        /// 响应式按钮属性
+        dailyPaper.getRenewAutoCheckRenew().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                dailyPaperElement.getRenewAutoCheckRenewOnButton().setSelected(true);
+            } else {
+                dailyPaperElement.getRenewAutoCheckRenewOffButton().setSelected(true);
+            }
+        });
+
+        dailyPaper.getRenewAutoDownloadRenew().addListener((observable, oldValue, newValue) -> {
+            if (Boolean.parseBoolean(String.valueOf(newValue))) {
+                dailyPaperElement.getRenewAutoDownloadRenewOnButton().setSelected(true);
+            } else {
+                dailyPaperElement.getRenewAutoDownloadRenewOffButton().setSelected(true);
             }
         });
     }

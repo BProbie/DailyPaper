@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.probie.dailypaper.Config.LogConfig;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.AIAgent.Interface.SiliconFlow.ITextToTextAIAgentSiliconFlow;
 
@@ -84,7 +85,8 @@ public class TextToTextAIAgentSiliconFlow extends AIAgentSiliconFlow implements 
             if (response.body() != null) {
                 String responseBody = response.body().string();
                 if (Boolean.parseBoolean(String.valueOf(DailyPaper.getInstance().getDebug().get()))) {
-                    System.out.println("TextToText" + "\n" + responseBody);
+                    String message = "TextToText" + "\n" + responseBody;
+                    LogConfig.getInstance().debug(message);
                 }
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果

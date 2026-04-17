@@ -148,9 +148,11 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     @Override
     public void chooseMenu(Node node) {
         if (node != dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().getFirst()) {
-            if (node == dailyPaperElement.getDailyVBox()) {
-                clearDaily();
-            }
+//            if (node == dailyPaperElement.getDailyVBox()) {
+//                clearDaily();
+//            } else if (node == dailyPaperElement.getRenewVBox()) {
+//                clearRenew();
+//            }
             dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().clear();
             dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().add(node);
         } else {
@@ -238,6 +240,8 @@ public class DailyPaperFunction implements IDailyPaperFunction {
 
     @Override
     public HBox createTitleHBox(Pane pane, String information) {
+        information = "【" + information + "】";
+
         HBox hBox = new HBox();
         hBox.prefWidthProperty().bind(pane.widthProperty());
         hBox.prefHeightProperty().bind(pane.heightProperty().divide(10.0));
@@ -274,6 +278,8 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         dataLabel.setAlignment(Pos.CENTER);
 
         hBox.getChildren().addAll(informationLabel, dataLabel);
+
+        data.addListener((observable, oldValue, newValue) -> {dataLabel.setText(String.valueOf(newValue));});
 
         return hBox;
     }

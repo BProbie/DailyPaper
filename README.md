@@ -2,7 +2,7 @@
 
 ## 软件名称：DailyPaper（日常壁纸）
 
-## 软件版本：1.4（稳定版）
+## 软件版本：1.5（稳定版）
 
 ## 开发语言：Java（JDK-21.0.8）
 
@@ -12,7 +12,7 @@
 
 ## 开源协议：https://raw.githubusercontent.com/BProbie/DailyPaper/refs/heads/master/LICENSE
 
-## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.4
+## 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/1.5
 
 ## 依赖工具：Maven
 

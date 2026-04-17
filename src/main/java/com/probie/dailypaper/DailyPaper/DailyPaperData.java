@@ -4,6 +4,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.ArrayList;
 import com.probie.dailypaper.Enum.Date;
+import com.probie.dailypaper.Config.LogConfig;
 import javafx.beans.property.SimpleObjectProperty;
 import com.probie.dailypaper.System.ComputerSystem;
 import com.probie.dailypaper.DailyPaper.Interface.IDailyPaperData;
@@ -61,7 +62,8 @@ public class DailyPaperData implements IDailyPaperData {
     private final Runnable autoDailyWallpaper = () -> {
         if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyAutoWallpaper().get())) && Integer.parseInt(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) >= 1) {
             if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDebug()))) {
-                System.out.println("DailyWallpaper" + "\n" + (System.currentTimeMillis() - autoDailyWallpaperStartTime) + "/" + Long.parseLong(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) * 60 * 1000);
+                String message = "DailyWallpaper" + "\n" + (System.currentTimeMillis() - autoDailyWallpaperStartTime) + "/" + Long.parseLong(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) * 60 * 1000;
+                LogConfig.getInstance().debug(message);
             }
             if (System.currentTimeMillis() - autoDailyWallpaperStartTime >= Long.parseLong(String.valueOf(dailyPaper.getDailyAutoWallpaperWhenTime().get())) * 60 * 1000) {
                 dailyPaperFunction.dailyWallpaper();

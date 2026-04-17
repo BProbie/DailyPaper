@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.probie.dailypaper.Config.LogConfig;
 import com.probie.dailypaper.System.PictureSystem;
 import com.probie.dailypaper.DailyPaper.DailyPaper;
 import com.probie.dailypaper.AIAgent.SiliconFlow.AIAgentSiliconFlow;
@@ -105,7 +106,8 @@ public class ImageAIAgentSiliconFlowAnalysis extends AIAgentSiliconFlow implemen
             if (response.body() != null) {
                 String responseBody = response.body().string();
                 if (Boolean.parseBoolean(String.valueOf(DailyPaper.getInstance().getDebug().get()))) {
-                    System.out.println("ImageToText" + "\n" + responseBody);
+                    String message = "ImageAnalysis" + "\n" + responseBody;
+                    LogConfig.getInstance().debug(message);
                 }
                 if (response.isSuccessful()) {
                     /// 解析响应并返回结果
