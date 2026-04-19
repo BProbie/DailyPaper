@@ -19,11 +19,8 @@
 
 package com.probie.dailypaper;
 
-import com.probie.dailypaper.Property.SelectableLabel;
-
 public class Main {
     public static void main(String[] args) {
         com.probie.dailypaper.DailyPaper.DailyPaper.getInstance().launch(args);
-        new SelectableLabel("a");
     }
 }
