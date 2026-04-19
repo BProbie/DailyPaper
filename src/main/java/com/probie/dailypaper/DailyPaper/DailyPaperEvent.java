@@ -12,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
@@ -21,6 +19,7 @@ import java.awt.image.BufferedImage;
 import javafx.scene.input.Clipboard;
 import java.util.concurrent.TimeUnit;
 import com.probie.dailypaper.Config.*;
+import com.probie.dailypaper.Plugin.Plugin;
 import javafx.scene.input.ClipboardContent;
 import com.probie.dailypaper.System.GIFSystem;
 import com.probie.dailypaper.System.ImageSystem;
@@ -671,9 +670,9 @@ public class DailyPaperEvent implements IDailyPaperEvent {
             });
         });
 
-        dailyPaperElement.getSettingButtonBarAdvancedButton().setOnAction(actionEvent -> {
-            // TODO Setting Advance Function
-            dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarAdvancedButton(), "敬请期待");
+        dailyPaperElement.getSettingButtonBarPluginButton().setOnAction(actionEvent -> {
+            dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarPluginButton(), "期待");
+            Plugin.getInstance().launch();
         });
     }
 

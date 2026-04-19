@@ -379,7 +379,16 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "速度参数"),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "动图播放速度", dailyPaper.getLiveImagePlaySpeed()),
 
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "聊天参数"),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "单次最大消息容量", dailyPaper.getSendMaxMessage()),
+
+                dailyPaperFunction.createTitleHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "Web请求参数"),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "最大连接时间", dailyPaper.getConnectTimeout()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "最大读取时间", dailyPaper.getReadTimeout()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "最大写入时间", dailyPaper.getWriteTimeout()),
+
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "AI生成参数"),
+                dailyPaperFunction.createLabelHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "上下文最大容量", dailyPaper.getSendMaxContent()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "图片生成大小", dailyPaper.getSpawnImageSize()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "图片生成数量", dailyPaper.getSpawnImageCount()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getParamInputScrollPaneVBox(), "单次最大词元", dailyPaper.getSpawnMaxTokens()),
@@ -442,11 +451,6 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "警告日志文件名称", dailyPaper.getLogWarnConfigFileName()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "错误日志文件名称", dailyPaper.getLogErrorConfigFileName()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "缓存图片文件名称", dailyPaper.getTempImageFileName()),
-
-                dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Web请求设置"),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大连接时间", dailyPaper.getConnectTimeout()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大读取时间", dailyPaper.getReadTimeout()),
-                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "最大写入时间", dailyPaper.getWriteTimeout()),
 
                 dailyPaperFunction.createTitleHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "AI设置"),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "硅基流动API密钥", dailyPaper.getAPIKeySiliconFlow()),
@@ -511,11 +515,11 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getSettingButtonBarHBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get())));
         dailyPaperElement.getSettingButtonBarHBox().setAlignment(Pos.CENTER);
 
-        dailyPaperElement.getSettingButtonBarAdvancedButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
-        dailyPaperElement.getSettingButtonBarAdvancedButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());
-        dailyPaperElement.getSettingButtonBarAdvancedButton().setText("高级");
-        dailyPaperElement.getSettingButtonBarAdvancedButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
-        dailyPaperElement.getSettingButtonBarAdvancedButton().setAlignment(Pos.CENTER);
+        dailyPaperElement.getSettingButtonBarPluginButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
+        dailyPaperElement.getSettingButtonBarPluginButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());
+        dailyPaperElement.getSettingButtonBarPluginButton().setText("插件");
+        dailyPaperElement.getSettingButtonBarPluginButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        dailyPaperElement.getSettingButtonBarPluginButton().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getSettingButtonBarResetButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
         dailyPaperElement.getSettingButtonBarResetButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());

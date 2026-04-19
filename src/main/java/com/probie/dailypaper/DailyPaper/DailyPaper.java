@@ -1,5 +1,6 @@
 package com.probie.dailypaper.DailyPaper;
 
+import com.probie.dailypaper.Plugin.Plugin;
 import lombok.Data;
 import java.io.File;
 import java.io.Closeable;
@@ -19,7 +20,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.6";
+    private final String VERSION = "1.7";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -52,7 +53,16 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 速度参数
     private String KeyLiveImagePlaySpeed = "LiveImagePlaySpeed";
 
+    /// 聊天参数
+    private String KeySendMaxMessage = "SendMaxMessage";
+
+    /// web 请求参数
+    private String KeyConnectTimeout = "ConnectTimeout";
+    private String KeyReadTimeout = "ReadTimeout";
+    private String KeyWriteTimeout = "WriteTimeout";
+
     /// AI 生成参数
+    private String KeySendMaxContent = "SendMaxContent";
     private String KeySpawnImageSize = "SpawnImageSize";
     private String KeySpawnImageCount = "SpawnImageCount";
     private String KeySpawnMaxTokens = "SpawnMaxTokens";
@@ -85,11 +95,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private String KeyLogErrorConfigFileName = "LogErrorConfigFileName";
 
     private String KeyTempImageFileName = "TempImageFileName";
-
-    /// web 请求参数
-    private String KeyConnectTimeout = "ConnectTimeout";
-    private String KeyReadTimeout = "ReadTimeout";
-    private String KeyWriteTimeout = "WriteTimeout";
 
     /// AI 参数
     private String KeyAPIKeySiliconFlow = "APIKeySiliconFlow";
@@ -166,7 +171,16 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 速度参数
     private SimpleObjectProperty<Object> LiveImagePlaySpeed = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyLiveImagePlaySpeed(), 10));
 
+    /// 聊天参数
+    private SimpleObjectProperty<Object> SendMaxMessage = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySendMaxMessage(), 10000)));
+
+    /// web 请求参数
+    private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180));
+    private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 180));
+    private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 180));
+
     /// AI 生成参数
+    private SimpleObjectProperty<Object> SendMaxContent = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySendMaxContent(), 10000)));
     private SimpleObjectProperty<Object> SpawnImageSize = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight())))));
     private SimpleObjectProperty<Object> SpawnImageCount = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1));
     private SimpleObjectProperty<Object> SpawnMaxTokens = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100));
@@ -198,11 +212,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> LogErrorConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogErrorConfigFileName(), "error.log")));
 
     private SimpleObjectProperty<Object> TempImageFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyTempImageFileName(), "image.png")));
-
-    /// web 请求参数
-    private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180));
-    private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 180));
-    private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(SettingConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 180));
 
     /// AI 参数
     private SimpleObjectProperty<Object> APIKeySiliconFlow = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyAPIKeySiliconFlow(), "65$!(4f9(t^!Q854Q5h!t95Q75hEO(R-7RhZ(NN7h^h-NP7O8)y")));
@@ -286,7 +295,16 @@ public class DailyPaper implements IDailyPaper, Closeable {
         /// 速度参数
         ParamConfig.getInstance().getLocalDB().set(KeyLiveImagePlaySpeed, LiveImagePlaySpeed.get());
 
+        /// 聊天参数
+        ParamConfig.getInstance().getLocalDB().set(KeySendMaxMessage, SendMaxMessage.get());
+
+        /// web 请求参数
+        ParamConfig.getInstance().getLocalDB().set(KeyConnectTimeout, ConnectTimeout.get());
+        ParamConfig.getInstance().getLocalDB().set(KeyReadTimeout, ReadTimeout.get());
+        ParamConfig.getInstance().getLocalDB().set(KeyWriteTimeout, WriteTimeout.get());
+
         /// AI 生成参数
+        ParamConfig.getInstance().getLocalDB().set(KeySendMaxContent, SendMaxContent.get());
         ParamConfig.getInstance().getLocalDB().set(KeySpawnImageSize, SpawnImageSize.get());
         ParamConfig.getInstance().getLocalDB().set(KeySpawnImageCount, SpawnImageCount.get());
         ParamConfig.getInstance().getLocalDB().set(KeySpawnMaxTokens, SpawnMaxTokens.get());
@@ -315,11 +333,6 @@ public class DailyPaper implements IDailyPaper, Closeable {
         SettingConfig.getInstance().getLocalDB().set(KeyLogConfigFileName, LogConfigFileName.get());
 
         SettingConfig.getInstance().getLocalDB().set(KeyTempImageFileName, TempImageFileName.get());
-
-        /// web 请求参数
-        SettingConfig.getInstance().getLocalDB().set(KeyConnectTimeout, ConnectTimeout.get());
-        SettingConfig.getInstance().getLocalDB().set(KeyReadTimeout, ReadTimeout.get());
-        SettingConfig.getInstance().getLocalDB().set(KeyWriteTimeout, WriteTimeout.get());
 
         /// AI 参数
         SettingConfig.getInstance().getLocalDB().set(KeyAPIKeySiliconFlow, APIKeySiliconFlow.get());
