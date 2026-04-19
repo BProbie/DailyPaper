@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.5";
+    private final String VERSION = "1.6";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -191,7 +191,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> ParamConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyParamConfigFileName(), "param.config")));
     private SimpleObjectProperty<Object> SettingConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySettingConfigFileName(), "setting.config")));
     private SimpleObjectProperty<Object> RenewConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyRenewConfigFileName(), "renew.config")));
-    private SimpleObjectProperty<Object> LogConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogConfigFileName(), "log.log")));
+    private SimpleObjectProperty<Object> LogConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogConfigFileName(), "log.config")));
     private SimpleObjectProperty<Object> LogDebugConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogDebugConfigFileName(), "debug.log")));
     private SimpleObjectProperty<Object> LogInfoConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogInfoConfigFileName(), "info.log")));
     private SimpleObjectProperty<Object> LogWarnConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogWarnConfigFileName(), "warn.log")));

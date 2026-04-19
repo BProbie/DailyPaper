@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.image.ImageView;
@@ -643,24 +645,35 @@ public class DailyPaperEvent implements IDailyPaperEvent {
     @Override
     public void createParamEvent() {
         dailyPaperElement.getParamButtonBarResetButton().setOnAction(actionEvent -> {
-            if (ParamConfig.getInstance().getLocalDB().deleteFile(ParamConfig.getInstance().getLocalDB().getFullFilePath()) && ParamConfig.getInstance().getLocalDB().createFile(ParamConfig.getInstance().getLocalDB().getFullFilePath())) {
-                dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "重启");
-                System.exit(0);
-            } else {
-                dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "失败");
-            }
+            dailyPaper.getDailyPaperPool().submit(() -> {
+                if (ParamConfig.getInstance().getLocalDB().deleteFile(ParamConfig.getInstance().getLocalDB().getFullFilePath()) && ParamConfig.getInstance().getLocalDB().createFile(ParamConfig.getInstance().getLocalDB().getFullFilePath())) {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "重启");
+                    dailyPaperFunction.waitADelay(100);
+                    System.exit(0);
+                } else {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getParamButtonBarResetButton(), "失败");
+                }
+            });
         });
     }
 
     @Override
     public void createSettingEvent() {
         dailyPaperElement.getSettingButtonBarResetButton().setOnAction(actionEvent -> {
-            if (SettingConfig.getInstance().getLocalDB().deleteFile(SettingConfig.getInstance().getLocalDB().getFullFilePath()) && SettingConfig.getInstance().getLocalDB().createFile(SettingConfig.getInstance().getLocalDB().getFullFilePath())) {
-                dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "重启");
-                System.exit(0);
-            } else {
-                dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "失败");
-            }
+            dailyPaper.getDailyPaperPool().submit(() -> {
+                if (SettingConfig.getInstance().getLocalDB().deleteFile(SettingConfig.getInstance().getLocalDB().getFullFilePath()) && SettingConfig.getInstance().getLocalDB().createFile(SettingConfig.getInstance().getLocalDB().getFullFilePath())) {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "重启");
+                    dailyPaperFunction.waitADelay(100);
+                    System.exit(0);
+                } else {
+                    dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarResetButton(), "失败");
+                }
+            });
+        });
+
+        dailyPaperElement.getSettingButtonBarAdvancedButton().setOnAction(actionEvent -> {
+            // TODO Setting Advance Function
+            dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarAdvancedButton(), "敬请期待");
         });
     }
 
@@ -712,6 +725,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                     if (dailyPaperFunction.downloadRenewDailyPaper()) {
                         Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新完成！"));
                         if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyPaperRenewAutoOpen().get()))) {
+//                            安全关闭程序
 //                            dailyPaperApplication.stop();
                             System.exit(0);
                         }

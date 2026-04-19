@@ -75,8 +75,9 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         if (!new File(String.valueOf(dailyPaper.getTempFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getTempFilePath().get())).mkdirs();
         if (!new File(String.valueOf(dailyPaper.getJavaFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getJavaFilePath().get())).mkdirs();
         if (!new File(String.valueOf(dailyPaper.getLibFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLibFilePath().get())).mkdirs();
-        if (!new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).mkdirs();
-        if (!new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).mkdirs();
+//        创建文件夹
+//        if (!new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).mkdirs();
+//        if (!new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).mkdirs();
     }
 
     @Override
@@ -130,6 +131,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
                                             if (dailyPaperFunction.downloadRenewDailyPaper()) {
                                                 Platform.runLater(() -> dailyPaperElement.getRenewManualShowRenewTextArea().setText("版本更新完成！"));
                                                 if (Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyPaperRenewAutoOpen().get()))) {
+//                                                    安全关闭程序
 //                                                    dailyPaperApplication.stop();
                                                     System.exit(0);
                                                 }

@@ -135,6 +135,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         }
         return false;
 
+//        RENEW自带的更新方法
 //        return Renew.getInstance()
 //                .setJavaFilePath(dailyPaper.getJavaFilePath().get() + File.separator + "bin" + File.separator + "java")
 //                .setRenewFilePath(dailyPaper.getRenewRenewLocalFilePath().get() + File.separator + dailyPaper.getRenewRenewLocalFileName().get())
@@ -148,6 +149,7 @@ public class DailyPaperFunction implements IDailyPaperFunction {
     @Override
     public void chooseMenu(Node node) {
         if (node != dailyPaperElement.getRootPaneCenterStageBarVBox().getChildren().getFirst()) {
+//            整页面刷新
 //            if (node == dailyPaperElement.getDailyVBox()) {
 //                clearDaily();
 //            } else if (node == dailyPaperElement.getRenewVBox()) {

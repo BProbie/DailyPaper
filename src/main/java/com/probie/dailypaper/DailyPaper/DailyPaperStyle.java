@@ -364,6 +364,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getParamInputScrollPane().prefWidthProperty().bind(dailyPaperElement.getParamInputVBox().widthProperty());
         dailyPaperElement.getParamInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getParamInputVBox().heightProperty());
         dailyPaperElement.getParamInputScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        隐藏竖滚动条
 //        dailyPaperElement.getParamInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         dailyPaperElement.getParamInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getParamInputScrollPane().widthProperty());
@@ -396,7 +397,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getParamButtonBarResetButton().prefHeightProperty().bind(dailyPaperElement.getParamButtonBarHBox().heightProperty());
         dailyPaperElement.getParamButtonBarResetButton().setText("重置");
         dailyPaperElement.getParamButtonBarResetButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
-        dailyPaperElement.getParamButtonBarHBox().setAlignment(Pos.CENTER);
+        dailyPaperElement.getParamButtonBarResetButton().setAlignment(Pos.CENTER);
     }
 
     @Override
@@ -414,6 +415,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getSettingInputScrollPane().prefWidthProperty().bind(dailyPaperElement.getSettingInputVBox().widthProperty());
         dailyPaperElement.getSettingInputScrollPane().prefHeightProperty().bind(dailyPaperElement.getSettingInputVBox().heightProperty());
         dailyPaperElement.getSettingInputScrollPane().setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        隐藏竖滚动条
 //        dailyPaperElement.getSettingInputScrollPane().setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         dailyPaperElement.getSettingInputScrollPaneVBox().prefWidthProperty().bind(dailyPaperElement.getSettingInputScrollPane().widthProperty());
@@ -506,13 +508,20 @@ public class DailyPaperStyle implements IDailyPaperStyle {
 
         dailyPaperElement.getSettingButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().widthProperty());
         dailyPaperElement.getSettingButtonBarHBox().prefHeightProperty().bind(dailyPaperElement.getSettingVBox().heightProperty().divide(10.0).multiply(1.0));
+        dailyPaperElement.getSettingButtonBarHBox().setSpacing(Integer.parseInt(String.valueOf(dailyPaperData.getSpacingSizeSmall().get())));
         dailyPaperElement.getSettingButtonBarHBox().setAlignment(Pos.CENTER);
+
+        dailyPaperElement.getSettingButtonBarAdvancedButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
+        dailyPaperElement.getSettingButtonBarAdvancedButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());
+        dailyPaperElement.getSettingButtonBarAdvancedButton().setText("高级");
+        dailyPaperElement.getSettingButtonBarAdvancedButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
+        dailyPaperElement.getSettingButtonBarAdvancedButton().setAlignment(Pos.CENTER);
 
         dailyPaperElement.getSettingButtonBarResetButton().prefWidthProperty().bind(dailyPaperElement.getSettingButtonBarHBox().widthProperty().divide(10.0));
         dailyPaperElement.getSettingButtonBarResetButton().prefHeightProperty().bind(dailyPaperElement.getSettingButtonBarHBox().heightProperty());
         dailyPaperElement.getSettingButtonBarResetButton().setText("重置");
         dailyPaperElement.getSettingButtonBarResetButton().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeMedium().get()))));
-        dailyPaperElement.getSettingButtonBarHBox().setAlignment(Pos.CENTER);
+        dailyPaperElement.getSettingButtonBarResetButton().setAlignment(Pos.CENTER);
     }
 
     @Override

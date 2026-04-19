@@ -23,8 +23,9 @@ public class SettingConfig extends Config implements ISettingConfig {
             INSTANCE = new SettingConfig();
         }
 
-//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getSettingConfigFileName().get()).exists()) {
-//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getSettingConfigFileName().get()).mkdirs();
+//        创建文件夹
+//        if (!new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).exists()) {
+//            new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).mkdirs();
 //        }
 
         if (INSTANCE.getLocalDB() == null) {

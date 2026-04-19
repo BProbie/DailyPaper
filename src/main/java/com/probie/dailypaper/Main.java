@@ -1,20 +1,18 @@
 /**
  * SoftWare-Name: DailyPaper
- * SoftWare-Version: 1.5
+ * SoftWare-Version: 1.6
  * SoftWare-Author: Probie
  * SoftWare-GitHub: <a href="https://github.com/BProbie/DailyPaper">DailyPaper-GitHub</a>
  * */
 
 /**
  * TODO
- * 优化参数
- * 优化设置
  * 高级设置
  * 导入插件
  * 异常处理
  * 日志记录
- * UI视觉优化
  * UI功能优化
+ * UI视觉优化
  * */
 
 package com.probie.dailypaper;

@@ -23,8 +23,9 @@ public class RenewConfig extends Config implements IRenewConfig {
             INSTANCE = new RenewConfig();
         }
 
-//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get()).exists()) {
-//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getRenewConfigFileName().get()).mkdirs();
+//        创建文件夹
+//        if (!new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).exists()) {
+//            new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).mkdirs();
 //        }
 
         if (INSTANCE.getLocalRemoteDB() == null) {

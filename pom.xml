@@ -6,7 +6,7 @@
 
     <groupId>com.probie</groupId>
     <artifactId>DailyPaper</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
     <name>DailyPaper</name>
 
     <properties>

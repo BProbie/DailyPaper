@@ -23,8 +23,9 @@ public class ParamConfig extends Config implements IParamConfig {
             INSTANCE = new ParamConfig();
         }
 
-//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getParamConfigFileName().get()).exists()) {
-//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getParamConfigFileName().get()).mkdirs();
+//        创建文件夹
+//        if (!new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).exists()) {
+//            new File(String.valueOf(DailyPaper.getInstance().getConfigFilePath().get())).mkdirs();
 //        }
 
         if (INSTANCE.getLocalDB() == null) {

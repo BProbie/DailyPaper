@@ -23,9 +23,9 @@ public class LiveImageConfig extends Config implements ILiveImageConfig {
             INSTANCE = new LiveImageConfig();
         }
 
-//        if (!new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLiveImageConfigFileName().get()).exists()) {
-//            new File(DailyPaper.getInstance().getConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLiveImageConfigFileName().get()).mkdirs();
-//        }
+        if (!new File(String.valueOf(DailyPaper.getInstance().getLiveImageFilePath())).exists()) {
+            new File(String.valueOf(DailyPaper.getInstance().getLiveImageFilePath())).mkdirs();
+        }
 
         if (INSTANCE.getLocalDB() == null) {
             INSTANCE.setLocalDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
@@ -33,6 +33,7 @@ public class LiveImageConfig extends Config implements ILiveImageConfig {
             INSTANCE.getLocalDB().setIsAutoCommit(false);
             INSTANCE.getLocalDB().connect();
         }
+
         return INSTANCE;
     }
 

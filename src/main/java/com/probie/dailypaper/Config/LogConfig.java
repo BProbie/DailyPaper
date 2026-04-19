@@ -27,37 +27,38 @@ public class LogConfig extends Config implements ILogConfig {
             INSTANCE = new LogConfig();
         }
 
-        if (!new File(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get()).exists()) {
-            new File(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get()).mkdirs();
+        File file = new File(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + INSTANCE.getCurrentDate().get());
+        if (!file.exists()) {
+            file.mkdirs();
         }
 
-        if (INSTANCE.getLog() == null) {
-            INSTANCE.setLog(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
-            INSTANCE.getLog().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLogConfigFileName().get());
-            INSTANCE.getLog().setIsAutoCommit(false);
-            INSTANCE.getLog().connect();
+        if (INSTANCE.getLocalDB() == null) {
+            INSTANCE.setLocalDB(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
+            INSTANCE.getLocalDB().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + DailyPaper.getInstance().getLogConfigFileName().get());
+            INSTANCE.getLocalDB().setIsAutoCommit(false);
+            INSTANCE.getLocalDB().connect();
         }
         if (INSTANCE.getDebug() == null) {
             INSTANCE.setDebug(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
-            INSTANCE.getDebug().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogDebugConfigFileName().get());
+            INSTANCE.getDebug().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogDebugConfigFileName().get());
             INSTANCE.getDebug().setIsAutoCommit(false);
             INSTANCE.getDebug().connect();
         }
         if (INSTANCE.getInfo() == null) {
             INSTANCE.setInfo(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
-            INSTANCE.getInfo().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogInfoConfigFileName().get());
+            INSTANCE.getInfo().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogInfoConfigFileName().get());
             INSTANCE.getInfo().setIsAutoCommit(false);
             INSTANCE.getInfo().connect();
         }
         if (INSTANCE.getWarn() == null) {
             INSTANCE.setWarn(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
-            INSTANCE.getWarn().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogWarnConfigFileName().get());
+            INSTANCE.getWarn().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogWarnConfigFileName().get());
             INSTANCE.getWarn().setIsAutoCommit(false);
             INSTANCE.getWarn().connect();
         }
         if (INSTANCE.getError() == null) {
             INSTANCE.setError(EasyDB.getInstance().getLocalDatabaseFactory().buildLocalDB());
-            INSTANCE.getError().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogErrorConfigFileName().get());
+            INSTANCE.getError().setFullFilePath(DailyPaper.getInstance().getLogConfigFilePath().get() + File.separator + INSTANCE.getCurrentDate().get() + File.separator + DailyPaper.getInstance().getLogErrorConfigFileName().get());
             INSTANCE.getError().setIsAutoCommit(false);
             INSTANCE.getError().connect();
         }
@@ -67,7 +68,7 @@ public class LogConfig extends Config implements ILogConfig {
     /**
      * EasyDB 实例对象
      * */
-    private volatile LocalDB log;
+    private volatile LocalDB localDB;
     private volatile LocalDB debug;
     private volatile LocalDB info;
     private volatile LocalDB warn;
@@ -88,8 +89,8 @@ public class LogConfig extends Config implements ILogConfig {
 
         while (true) {
             String key = time + "-" + index;
-            if (getDebug().get(key, null) == null) {
-                getDebug().set(key, debugMessage);
+            if (INSTANCE.getDebug().get(key, null) == null) {
+                INSTANCE.getDebug().set(key, debugMessage);
                 flag = true;
             }
             if (flag) {
@@ -97,7 +98,7 @@ public class LogConfig extends Config implements ILogConfig {
             }
             index++;
         }
-        getDebug().commit();
+        INSTANCE.getDebug().commit();
     }
 
     @Override
@@ -112,8 +113,8 @@ public class LogConfig extends Config implements ILogConfig {
 
         while (true) {
             String key = time + "-" + index;
-            if (getInfo().get(key, null) == null) {
-                getInfo().set(key, infoMessage);
+            if (INSTANCE.getInfo().get(key, null) == null) {
+                INSTANCE.getInfo().set(key, infoMessage);
                 flag = true;
             }
             if (flag) {
@@ -121,7 +122,7 @@ public class LogConfig extends Config implements ILogConfig {
             }
             index++;
         }
-        getInfo().commit();
+        INSTANCE.getInfo().commit();
     }
 
     @Override
@@ -136,8 +137,8 @@ public class LogConfig extends Config implements ILogConfig {
 
         while (true) {
             String key = time + "-" + index;
-            if (getWarn().get(key, null) == null) {
-                getWarn().set(key, warnMessage);
+            if (INSTANCE.getWarn().get(key, null) == null) {
+                INSTANCE.getWarn().set(key, warnMessage);
                 flag = true;
             }
             if (flag) {
@@ -145,7 +146,7 @@ public class LogConfig extends Config implements ILogConfig {
             }
             index++;
         }
-        getWarn().commit();
+        INSTANCE.getWarn().commit();
     }
 
     @Override
@@ -160,8 +161,8 @@ public class LogConfig extends Config implements ILogConfig {
 
         while (true) {
             String key = time + "-" + index;
-            if (getError().get(key, null) == null) {
-                getError().set(key, errorMessage);
+            if (INSTANCE.getError().get(key, null) == null) {
+                INSTANCE.getError().set(key, errorMessage);
                 flag = true;
             }
             if (flag) {
@@ -169,7 +170,7 @@ public class LogConfig extends Config implements ILogConfig {
             }
             index++;
         }
-        getError().commit();
+        INSTANCE.getError().commit();
     }
 
 }

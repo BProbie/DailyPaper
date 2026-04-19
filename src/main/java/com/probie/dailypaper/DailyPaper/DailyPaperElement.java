@@ -178,6 +178,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     private ScrollPane settingInputScrollPane = new ScrollPane();
     private VBox settingInputScrollPaneVBox = new VBox();
     private HBox settingButtonBarHBox = new HBox();
+    private Button settingButtonBarAdvancedButton = new Button();
     private Button settingButtonBarResetButton = new Button();
 
     /**
@@ -318,7 +319,7 @@ public class DailyPaperElement implements IDailyPaperElement {
     public void createSettingElement() {
         settingInputScrollPane.setContent(settingInputScrollPaneVBox);
         settingInputVBox.getChildren().addAll(settingInputScrollPane);
-        settingButtonBarHBox.getChildren().addAll(settingButtonBarResetButton);
+        settingButtonBarHBox.getChildren().addAll(settingButtonBarAdvancedButton, settingButtonBarResetButton);
         settingVBox.getChildren().addAll(settingInputVBox, settingButtonBarHBox);
     }
 
