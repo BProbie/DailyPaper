@@ -18,11 +18,11 @@
 
 ## 依赖技术：
 
-* ### EasyDB（个人原创：https://github.com/BProbie/EasyDB/
+* ### EasyDB（💎个人原创：https://github.com/BProbie/EasyDB/
 
-* ### Encryption（个人原创：https://github.com/BProbie/Encryption/
+* ### Encryption（💎个人原创：https://github.com/BProbie/Encryption/
 
-* ### Renew（个人原创：https://github.com/BProbie/Renew/
+* ### Renew（💎个人原创：https://github.com/BProbie/Renew/
 
 * ### JavaFX（系列集合）
 
