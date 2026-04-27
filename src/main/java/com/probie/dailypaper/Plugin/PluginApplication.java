@@ -23,11 +23,43 @@ public class PluginApplication implements IPluginApplication {
 
     @Override
     public void start(Stage stage) {
+        beforeStart();
+
         PluginElement.getInstance().createElement(stage);
         PluginStyle.getInstance().createStyle();
         PluginEvent.getInstance().createEvent();
-//        显示舞台
-//        stage.show();
+        stage.show();
+
+        afterStart();
+
+        stage.setTitle("敬请期待");
+    }
+
+    @Override
+    public void stop() {
+        beforeStop();
+
+        afterStop();
+    }
+
+    @Override
+    public void beforeStart() {
+
+    }
+
+    @Override
+    public void afterStart() {
+
+    }
+
+    @Override
+    public void beforeStop() {
+
+    }
+
+    @Override
+    public void afterStop() {
+
     }
 
 }

@@ -75,6 +75,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
         if (!new File(String.valueOf(dailyPaper.getTempFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getTempFilePath().get())).mkdirs();
         if (!new File(String.valueOf(dailyPaper.getJavaFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getJavaFilePath().get())).mkdirs();
         if (!new File(String.valueOf(dailyPaper.getLibFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLibFilePath().get())).mkdirs();
+        if (!new File(String.valueOf(dailyPaper.getPluginFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getPluginFilePath().get())).mkdirs();
 //        创建文件夹
 //        if (!new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLiveImageFilePath().get())).mkdirs();
 //        if (!new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).exists()) new File(String.valueOf(dailyPaper.getLogConfigFilePath().get())).mkdirs();

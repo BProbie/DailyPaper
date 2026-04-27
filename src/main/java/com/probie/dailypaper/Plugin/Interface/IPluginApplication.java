@@ -15,4 +15,29 @@ public interface IPluginApplication {
      * */
     void start(Stage stage);
 
+    /**
+     * 结束程序
+     * */
+    void stop();
+
+    /**
+     * 启动程序前
+     * */
+    void beforeStart();
+
+    /**
+     * 启动程序后
+     * */
+    void afterStart();
+
+    /**
+     * 结束程序前
+     * */
+    void beforeStop();
+
+    /**
+     * 结束程序后
+     * */
+    void afterStop();
+
 }

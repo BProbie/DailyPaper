@@ -210,26 +210,26 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         if (chatUserMessageLabel.getText().length() <= 10000) {
                             /// AI 回复
                             dailyPaper.getDailyPaperPool().submit(() -> {
-                                /// 解析输入
-                                Platform.runLater(() -> chatAgentMessageLabel.setText("解析输入中..."));
-                                StringBuilder currentText = new StringBuilder(chatUserMessageLabel.getText());
-                                if (String.valueOf(currentText).contains(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()))) {
-                                    String[] texts = String.valueOf(currentText).split(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()), -1);
-                                    for (int i = 0; i < texts.length; i++) {
-                                        File currentFile = new File(texts[i]);
-                                        String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
-                                        if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
-                                            String[] imageData = ImageAIAgentSiliconFlowAnalysis.getInstance().analysisImage(currentFile.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
-                                            String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
-                                            texts[i] = texts[i] + "(文件内容：" + imageDelineate + ")";
-                                        }
-                                    }
-                                    currentText = new StringBuilder(String.join(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()), texts));
-                                }
-                                dailyPaperData.getChatUserMessageArrayList().add(String.valueOf(currentText));
-
-                                /// 收集上下文
                                 try {
+                                    /// 解析输入
+                                    Platform.runLater(() -> chatAgentMessageLabel.setText("解析输入中..."));
+                                    StringBuilder currentText = new StringBuilder(chatUserMessageLabel.getText());
+                                    if (String.valueOf(currentText).contains(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()))) {
+                                        String[] texts = String.valueOf(currentText).split(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()), -1);
+                                        for (int i = 0; i < texts.length; i++) {
+                                            File currentFile = new File(texts[i]);
+                                            String format = currentFile.getName().contains(".") ? currentFile.getName().toLowerCase().substring(currentFile.getName().lastIndexOf(".")) : currentFile.getName().toLowerCase();
+                                            if (currentFile.exists() && ! currentFile.isDirectory() && dailyPaperData.getSupportImageFormat().contains(format)) {
+                                                String[] imageData = ImageAIAgentSiliconFlowAnalysis.getInstance().analysisImage(currentFile.getAbsolutePath(), String.valueOf(dailyPaperData.getPromptDelineateImagePrompt().get()));
+                                                String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
+                                                texts[i] = texts[i] + "(文件内容：" + imageDelineate + ")";
+                                            }
+                                        }
+                                        currentText = new StringBuilder(String.join(String.valueOf(dailyPaper.getUploadImageFullFilePathMark().get()), texts));
+                                    }
+                                    dailyPaperData.getChatUserMessageArrayList().add(String.valueOf(currentText));
+
+                                    /// 收集上下文
                                     Platform.runLater(() -> chatAgentMessageLabel.setText("收集上下文..."));
 
                                     /// 背景信息
@@ -671,7 +671,6 @@ public class DailyPaperEvent implements IDailyPaperEvent {
         });
 
         dailyPaperElement.getSettingButtonBarPluginButton().setOnAction(actionEvent -> {
-            dailyPaperFunction.showButtonInformation(dailyPaperElement.getSettingButtonBarPluginButton(), "期待");
             Plugin.getInstance().launch();
         });
     }

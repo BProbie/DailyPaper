@@ -439,6 +439,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "缓存文件路径", dailyPaper.getTempFilePath()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "Java环境路径", dailyPaper.getJavaFilePath()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "工库文件路径", dailyPaper.getLibFilePath()),
+                dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "插件文件路径", dailyPaper.getPluginFilePath()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "动态图片存放路径", dailyPaper.getLiveImageFilePath()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "日志文件存放路径", dailyPaper.getLogConfigFilePath()),
                 dailyPaperFunction.createTextFieldHBox(dailyPaperElement.getSettingInputScrollPaneVBox(), "动图配置文件名称", dailyPaper.getLiveImageConfigFileName()),

@@ -19,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.8";
+    private final String VERSION = "1.9";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -76,10 +76,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 文件参数
     private String KeyCurrentFilePath = "CurrentFilePath";
     private String KeyDailyPaperFilePath = "DailyPaperFilePath";
+
     private String KeyConfigFilePath = "ConfigFilePath";
     private String KeyTempFilePath = "TempFilePath";
     private String KeyJavaFilePath = "JavaFilePath";
     private String KeyLibFilePath = "LibFilePath";
+    private String KeyPluginFilePath = "PluginFilePath";
+
     private String KeyLiveImageFilePath = "LiveImageFilePath";
     private String KeyLogConfigFilePath = "LogConfigFilePath";
 
@@ -182,7 +185,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> SendMaxContent = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySendMaxContent(), 10000)));
     private SimpleObjectProperty<Object> SpawnImageSize = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageSize(), ((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getWidth()))+"x"+((int) Math.floor(MathSystem.getInstance().getFitDimension(ComputerSystem.getInstance().getDimension()).getHeight())))));
     private SimpleObjectProperty<Object> SpawnImageCount = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnImageCount(), 1));
-    private SimpleObjectProperty<Object> SpawnMaxTokens = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 100));
+    private SimpleObjectProperty<Object> SpawnMaxTokens = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeySpawnMaxTokens(), 1000));
 
     /// 标记参数
     private SimpleObjectProperty<Object> UploadImageFullFilePathMark = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeyUploadImageFullFilePathMark(), "#")));
@@ -194,12 +197,16 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /// 文件参数
     private SimpleObjectProperty<Object> CurrentFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyCurrentFilePath(), ComputerSystem.getInstance().getHere())));
     private SimpleObjectProperty<Object> DailyPaperFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyDailyPaperFilePath(), getCurrentFilePath().get() + File.separator + "DailyPaper")));
+
     private SimpleObjectProperty<Object> ConfigFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyConfigFilePath(), DailyPaperFilePath.get())));
     private SimpleObjectProperty<Object> TempFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyTempFilePath(), DailyPaperFilePath.get())));
     private SimpleObjectProperty<Object> JavaFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyJavaFilePath(), DailyPaperFilePath.get() + File.separator + "jdk-21.0.8")));
     private SimpleObjectProperty<Object> LibFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLibFilePath(), DailyPaperFilePath.get() + File.separator + "lib")));
+    private SimpleObjectProperty<Object> PluginFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyPluginFilePath(), DailyPaperFilePath.get() + File.separator + "Plugin")));
+
     private SimpleObjectProperty<Object> LiveImageFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageFilePath(), DailyPaperFilePath.get() + File.separator + "LiveImage")));
     private SimpleObjectProperty<Object> LogConfigFilePath = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLogConfigFilePath(), DailyPaperFilePath.get() + File.separator + "Log")));
+
     private SimpleObjectProperty<Object> LiveImageConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyLiveImageConfigFileName(), "liveImage.config")));
     private SimpleObjectProperty<Object> ParamConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeyParamConfigFileName(), "param.config")));
     private SimpleObjectProperty<Object> SettingConfigFileName = new SimpleObjectProperty<>(String.valueOf(SettingConfig.getInstance().getLocalDB().get(getKeySettingConfigFileName(), "setting.config")));
@@ -318,10 +325,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
         /// 文件参数
         SettingConfig.getInstance().getLocalDB().set(KeyCurrentFilePath, CurrentFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyDailyPaperFilePath, DailyPaperFilePath.get());
+
         SettingConfig.getInstance().getLocalDB().set(KeyConfigFilePath, ConfigFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyTempFilePath, TempFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyJavaFilePath, JavaFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyLibFilePath, LibFilePath.get());
+        SettingConfig.getInstance().getLocalDB().set(KeyPluginFilePath, PluginFilePath.get());
+
         SettingConfig.getInstance().getLocalDB().set(KeyLiveImageFilePath, LiveImageFilePath.get());
         SettingConfig.getInstance().getLocalDB().set(KeyLogConfigFilePath, LogConfigFilePath.get());
 
