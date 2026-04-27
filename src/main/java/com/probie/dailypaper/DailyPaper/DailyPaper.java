@@ -1,6 +1,5 @@
 package com.probie.dailypaper.DailyPaper;
 
-import com.probie.dailypaper.Plugin.Plugin;
 import lombok.Data;
 import java.io.File;
 import java.io.Closeable;
@@ -20,7 +19,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
      * DailyPaper 版本参数
      * */
     private final String NAME = "DailyPaper";
-    private final String VERSION = "1.7";
+    private final String VERSION = "1.8";
 
     /**
      * 维护一个懒加载的类单例对象
@@ -175,9 +174,9 @@ public class DailyPaper implements IDailyPaper, Closeable {
     private SimpleObjectProperty<Object> SendMaxMessage = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySendMaxMessage(), 10000)));
 
     /// web 请求参数
-    private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 180));
-    private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 180));
-    private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 180));
+    private SimpleObjectProperty<Object> ConnectTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyConnectTimeout(), 300));
+    private SimpleObjectProperty<Object> ReadTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyReadTimeout(), 300));
+    private SimpleObjectProperty<Object> WriteTimeout = new SimpleObjectProperty<>(ParamConfig.getInstance().getLocalDB().get(getKeyWriteTimeout(), 300));
 
     /// AI 生成参数
     private SimpleObjectProperty<Object> SendMaxContent = new SimpleObjectProperty<>(String.valueOf(ParamConfig.getInstance().getLocalDB().get(getKeySendMaxContent(), 10000)));

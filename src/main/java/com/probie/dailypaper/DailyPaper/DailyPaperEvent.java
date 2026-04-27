@@ -586,7 +586,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             String imageDelineate = imageData[0].isEmpty() ? imageData[1].isEmpty() ? "无" : imageData[1] : imageData[0];
                             String hobby = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnDailyWallpaperHobbyPrompt().get()).formatted(dailyPaperElement.getDailyWallpaperHobbyTextArea().getText(), imageDelineate))[0];
                             dailyPaperElement.getDailyWallpaperHobbyTextArea().setText(hobby);
-                            dailyPaper.getDailyImageHobby().set(hobby);
+                            dailyPaper.getDailyImageHobby().set(hobby.replaceAll("^[\\s\\n]+", "").replaceAll("[\\s\\n]+$", ""));
                         } catch (Exception ignored) {
                             Platform.runLater(() -> dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("分析超时"));
                             dailyPaperFunction.waitADelay(100);
