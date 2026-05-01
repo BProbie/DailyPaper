@@ -39,7 +39,7 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /**
      * DailyPaper 参值
      * */
-    private final ExecutorService dailyPaperPool = Executors.newFixedThreadPool(64);
+    private final ExecutorService dailyPaperPool = Executors.newFixedThreadPool(16);
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     /**
