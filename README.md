@@ -132,6 +132,144 @@
 
 
 
+# 项目结构
+
+```markdown
+DailyPaper/
+├── .gitignore
+├── .idea/
+├── .mvn/
+├── Key
+├── LICENSE
+├── mvnw
+├── mvnw.cmd
+├── out/
+├── pom.xml
+├── README.md
+├── res/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── probie/
+│   │   │           └── dailypaper/
+│   │   │               ├── Main.java
+│   │   │               ├── AIAgent/
+│   │   │               │   ├── AIAgent.java
+│   │   │               │   ├── Interface/
+│   │   │               │   │   ├── IAIAgent.java
+│   │   │               │   │   └── SiliconFlow/
+│   │   │               │   │       ├── IAIAgentSiliconFlow.java
+│   │   │               │   │       ├── IImageToTextAIAgentSiliconFlow.java
+│   │   │               │   │       ├── ITextToImageAIAgentSiliconFlow.java
+│   │   │               │   │       ├── ITextToTextAIAgentSiliconFlow.java
+│   │   │               │   │       └── Analysis/
+│   │   │               │   │           ├── IImageAIAgentSiliconFlowAnalysis.java
+│   │   │               │   │           └── ITextAIAgentSiliconFlowAnalysis.java
+│   │   │               │   └── SiliconFlow/
+│   │   │               │       ├── AIAgentSiliconFlow.java
+│   │   │               │       ├── ImageToTextAIAgentSiliconFlow.java
+│   │   │               │       ├── TextToImageAIAgentSiliconFlow.java
+│   │   │               │       ├── TextToTextAIAgentSiliconFlow.java
+│   │   │               │       └── Analysis/
+│   │   │               │           ├── ImageAIAgentSiliconFlowAnalysis.java
+│   │   │               │           └── TextAIAgentSiliconFlowAnalysis.java
+│   │   │               ├── Config/
+│   │   │               │   ├── Config.java
+│   │   │               │   ├── LiveImageConfig.java
+│   │   │               │   ├── LogConfig.java
+│   │   │               │   ├── ParamConfig.java
+│   │   │               │   ├── RenewConfig.java
+│   │   │               │   ├── SettingConfig.java
+│   │   │               │   └── Interface/
+│   │   │               │       ├── IConfig.java
+│   │   │               │       ├── ILiveImageConfig.java
+│   │   │               │       ├── ILogConfig.java
+│   │   │               │       ├── IParamConfig.java
+│   │   │               │       ├── IRenewConfig.java
+│   │   │               │       └── ISettingConfig.java
+│   │   │               ├── DailyPaper/
+│   │   │               │   ├── DailyPaper.java
+│   │   │               │   ├── DailyPaperApplication.java
+│   │   │               │   ├── DailyPaperData.java
+│   │   │               │   ├── DailyPaperElement.java
+│   │   │               │   ├── DailyPaperEvent.java
+│   │   │               │   ├── DailyPaperFunction.java
+│   │   │               │   ├── DailyPaperStyle.java
+│   │   │               │   └── Interface/
+│   │   │               │       ├── IDailyPaper.java
+│   │   │               │       ├── IDailyPaperApplication.java
+│   │   │               │       ├── IDailyPaperData.java
+│   │   │               │       ├── IDailyPaperElement.java
+│   │   │               │       ├── IDailyPaperEvent.java
+│   │   │               │       ├── IDailyPaperFunction.java
+│   │   │               │       └── IDailyPaperStyle.java
+│   │   │               ├── Enum/
+│   │   │               │   ├── Date.java
+│   │   │               │   └── Interface/
+│   │   │               │       └── IData.java
+│   │   │               ├── Exception/
+│   │   │               │   ├── DailyPaperException.java
+│   │   │               │   └── Interface/
+│   │   │               │       └── IDailyPaperException.java
+│   │   │               ├── Plugin/
+│   │   │               │   ├── Plugin.java
+│   │   │               │   ├── PluginApplication.java
+│   │   │               │   ├── PluginData.java
+│   │   │               │   ├── PluginElement.java
+│   │   │               │   ├── PluginEvent.java
+│   │   │               │   ├── PluginFunction.java
+│   │   │               │   ├── PluginStyle.java
+│   │   │               │   └── Interface/
+│   │   │               │       ├── IPlugin.java
+│   │   │               │       ├── IPluginApplication.java
+│   │   │               │       ├── IPluginData.java
+│   │   │               │       ├── IPluginElement.java
+│   │   │               │       ├── IPluginEvent.java
+│   │   │               │       ├── IPluginFunction.java
+│   │   │               │       └── IPluginStyle.java
+│   │   │               ├── Property/
+│   │   │               │   ├── SelectableLabel.java
+│   │   │               │   ├── SimpleSupplierObjectProperty.java
+│   │   │               │   └── Interface/
+│   │   │               │       ├── ISelectableLabel.java
+│   │   │               │       └── ISimpleSupplierObjectProperty.java
+│   │   │               └── System/
+│   │   │                   ├── ComputerSystem.java
+│   │   │                   ├── FileSystem.java
+│   │   │                   ├── GIFSystem.java
+│   │   │                   ├── ImageSystem.java
+│   │   │                   ├── MathSystem.java
+│   │   │                   ├── NetworkSystem.java
+│   │   │                   ├── PictureSystem.java
+│   │   │                   └── Interface/
+│   │   │                       ├── IComputerSystem.java
+│   │   │                       ├── IFileSystem.java
+│   │   │                       ├── IGIFSystem.java
+│   │   │                       ├── IImageSystem.java
+│   │   │                       ├── IMathSystem.java
+│   │   │                       ├── INetworkSystem.java
+│   │   │                       ├── IPictureSystem.java
+│   │   │                       └── Native/
+│   │   │                           └── User32.java
+│   │   └── resources/
+│   │       ├── com/
+│   │       │   └── probie/
+│   │       │       └── dailypaper/
+│   │       │           └── DailyPaper.fxml
+│   │       └── META-INF/
+│   │           └── MANIFEST.MF
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── probie/
+│                   └── dailypaper/
+│                       └── DailyPaper/
+└── target/
+```
+
+
+
 # 技术细节
 
 ## Chat
