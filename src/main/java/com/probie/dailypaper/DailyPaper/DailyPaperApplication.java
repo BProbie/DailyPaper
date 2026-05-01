@@ -188,6 +188,7 @@ public class DailyPaperApplication extends Application implements IDailyPaperApp
     @Override
     public void afterStop() {
         System.gc();
+//        直截关闭
 //        System.exit(0);
     }
 

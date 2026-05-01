@@ -26,7 +26,7 @@ public interface IComputerSystem {
             case YEAR -> Calendar.getInstance().get(Calendar.YEAR);
             case MONTH -> Calendar.getInstance().get(Calendar.MONTH) + 1;
             case DAY -> Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-            case HOUR -> Calendar.getInstance().get(Calendar.HOUR);
+            case HOUR -> Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
             case MINUTE -> Calendar.getInstance().get(Calendar.MINUTE);
             case SECONDE -> Calendar.getInstance().get(Calendar.SECOND);
             case SUNDAY -> LocalDate.now().getDayOfWeek().getValue();
