@@ -2,17 +2,17 @@
 
 ### 软件名称：DailyPaper（Daily+AI+Wallpaper=AI赋能的日常桌面壁纸工具）
 
-### 软件版本：2.0（稳定版）
+### 软件版本：v2.0.0（稳定版）
 
 ### 开发语言：Java（JDK-21.0.8）
 
 ### 开发时间：2025年11月01日 ~ 至今持续更新！
 
-### 开源地址：https://github.com/BProbie/DailyPaper/
+### 开源地址（Github）：https://github.com/BProbie/DailyPaper/
 
-### 开源协议：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/LICENSE/
+### 开源协议（MIT）：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/LICENSE/
 
-### 下载地址：https://github.com/BProbie/DailyPaper/releases/tag/2.0/
+### 下载地址（Github）：https://github.com/BProbie/DailyPaper/releases/tag/2.0/
 
 ### 依赖工具：Maven
 
@@ -135,141 +135,137 @@
 # ⭐项目结构
 
 ```markdown
-DailyPaper/ # 根
+DailyPaper # 根
+├── .github
 ├── .gitignore
-├── .idea/ # idea配置，已删减私有配置，仅保留公有配置，便于依赖配置
-├── .mvn/
-├── Key # 免费密钥，已高度加密深度混淆，且已具备反调试机制
-├── LICENSE # MIT开源协议，其中对于AI-Agent的API-KEY仅提供使用权，且不支持破译、滥用、所有等权益
+├── .idea # 已在仓库中删减
+├── .mvn # 已在仓库中删除
+├── Key # 免费AI-API密钥，已高度加密深度编码反复混淆，且已具备反调试机制
+├── LICENSE # MIT开源协议
 ├── mvnw
 ├── mvnw.cmd
-├── out/ # 代码打包，提供小体积代码测试包，便于测试运行
+├── out # 已在仓库中删除
 ├── pom.xml
-├── README.md # README介绍文档
-├── res/
-├── src/ # 源码
-│   ├── main/
-│   │   ├── java/ # 源
-│   │   │   ├── com/
-│   │   │   │   └── probie/
-│   │   │   │       └── dailypaper/
-│   │   │   │           ├── AIAgent/
-│   │   │   │           │   ├── AIAgent.java
-│   │   │   │           │   ├── Interface/
-│   │   │   │           │   │   ├── IAIAgent.java
-│   │   │   │           │   │   └── SiliconFlow/
-│   │   │   │           │   │       ├── IAIAgentSiliconFlow.java
-│   │   │   │           │   │       ├── IImageToTextAIAgentSiliconFlow.java
-│   │   │   │           │   │       ├── ITextToImageAIAgentSiliconFlow.java
-│   │   │   │           │   │       ├── ITextToTextAIAgentSiliconFlow.java
-│   │   │   │           │   │       └── Analysis/
-│   │   │   │           │   │           ├── IImageAIAgentSiliconFlowAnalysis.java
-│   │   │   │           │   │           └── ITextAIAgentSiliconFlowAnalysis.java
-│   │   │   │           │   └── SiliconFlow/
-│   │   │   │           │       ├── AIAgentSiliconFlow.java
-│   │   │   │           │       ├── ImageToTextAIAgentSiliconFlow.java
-│   │   │   │           │       ├── TextToImageAIAgentSiliconFlow.java
-│   │   │   │           │       ├── TextToTextAIAgentSiliconFlow.java
-│   │   │   │           │       └── Analysis/
-│   │   │   │           │           ├── ImageAIAgentSiliconFlowAnalysis.java
-│   │   │   │           │           └── TextAIAgentSiliconFlowAnalysis.java
-│   │   │   │           ├── Config/
-│   │   │   │           │   ├── Config.java
-│   │   │   │           │   ├── LiveImageConfig.java
-│   │   │   │           │   ├── LogConfig.java
-│   │   │   │           │   ├── ParamConfig.java
-│   │   │   │           │   ├── RenewConfig.java
-│   │   │   │           │   ├── SettingConfig.java
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       ├── IConfig.java
-│   │   │   │           │       ├── ILiveImageConfig.java
-│   │   │   │           │       ├── ILogConfig.java
-│   │   │   │           │       ├── IParamConfig.java
-│   │   │   │           │       ├── IRenewConfig.java
-│   │   │   │           │       └── ISettingConfig.java
-│   │   │   │           ├── DailyPaper/
-│   │   │   │           │   ├── DailyPaper.java
-│   │   │   │           │   ├── DailyPaperApplication.java
-│   │   │   │           │   ├── DailyPaperData.java
-│   │   │   │           │   ├── DailyPaperElement.java
-│   │   │   │           │   ├── DailyPaperEvent.java
-│   │   │   │           │   ├── DailyPaperFunction.java
-│   │   │   │           │   ├── DailyPaperStyle.java
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       ├── IDailyPaper.java
-│   │   │   │           │       ├── IDailyPaperApplication.java
-│   │   │   │           │       ├── IDailyPaperData.java
-│   │   │   │           │       ├── IDailyPaperElement.java
-│   │   │   │           │       ├── IDailyPaperEvent.java
-│   │   │   │           │       ├── IDailyPaperFunction.java
-│   │   │   │           │       └── IDailyPaperStyle.java
-│   │   │   │           ├── Enum/
-│   │   │   │           │   ├── Date.java
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       └── IData.java
-│   │   │   │           ├── Exception/
-│   │   │   │           │   ├── DailyPaperException.java
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       └── IDailyPaperException.java
-│   │   │   │           ├── Main.java
-│   │   │   │           ├── Plugin/
-│   │   │   │           │   ├── Plugin.java
-│   │   │   │           │   ├── PluginApplication.java
-│   │   │   │           │   ├── PluginData.java
-│   │   │   │           │   ├── PluginElement.java
-│   │   │   │           │   ├── PluginEvent.java
-│   │   │   │           │   ├── PluginFunction.java
-│   │   │   │           │   ├── PluginStyle.java
-│   │   │   │           │   ├── API/
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       ├── IPlugin.java
-│   │   │   │           │       ├── IPluginApplication.java
-│   │   │   │           │       ├── IPluginData.java
-│   │   │   │           │       ├── IPluginElement.java
-│   │   │   │           │       ├── IPluginEvent.java
-│   │   │   │           │       ├── IPluginFunction.java
-│   │   │   │           │       ├── IPluginStyle.java
-│   │   │   │           │       └── API/
-│   │   │   │           │           └── IDailyPaperPluginAPI.java
-│   │   │   │           ├── Property/
-│   │   │   │           │   ├── SelectableLabel.java
-│   │   │   │           │   ├── SimpleSupplierObjectProperty.java
-│   │   │   │           │   └── Interface/
-│   │   │   │           │       ├── ISelectableLabel.java
-│   │   │   │           │       └── ISimpleSupplierObjectProperty.java
-│   │   │   │           └── System/
-│   │   │   │               ├── ComputerSystem.java
-│   │   │   │               ├── FileSystem.java
-│   │   │   │               ├── GIFSystem.java
-│   │   │   │               ├── ImageSystem.java
-│   │   │   │               ├── MathSystem.java
-│   │   │   │               ├── NetworkSystem.java
-│   │   │   │               ├── PictureSystem.java
-│   │   │   │               └── Interface/
-│   │   │   │                   ├── IComputerSystem.java
-│   │   │   │                   ├── IFileSystem.java
-│   │   │   │                   ├── IGIFSystem.java
-│   │   │   │                   ├── IImageSystem.java
-│   │   │   │                   ├── IMathSystem.java
-│   │   │   │                   ├── INetworkSystem.java
-│   │   │   │                   ├── IPictureSystem.java
-│   │   │   │                   └── Native/
-│   │   │   │                       └── User32.java
-│   │   │   └── module-info.java
-│   │   └── resources/ # 资源
-│   │       ├── com/
-│   │       │   └── probie/
-│   │       │       └── dailypaper/
-│   │       │           └── DailyPaper.fxml
-│   │       └── META-INF/
+├── README.md
+├── res
+├── src # 源码
+│   ├── main
+│   │   ├── java # 源
+│   │   │   ├── module-info.java
+│   │   │   └── com
+│   │   │       └── probie
+│   │   │           └── dailypaper
+│   │   │               ├── Main.java
+│   │   │               ├── aiagent
+│   │   │               │   ├── AIAgent.java
+│   │   │               │   ├── api
+│   │   │               │   │   ├── IAIAgent.java
+│   │   │               │   │   └── siliconflow
+│   │   │               │   │       ├── IAIAgentSiliconFlow.java
+│   │   │               │   │       ├── IImageToTextAIAgentSiliconFlow.java
+│   │   │               │   │       ├── ITextToImageAIAgentSiliconFlow.java
+│   │   │               │   │       ├── ITextToTextAIAgentSiliconFlow.java
+│   │   │               │   │       └── analysis
+│   │   │               │   │           ├── IImageAIAgentSiliconFlowAnalysis.java
+│   │   │               │   │           └── ITextAIAgentSiliconFlowAnalysis.java
+│   │   │               │   └── siliconflow
+│   │   │               │       ├── AIAgentSiliconFlow.java
+│   │   │               │       ├── ImageToTextAIAgentSiliconFlow.java
+│   │   │               │       ├── TextToImageAIAgentSiliconFlow.java
+│   │   │               │       ├── TextToTextAIAgentSiliconFlow.java
+│   │   │               │       └── analysis
+│   │   │               │           ├── ImageAIAgentSiliconFlowAnalysis.java
+│   │   │               │           └── TextAIAgentSiliconFlowAnalysis.java
+│   │   │               ├── config
+│   │   │               │   ├── Config.java
+│   │   │               │   ├── LiveImageConfig.java
+│   │   │               │   ├── LogConfig.java
+│   │   │               │   ├── ParamConfig.java
+│   │   │               │   ├── RenewConfig.java
+│   │   │               │   ├── SettingConfig.java
+│   │   │               │   └── api
+│   │   │               │       ├── IConfig.java
+│   │   │               │       ├── ILiveImageConfig.java
+│   │   │               │       ├── ILogConfig.java
+│   │   │               │       ├── IParamConfig.java
+│   │   │               │       ├── IRenewConfig.java
+│   │   │               │       └── ISettingConfig.java
+│   │   │               ├── dailypaper
+│   │   │               │   ├── DailyPaper.java
+│   │   │               │   ├── DailyPaperApplication.java
+│   │   │               │   ├── DailyPaperData.java
+│   │   │               │   ├── DailyPaperElement.java
+│   │   │               │   ├── DailyPaperEvent.java
+│   │   │               │   ├── DailyPaperFunction.java
+│   │   │               │   ├── DailyPaperStyle.java
+│   │   │               │   └── api
+│   │   │               │       ├── IDailyPaper.java
+│   │   │               │       ├── IDailyPaperApplication.java
+│   │   │               │       ├── IDailyPaperData.java
+│   │   │               │       ├── IDailyPaperElement.java
+│   │   │               │       ├── IDailyPaperEvent.java
+│   │   │               │       ├── IDailyPaperFunction.java
+│   │   │               │       └── IDailyPaperStyle.java
+│   │   │               ├── enums
+│   │   │               │   ├── Date.java
+│   │   │               │   └── api
+│   │   │               │       └── IData.java
+│   │   │               ├── exceptions
+│   │   │               │   ├── DailyPaperException.java
+│   │   │               │   └── Interface
+│   │   │               │       └── IDailyPaperException.java
+│   │   │               ├── plugin
+│   │   │               │   ├── Plugin.java
+│   │   │               │   ├── PluginApplication.java
+│   │   │               │   ├── PluginData.java
+│   │   │               │   ├── PluginElement.java
+│   │   │               │   ├── PluginEvent.java
+│   │   │               │   ├── PluginFunction.java
+│   │   │               │   ├── PluginStyle.java
+│   │   │               │   ├── api
+│   │   │               │   │   ├── IPlugin.java
+│   │   │               │   │   ├── IPluginApplication.java
+│   │   │               │   │   ├── IPluginData.java
+│   │   │               │   │   ├── IPluginElement.java
+│   │   │               │   │   ├── IPluginEvent.java
+│   │   │               │   │   ├── IPluginFunction.java
+│   │   │               │   │   ├── IPluginStyle.java
+│   │   │               │   │   └── openapi
+│   │   │               │   │       └── IDailyPaperPluginAPI.java
+│   │   │               │   └── openapi
+│   │   │               ├── property
+│   │   │               │   ├── SelectableLabel.java
+│   │   │               │   ├── SimpleSupplierObjectProperty.java
+│   │   │               │   └── api
+│   │   │               │       ├── ISelectableLabel.java
+│   │   │               │       └── ISimpleSupplierObjectProperty.java
+│   │   │               └── system
+│   │   │                   ├── ComputerSystem.java
+│   │   │                   ├── FileSystem.java
+│   │   │                   ├── GIFSystem.java
+│   │   │                   ├── ImageSystem.java
+│   │   │                   ├── MathSystem.java
+│   │   │                   ├── NetworkSystem.java
+│   │   │                   ├── PictureSystem.java
+│   │   │                   └── api
+│   │   │                       ├── IComputerSystem.java
+│   │   │                       ├── IFileSystem.java
+│   │   │                       ├── IGIFSystem.java
+│   │   │                       ├── IImageSystem.java
+│   │   │                       ├── IMathSystem.java
+│   │   │                       ├── INetworkSystem.java
+│   │   │                       ├── IPictureSystem.java
+│   │   │                       └── natives
+│   │   │                           └── User32.java
+│   │   └── resources # 资源
+│   │       ├── com/probie/dailypaper
+│   │       │   └── DailyPaper.fxml
+│   │       └── META-INF
 │   │           └── MANIFEST.MF
-│   └── test/ # 测试，暂不提供具体测试单元
-│       └── java/
-│           └── com/
-│               └── probie/
-│                   └── dailypaper/
-│                       └── DailyPaper/
-└── target/
+│   └── test # 测试
+│       └── java/com/probie/dailypaper
+│           └── MainTest.java
+└── target # 已在仓库中删除
 ```
 
 ### 项目整体
@@ -280,11 +276,11 @@ DailyPaper/ # 根
 
 ##### 遵循类对象懒加载的设计原则，避免大量数据资源同时初始化造成集中卡顿。
 
-##### 基于主干开发（TBD），软件只维护当前的最新版本，且暂不提供具体的测试单元。
+##### 基于主干开发（TBD），软件只维护当前的最新版本，不纠结历史版本和旧版问题。
 
 ##### 面向接口编程，<u>【函数调用规则基本存在于接口类的注释文档中】</u>，大多数<u>【功能性宽泛的通用代码都以继承接口类内的默认方法获得】</u>，功能性具体的特定代码都以继承接口进而重写方法实现。
 
-##### 本项目的定位向工程化、工业化、企业化发展，因考虑到<u>【当今（例如JDK）以及未来会有很多依赖都需要指定特定的版本号】</u>，所以在<u>【当前项目文件结构中选择性地保留了`.idea`和`out`文件夹】</u>，以便<u>【贡献者或合作者能够开箱即用地继续开发本项目或者直接对本项目进行运行测试】</u>。
+##### 本项目的定位向工程化、工业化、企业化发展，因考虑到<u>【当今（例如JDK）以及未来会有很多依赖都需要指定特定的版本号】</u>，所以在<u>【当前项目文件结构中选择性地保留了`.idea`文件夹】</u>，以便<u>【贡献者或合作者能够开箱即用地配置项目环境以及继续开发软件程序】</u>。
 
 
 

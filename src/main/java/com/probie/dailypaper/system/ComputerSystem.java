@@ -1,0 +1,36 @@
+package com.probie.dailypaper.system;
+
+import java.awt.*;
+import com.probie.dailypaper.system.api.IComputerSystem;
+
+public class ComputerSystem extends NetworkSystem implements IComputerSystem {
+
+    /**
+     * 维护一个懒加载的类单例对象
+     * */
+    private volatile static ComputerSystem INSTANCE;
+
+    /**
+     * 获取一个懒加载的类单例对象
+     * */
+    public synchronized static ComputerSystem getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ComputerSystem();
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * Computer 的一些相关参数
+     * */
+    private Dimension dimension;
+
+    @Override
+    public Dimension getDimension() {
+        if (dimension == null) {
+            dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        }
+        return dimension;
+    }
+
+}

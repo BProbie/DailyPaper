@@ -20,9 +20,9 @@ module com.probie.dailypaper {
     requires static lombok;
 
     exports com.probie.dailypaper;
-    exports com.probie.dailypaper.DailyPaper;
+    exports com.probie.dailypaper.dailypaper;
 
     opens com.probie.dailypaper to javafx.fxml;
-    opens com.probie.dailypaper.DailyPaper to javafx.fxml;
+    opens com.probie.dailypaper.dailypaper to javafx.fxml;
 
 }

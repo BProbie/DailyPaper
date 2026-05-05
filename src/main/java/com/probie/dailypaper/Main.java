@@ -10,6 +10,6 @@ package com.probie.dailypaper;
 
 public class Main {
     public static void main(String[] args) {
-        com.probie.dailypaper.DailyPaper.DailyPaper.getInstance().launch(args);
+        com.probie.dailypaper.dailypaper.DailyPaper.getInstance().launch(args);
     }
 }
