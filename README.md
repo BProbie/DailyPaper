@@ -12,7 +12,7 @@
 
 ### 开源协议（MIT）：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/LICENSE/
 
-### 下载地址（Github）：https://github.com/BProbie/DailyPaper/releases/tag/2.0/
+### 下载地址（Github）：https://github.com/BProbie/DailyPaper/releases/tag/2.0.0/
 
 ### 依赖工具：Maven
 
