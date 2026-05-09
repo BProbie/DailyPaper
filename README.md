@@ -1,4 +1,4 @@
-# ⭐原创开源应用软件开发信息
+# ⭐原创开源软件
 
 ### 软件名称：DailyPaper（Daily+AI+Wallpaper=AI赋能的日常桌面壁纸工具）
 
