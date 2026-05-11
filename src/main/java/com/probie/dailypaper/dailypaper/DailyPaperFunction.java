@@ -1,6 +1,5 @@
 package com.probie.dailypaper.dailypaper;
 
-import com.probie.renew.renew.Renew;
 import lombok.Data;
 import java.io.File;
 import javafx.scene.Node;
@@ -10,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.HBox;
 import javafx.application.Platform;
+import com.probie.renew.renew.Renew;
 import java.awt.image.BufferedImage;
 import com.probie.dailypaper.system.ImageSystem;
 import com.probie.dailypaper.config.RenewConfig;
@@ -137,12 +137,12 @@ public class DailyPaperFunction implements IDailyPaperFunction {
         return false;
 
 //        RENEW自带的更新方法
-//        return Renew.getInstance()
-//                .setJavaFilePath(dailyPaper.getJavaFilePath().get() + File.separator + "bin" + File.separator + "java")
-//                .setRenewFilePath(dailyPaper.getRenewRenewLocalFilePath().get() + File.separator + dailyPaper.getRenewRenewLocalFileName().get())
-//                .setFullFileUrl(dailyPaper.getDailyPaperRenewUri().get())
-//                .setFullFilePath(dailyPaper.getDailyPaperRenewLocalFilePath().get() + File.separator + dailyPaper.getDailyPaperRenewLocalFileName().get())
-//                .setIsOpen(dailyPaper.getDailyPaperRenewAutoOpen().get())
+//        return Renew.builder(String.valueOf(dailyPaper.getDailyPaperRenewUri().get()))
+//                .javaFilePath(dailyPaper.getJavaFilePath().get() + File.separator + "bin" + File.separator + "java")
+//                .renewFilePath(dailyPaper.getRenewRenewLocalFilePath().get() + File.separator + dailyPaper.getRenewRenewLocalFileName().get())
+//                .fullFilePath(dailyPaper.getDailyPaperRenewLocalFilePath().get() + File.separator + dailyPaper.getDailyPaperRenewLocalFileName().get())
+//                .isOpen(Boolean.parseBoolean(String.valueOf(dailyPaper.getDailyPaperRenewAutoOpen().get())))
+//                .build()
 //                .renew();
         
     }
