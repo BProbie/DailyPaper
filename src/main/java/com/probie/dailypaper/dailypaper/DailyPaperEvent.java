@@ -292,7 +292,7 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                                     else {
                                         Platform.runLater(() -> chatAgentMessageLabel.setText("图片生成中..."));
 
-                                        String[] result = TextAIAgentSiliconFlowAnalysis.getInstance().analysisText(String.valueOf(dailyPaperData.getPromptSpawnImageResultPrompt().get()) + content);
+                                        String[] result = TextToTextAIAgentSiliconFlow.getInstance().turnTextToText(String.valueOf(dailyPaperData.getPromptSpawnImageResultPrompt().get()) + content);
 
                                         HBox chatPaneAgentMessageSetWallpaperButtonBar = new HBox();
                                         HBox chatPaneAgentMessageDownloadImageButtonBar = new HBox();

@@ -29,9 +29,13 @@ public class DailyPaper implements IDailyPaper, Closeable {
     /**
      * 获取一个懒加载的类单例对象
      * */
-    public synchronized static DailyPaper getInstance() {
+    public static DailyPaper getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new DailyPaper();
+            synchronized (DailyPaper.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new DailyPaper();
+                }
+            }
         }
         return INSTANCE;
     }
