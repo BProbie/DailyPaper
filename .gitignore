@@ -1,42 +1,354 @@
-### DIY ###
-DailyPaper/
+# ------------------------------
+# 0. 自定义产物
+# ------------------------------
+.idea/
 out/
 
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ------------------------------
+# 1. Java 编译产物
+# ------------------------------
+# 所有层级的 class 文件
+**/*.class
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
+# 字节码缓存
+**/*.ctxt
+
+# 打包文件（注意：如果需要提交第三方依赖 jar，请注释掉这行）
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# JVM 崩溃日志
+hs_err_pid*
+replay_pid*
+hs_err_*.log
+replay_*.log
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# ------------------------------
+# 2. Maven 构建工具
+# ------------------------------
+# 所有层级的 target 目录（多模块项目适用）
+**/target/
+target/
+
+# Maven 包装器（保留 wrapper 以确保团队使用统一版本）
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# Maven 本地仓库缓存
+.m2/repository/
+.m2/settings.xml
+
+# Maven 生成的站点文档
+**/target/site/
+**/target/apidocs/
+
+# ------------------------------
+# 3. Gradle 构建工具
+# ------------------------------
+# 所有层级的 build 目录
+**/build/
+build/
+
+# Gradle 缓存
+.gradle/
+**/.gradle/
+
+# Gradle 包装器（保留 wrapper 以确保团队使用统一版本）
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# Gradle 生成的日志
+gradle-app.setting
+*.gradle.kts.bak
+
+# ------------------------------
+# 4. Ant 构建工具
+# ------------------------------
+# Ant 输出目录
+ant_build/
+dist/
+lib/
+
+# Ant 配置备份
+build.xml.bak
+
+# ------------------------------
+# 5. Ivy 依赖管理
+# ------------------------------
+.ivy/
+.ivyrepo/
+ivy-*.xml
+
+# ------------------------------
+# 6. 测试相关
+# ------------------------------
+# JUnit / TestNG 测试报告
+**/test-output/
+**/surefire-reports/
+**/failsafe-reports/
+
+# 测试覆盖率报告 (JaCoCo, Cobertura)
+**/jacoco.exec
+**/jacoco/
+**/coverage/
+**/cobertura/
+
+# 测试临时文件
+**/test-tmp/
+**/test-data/
+
+# ------------------------------
+# 7. 文档生成
+# ------------------------------
+# Javadoc
+**/apidocs/
+**/javadoc/
+
+# Asciidoctor
+**/build/docs/
+**/asciidoc/
+*.asc
+!README.asc
+!CHANGELOG.asc
+
+# Markdown 生成的 HTML
+*.html
+*.pdf
+
+# ------------------------------
+# 8. IntelliJ IDEA / JetBrains 系列 IDE
+# ------------------------------
+# 项目配置目录
+.idea/
+**/.idea/
+
+# 模块文件
 *.iml
 *.ipr
+*.iws
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
+# 编译输出目录
+out/
+**/out/
+
+# 运行时配置（如果团队需要共享运行配置，请注释掉这行）
+.idea/runConfigurations/
+
+# 代码样式配置（如果团队需要统一代码样式，请注释掉这行）
+.idea/codeStyles/
+
+# 本地历史记录
+.idea/localHistory/
+
+# 缓存文件
+.idea/caches/
+.idea/shelf/
+
+# ------------------------------
+# 9. Eclipse IDE
+# ------------------------------
+# 项目配置文件
 .project
-.settings
+.classpath
+.settings/
+**/.settings/
+
+# 编译输出目录
+bin/
+**/bin/
+
+# Eclipse 工作区
+.metadata/
+.recommenders/
+
+# Eclipse 插件配置
 .springBeans
-.sts4-cache
+.factorypath
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# ------------------------------
+# 10. VS Code 编辑器
+# ------------------------------
+# 工作区配置
 .vscode/
+**/.vscode/
 
-### Mac OS ###
+# 保留团队共享的配置（如果需要，请取消注释）
+# !.vscode/settings.json
+# !.vscode/extensions.json
+# !.vscode/launch.json
+# !.vscode/tasks.json
+
+# ------------------------------
+# 11. NetBeans IDE
+# ------------------------------
+nbproject/
+**/nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+nbactions.xml
+nb-configuration.xml
+
+# ------------------------------
+# 12. 操作系统相关文件
+# ------------------------------
+# Mac OS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.lnk
+*.url
+
+# Linux
+*~
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+*.cache
+
+# ------------------------------
+# 13. 日志与临时文件
+# ------------------------------
+# 日志文件
+*.log
+**/*.log
+logs/
+**/logs/
+nohup.out
+catalina.out
+
+# 临时文件
+tmp/
+**/tmp/
+temp/
+**/temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# 编辑器临时文件
+*.swp
+*.swo
+*~
+.#*
+
+# ------------------------------
+# 14. 敏感信息与本地配置
+# ------------------------------
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env.*.local
+
+# 本地配置文件
+local.properties
+**/local.properties
+application-local.yml
+application-local.yaml
+application-local.properties
+**/application-*.yml
+**/application-*.properties
+!application.yml
+!application.properties
+
+# 密钥与证书
+*.key
+*.pem
+*.pfx
+*.jks
+*.keystore
+*.truststore
+
+# 数据库配置
+db.properties
+database.properties
+jdbc.properties
+
+# ------------------------------
+# 15. Spring Boot 特定
+# ------------------------------
+# Spring Boot 运行时文件
+*.pid
+*.pid.bak
+*.seed
+*.lck
+
+# Spring Boot DevTools
+spring-boot-devtools.properties
+
+# Spring Boot 打包临时目录
+**/BOOT-INF/
+**/META-INF/
+
+# ------------------------------
+# 16. 其他常见框架
+# ------------------------------
+# Hibernate
+hibernate.properties
+hibernate.cfg.xml
+
+# MyBatis
+mybatis-config.xml
+
+# Log4j / SLF4J
+log4j.properties
+logback.xml
+logback-spring.xml
+
+# ------------------------------
+# 17. 其他通用忽略项
+# ------------------------------
+# 版本控制备份
+*.orig
+*.rej
+
+# 压缩文件
+*.7z
+*.dmg
+*.gz
+*.iso
+*.rar
+*.tar
+*.zip
+
+# 虚拟机文件
+*.vmx
+*.vmdk
+*.vmsd
+*.vmxf
+
+# Docker 本地配置
+docker-compose.override.yml
+docker-compose.local.yml
+
+# 本地脚本
+*.sh
+*.bat
+*.cmd
+!*.sh.example
+!*.bat.example
