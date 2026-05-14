@@ -139,12 +139,13 @@ DailyPaper # 根
 ├── .github
 ├── .gitignore
 ├── .idea # 已在仓库中删减
-├── .mvn # 已在仓库中删除
+├── .mvn
 ├── Key # 免费AI-API密钥，已高度加密深度编码反复混淆，且已具备反调试机制
 ├── LICENSE # MIT开源协议
 ├── mvnw
 ├── mvnw.cmd
 ├── out # 已在仓库中删除
+├── scripts # 已在仓库中删除
 ├── pom.xml
 ├── README.md
 ├── res
