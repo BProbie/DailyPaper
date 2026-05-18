@@ -214,7 +214,7 @@ DailyPaper # 根
 │   │   │               │       └── IData.java
 │   │   │               ├── exceptions
 │   │   │               │   ├── DailyPaperException.java
-│   │   │               │   └── Interface
+│   │   │               │   └── api
 │   │   │               │       └── IDailyPaperException.java
 │   │   │               ├── plugin
 │   │   │               │   ├── Plugin.java

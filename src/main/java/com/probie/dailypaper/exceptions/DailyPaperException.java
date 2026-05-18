@@ -1,6 +1,6 @@
 package com.probie.dailypaper.exceptions;
 
-import com.probie.dailypaper.exceptions.Interface.IDailyPaperException;
+import com.probie.dailypaper.exceptions.api.IDailyPaperException;
 
 public class DailyPaperException extends RuntimeException implements IDailyPaperException {
 
