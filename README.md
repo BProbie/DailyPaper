@@ -145,7 +145,7 @@ DailyPaper # 根
 ├── mvnw
 ├── mvnw.cmd
 ├── out # 已在仓库中删除
-├── scripts # 已在仓库中删除
+├── scripts # 脚本程序
 ├── docs # 文本文档
 ├── pom.xml
 ├── README.md
