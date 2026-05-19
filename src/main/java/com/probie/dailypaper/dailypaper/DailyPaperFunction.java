@@ -70,14 +70,14 @@ public class DailyPaperFunction implements IDailyPaperFunction {
             do {
                 for (int i = 0; i < imagesWallPaperFullFilePath.length; i++) {
                     ImageSystem.getInstance().setWallPaper(imagesWallPaperFullFilePath[i]);
+                    String delay = String.valueOf(dailyPaper.getLiveImagePlaySpeed().get());
+                    if (delay == null || !delay.matches("\\d+")) {
+                        delay = "1";
+                    }
                     try {
-                        String delay = String.valueOf(dailyPaper.getLiveImagePlaySpeed().get());
-                        if (delay == null || !delay.matches("\\d+")) {
-                            delay = "10";
-                        }
                         Thread.sleep(imagesWallpaperSpeed[i] / Integer.parseInt(delay));
-                    } catch (Exception exception) {
-                        throw new RuntimeException(exception);
+                    } catch (InterruptedException interruptedException) {
+                        throw new RuntimeException(interruptedException);
                     }
                     if (!Boolean.parseBoolean(String.valueOf(dailyPaperData.getIsLiveWallpaperShowing().get()))) {
                         break;
