@@ -22,11 +22,11 @@
 
 依赖技术：
 
-* EasyDB（**💎本人原创开源项目：https://github.com/BProbie/EasyDB/**
+* EasyDB(**💎本人原创开源项目：https://github.com/BProbie/EasyDB/**)
 
-* Encryption（**💎本人原创开源项目：https://github.com/BProbie/Encryption/**
+* Encryption(**💎本人原创开源项目：https://github.com/BProbie/Encryption/**)
 
-* Renew（**💎本人原创开源项目：https://github.com/BProbie/Renew/**
+* Renew(**💎本人原创开源项目：https://github.com/BProbie/Renew/**)
 
 * JavaFX（系列集合）
 
