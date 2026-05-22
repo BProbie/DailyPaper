@@ -50,6 +50,22 @@
 
 
 
+## ⭐快速开始
+
+### 普通人
+
+```shell
+https://github.com/BProbie/DailyPaper/releases/tag/2.0.0/
+```
+
+### 开发者
+
+```shell
+git clone https://github.com/BProbie/DailyPaper.git
+```
+
+
+
 ## ⭐诞生背景
 
 我刚重置完电脑看着电脑桌面上展示的操作系统自带的经典壁纸陷入了沉思：我该选一张怎样的壁纸呢？
@@ -359,10 +375,6 @@ DailyPaper # 根
 作者：**probie**
 
 贡献：
-
-- **probie**
-
-- **probie**
 
 - **probie**
 
