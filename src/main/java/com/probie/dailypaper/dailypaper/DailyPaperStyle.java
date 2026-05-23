@@ -174,7 +174,7 @@ public class DailyPaperStyle implements IDailyPaperStyle {
         dailyPaperElement.getChatTextInputTextArea().prefWidthProperty().bind(dailyPaperElement.getChatTextInputScrollPane().widthProperty());
         dailyPaperElement.getChatTextInputTextArea().prefHeightProperty().bind(dailyPaperElement.getChatTextInputScrollPane().heightProperty());
         dailyPaperElement.getChatTextInputTextArea().setWrapText(true);
-        dailyPaperElement.getChatTextInputTextArea().setPromptText("请输入提示词...");
+        dailyPaperElement.getChatTextInputTextArea().setPromptText("在此输入您的提示词, Ctrl+Enter 发送, Enter 换行");
         dailyPaperElement.getChatTextInputTextArea().clear();
         dailyPaperElement.getChatTextInputTextArea().setFont(new Font(Integer.parseInt(String.valueOf(dailyPaperData.getFontSizeLarge().get()))));
 
