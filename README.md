@@ -174,7 +174,7 @@ DailyPaper # 根
 ├── .gitignore
 ├── .idea # 已在仓库中删减
 ├── .mvn
-├── Key # 免费AI-API密钥，已高度加密深度编码反复混淆，且已具备反调试机制
+├── Key # 免费AI-API密钥，同时已高度加密深度编码反复混淆，并且已具备反调试机制
 ├── LICENSE # MIT开源协议
 ├── mvnw
 ├── mvnw.cmd
@@ -372,11 +372,11 @@ DailyPaper # 根
 
 ## ⭐作者介绍
 
-作者：**probie**
+作者：**BProbie**
 
 贡献：
 
-- **probie**
+- **BProbie**
 
 
 
