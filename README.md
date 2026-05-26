@@ -176,6 +176,9 @@ DailyPaper # 根
 ├── .mvn
 ├── Key # 免费AI-API密钥，同时已高度加密深度编码反复混淆，并且已具备反调试机制
 ├── LICENSE # MIT开源协议
+├── CONTRIBUTING.md # 贡献指南
+├── CODE_OF_CONDUCT.md # 社区准则
+├── SECURITY.md # 安全策略
 ├── mvnw
 ├── mvnw.cmd
 ├── out # 已在仓库中删除
