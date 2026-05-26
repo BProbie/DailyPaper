@@ -250,8 +250,10 @@ DailyPaper # 根
 │   │   │               │   └── api
 │   │   │               │       └── IData.java
 │   │   │               ├── exceptions
+│   │   │               │   ├── DailyPaperExceptionMenu.java
 │   │   │               │   ├── DailyPaperException.java
 │   │   │               │   └── api
+│   │   │               │       ├── IDailyPaperExceptionMenu.java
 │   │   │               │       └── IDailyPaperException.java
 │   │   │               ├── plugin
 │   │   │               │   ├── Plugin.java

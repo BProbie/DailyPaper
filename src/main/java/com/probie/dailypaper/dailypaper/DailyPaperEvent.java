@@ -579,6 +579,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                         String temp = dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().getText();
                         try {
                             Platform.runLater(() -> {
+//                                输入栏不可编辑
+//                                dailyPaperElement.getDailyWallpaperHobbyTextArea().setEditable(false);
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(true);
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText("正在分析");
                             });
@@ -594,6 +596,8 @@ public class DailyPaperEvent implements IDailyPaperEvent {
                             Platform.runLater(() -> {
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setText(temp);
                                 dailyPaperElement.getDailyWallpaperHobbyToolsUploadImageButton().setDisable(false);
+//                                输入栏可编辑
+//                                dailyPaperElement.getDailyWallpaperHobbyTextArea().setEditable(true);
                             });
                         }
                     });

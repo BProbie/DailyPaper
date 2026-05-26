@@ -4,12 +4,26 @@ import com.probie.dailypaper.exceptions.api.IDailyPaperException;
 
 public class DailyPaperException extends RuntimeException implements IDailyPaperException {
 
+    private final DailyPaperExceptionMenu dailyPaperExceptionMenu;
+
     /**
-     * DailyPaper 专属错误信息
-     * @param message 错误信息
+     * DailyPaper 错误
+     * @param dailyPaperExceptionMenu 错误
      * */
-    public DailyPaperException(String message) {
-        super(message);
+    public DailyPaperException(DailyPaperExceptionMenu dailyPaperExceptionMenu) {
+        this.dailyPaperExceptionMenu = dailyPaperExceptionMenu;
+    }
+
+    @Override
+    public String getMessage() {
+        return """
+                
+                Code: %d
+                Message: %s
+                """.formatted(
+                dailyPaperExceptionMenu.getCode(),
+                dailyPaperExceptionMenu.getMessage()
+        );
     }
 
 }
