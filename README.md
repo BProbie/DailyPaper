@@ -170,22 +170,25 @@ AI+赋能的日常桌面壁纸创作、生成、管理工具。
 
 ```markdown
 DailyPaper # 根
-├── .github
-├── .gitignore
-├── .idea # 已在仓库中删减
-├── .mvn
 ├── Key # 免费AI-API密钥，同时已高度加密深度编码反复混淆，并且已具备反调试机制
-├── LICENSE # MIT开源协议
+├── LICENSE # 开源协议
 ├── CONTRIBUTING.md # 贡献指南
 ├── CODE_OF_CONDUCT.md # 社区准则
 ├── SECURITY.md # 安全策略
+├── CHANGELOG.md # 更新内容
+├── AUTHORS.md # 作者详情
+├── CONTRIBUTORS.md # 贡献者页
+├── .mvn
 ├── mvnw
 ├── mvnw.cmd
+├── .gitignore
+├── pom.xml
+├── README.md
+├── .idea # 已在仓库中删减
 ├── out # 已在仓库中删除
 ├── scripts # 脚本程序
 ├── docs # 文本文档
-├── pom.xml
-├── README.md
+├── .github
 ├── res
 ├── src # 源码
 │   ├── main
