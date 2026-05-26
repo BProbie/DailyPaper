@@ -393,7 +393,7 @@ DailyPaper # 根
 
 ## ⭐参考
 
-暂无参考资料
+本项目**暂无**可知的参考文献资料
 
 
 
@@ -404,6 +404,12 @@ DailyPaper # 根
 社区准则：https://github.com/BProbie/DailyPaper?tab=coc-ov-file
 
 安全策略：https://github.com/BProbie/DailyPaper?tab=security-ov-file
+
+更新内容：https://github.com/BProbie/DailyPaper/blob/master/CHANGELOG.md
+
+作者详情：https://github.com/BProbie/DailyPaper/blob/master/AUTHORS.md
+
+贡献者页：https://github.com/BProbie/DailyPaper/blob/master/CONTRIBUTORS.md
 
 
 
