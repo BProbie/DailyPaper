@@ -389,4 +389,20 @@ DailyPaper # 根
 
 
 
+## ⭐参考
+
+暂无参考资料
+
+
+
+## ⭐附录
+
+贡献指南：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/CONTRIBUTING.md/
+
+社区准则：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/CODE_OF_CONDUCT.md/
+
+安全策略：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/SECURITY.md/
+
+
+
 # **❤❤❤**
