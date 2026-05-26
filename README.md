@@ -397,11 +397,11 @@ DailyPaper # 根
 
 ## ⭐附录
 
-贡献指南：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/CONTRIBUTING.md/
+贡献指南：https://github.com/BProbie/DailyPaper?tab=contributing-ov-file
 
-社区准则：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/CODE_OF_CONDUCT.md/
+社区准则：https://github.com/BProbie/DailyPaper?tab=coc-ov-file
 
-安全策略：https://github.com/BProbie/DailyPaper/raw/refs/heads/master/SECURITY.md/
+安全策略：https://github.com/BProbie/DailyPaper?tab=security-ov-file
 
 
 
