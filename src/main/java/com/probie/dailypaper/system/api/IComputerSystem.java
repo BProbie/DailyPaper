@@ -2,10 +2,17 @@ package com.probie.dailypaper.system.api;
 
 import java.awt.*;
 import java.io.File;
+import okhttp3.Request;
+import okhttp3.Response;
 import java.util.Calendar;
 import java.io.IOException;
 import java.time.LocalDate;
+import okhttp3.OkHttpClient;
 import java.time.LocalDateTime;
+import com.alibaba.fastjson2.JSONObject;
+import com.probie.dailypaper.enums.Date;
+import com.probie.dailypaper.config.LogConfig;
+import com.probie.dailypaper.dailypaper.DailyPaper;
 import com.probie.dailypaper.system.api.natives.User32;
 
 public interface IComputerSystem {
@@ -39,6 +46,51 @@ public interface IComputerSystem {
      * */
     default String getCurrentFormatDate() {
         return String.valueOf(LocalDateTime.now());
+    }
+
+    /**
+     * 获取今天的节日
+     * @return 今天的节日
+     * */
+    default String getHoliDay() {
+        return getHoliDay(("%s-%s-%s").formatted(String.valueOf(getDate(Date.YEAR)), String.format("%02d", getDate(Date.MONTH)), String.format("%02d", getDate(Date.DAY))));
+    }
+
+    /**
+     * 获取节日
+     * @param date 日期(例 2000-01-01)
+     * @return 节日
+     * */
+    default String getHoliDay(String date) {
+        String holiDay = "无节日";
+
+        String uri = "https://api.jiejiariapi.com/v1/is_holiday?date=" + date;
+
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(uri)
+                .get()
+                .build();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
+            if (response.body() != null) {
+                String responseBody = response.body().string();
+                if (Boolean.parseBoolean(String.valueOf(DailyPaper.getInstance().getDebug().get()))) {
+                    String message = "Holiday" + "\n" + responseBody;
+                    LogConfig.getInstance().debug(message);
+                }
+                if (response.isSuccessful()) {
+                    JSONObject responseBodyJson = JSONObject.parseObject(responseBody);
+                    boolean isHoliday = responseBodyJson.getBooleanValue("is_holiday");
+                    if (isHoliday) {
+                        holiDay = responseBodyJson.getJSONObject("holiday").getString("name");
+                    }
+                }
+            }
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
+        return holiDay;
     }
 
     /**
